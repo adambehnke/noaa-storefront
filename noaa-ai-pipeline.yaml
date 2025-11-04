@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: NOAA AI-driven ETL and validation pipeline
+
+Parameters:
+  ENV:
+    Type: String
+    Default: dev
+
+Resources:
+  NOAAETLRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub noaa-etl-role-${ENV}
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - glue.amazonaws.com
+                - lambda.amazonaws.com
+                - athena.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+        - arn:aws:iam::aws:policy/AmazonAthenaFullAccess
+
+  NOAAGlueBronzeToSilver:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub noaa-bronze-to-silver-${ENV}
+      Role: !Ref NOAAETLRole
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub s3://${LakeBucket}/scripts/bronze_to_silver.py
+        PythonVersion: 3
+      DefaultArguments:
+        "--ENV": !Ref ENV
+        "--LAKE_BUCKET": !Sub noaa-federated-lake-${AWS::AccountId}-${AWS::Region}
+
+  NOAAGlueSilverToGold:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub noaa-silver-to-gold-${ENV}
+      Role: !Ref NOAAETLRole
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub s3://${LakeBucket}/scripts/silver_to_gold.py
+        PythonVersion: 3
+      DefaultArguments:
+        "--ENV": !Ref ENV
+        "--LAKE_BUCKET": !Sub noaa-federated-lake-${AWS::AccountId}-${AWS::Region}
+
+Outputs:
+  ETLRoleArn:
+    Value: !GetAtt NOAAETLRole.Arn
+

@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: NOAA Federated Data Lake (Medallion architecture core)
+
+Resources:
+  NOAALakeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub noaa-federated-lake-${AWS::AccountId}-${AWS::Region}
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Status: Enabled
+            ExpirationInDays: 365
+
+  NOAALakeBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref NOAALakeBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: athena.amazonaws.com
+            Action:
+              - s3:GetBucketLocation
+              - s3:PutObject
+              - s3:GetObject
+              - s3:ListBucket
+            Resource:
+              - !Sub arn:aws:s3:::noaa-federated-lake-${AWS::AccountId}-${AWS::Region}
+              - !Sub arn:aws:s3:::noaa-federated-lake-${AWS::AccountId}-${AWS::Region}/*
+Outputs:
+  LakeBucketName:
+    Value: !Ref NOAALakeBucket
+

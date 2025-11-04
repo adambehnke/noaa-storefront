@@ -1,0 +1,111 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  NOAA Federated AI Pipeline Validation Lambda.
+  Invokes ingestion → ETL → query chain and validates output in the same AWS account.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+
+Resources:
+  NOAAValidationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub noaa-pipeline-validation-role-${Environment}
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: pipeline-validation-access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - glue:StartJobRun
+                  - glue:GetJobRun
+                  - athena:StartQueryExecution
+                  - athena:GetQueryExecution
+                  - athena:GetQueryResults
+                  - s3:GetObject
+                  - s3:ListBucket
+                Resource: "*"
+
+  NOAAValidationLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub noaa-pipeline-validation-${Environment}
+      Role: !GetAtt NOAAValidationRole.Arn
+      Runtime: python3.11
+      Timeout: 900
+      Handler: index.handler
+      Code:
+        ZipFile: |
+          import boto3, json, time
+
+          lambda_client = boto3.client('lambda')
+          glue = boto3.client('glue')
+          athena = boto3.client('athena')
+          sts = boto3.client('sts')
+          account_id = sts.get_caller_identity()['Account']
+          region = boto3.session.Session().region_name
+
+          def build_arn(name):
+              return f"arn:aws:lambda:{region}:{account_id}:function:{name}"
+
+          def handler(event, context):
+              env = context.function_name.split('-')[-1]
+              result = {}
+
+              # Step 1: Trigger ingestion Lambda
+              ingest_fn = build_arn(f"noaa-ai-ingest-{env}")
+              print(f"Invoking ingestion Lambda: {ingest_fn}")
+              resp = lambda_client.invoke(
+                  FunctionName=ingest_fn,
+                  InvocationType='RequestResponse'
+              )
+              ingest_output = json.loads(resp['Payload'].read().decode())
+              result['ingest'] = ingest_output
+
+              # Step 2: Run Glue jobs sequentially
+              for job in [f"noaa-bronze-to-silver-{env}", f"noaa-silver-to-gold-{env}"]:
+                  print(f"Starting Glue job: {job}")
+                  job_run = glue.start_job_run(JobName=job)
+                  run_id = job_run['JobRunId']
+                  while True:
+                      state = glue.get_job_run(JobName=job, RunId=run_id)['JobRun']['JobRunState']
+                      if state in ['SUCCEEDED', 'FAILED', 'STOPPED']:
+                          break
+                      time.sleep(15)
+                  result[job] = state
+                  if state != 'SUCCEEDED':
+                      raise Exception(f"Glue job {job} failed with state {state}")
+
+              # Step 3: Query Athena
+              query_fn = build_arn(f"noaa-query-ai-{env}")
+              print(f"Invoking Athena query Lambda: {query_fn}")
+              q_resp = lambda_client.invoke(
+                  FunctionName=query_fn,
+                  InvocationType='RequestResponse',
+                  Payload=json.dumps({
+                      "query": "SELECT * FROM noaa_catalog_core LIMIT 3"
+                  })
+              )
+              query_output = json.loads(q_resp['Payload'].read().decode())
+              result['athena_query'] = query_output
+
+              return {"validation": "success", "details": result}
+
+Outputs:
+  ValidationLambdaArn:
+    Description: Validation Lambda ARN
+    Value: !GetAtt NOAAValidationLambda.Arn
+

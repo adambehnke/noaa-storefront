@@ -1,0 +1,41 @@
+{
+  "Comment": "NOAA Federated Medallion Pipeline Orchestrator with error handling",
+  "StartAt": "BronzeToSilver",
+  "States": {
+    "BronzeToSilver": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": { "JobName": "noaa-bronze-to-silver-dev" },
+      "Next": "SilverToGold",
+      "Catch": [{ "ErrorEquals": ["States.ALL"], "Next": "CatchFailure" }]
+    },
+    "SilverToGold": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": { "JobName": "noaa-silver-to-gold-dev" },
+      "Next": "NotifySuccess",
+      "Catch": [{ "ErrorEquals": ["States.ALL"], "Next": "CatchFailure" }]
+    },
+    "NotifySuccess": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:us-east-1:899626030376:noaa-pipeline-status",
+        "Message": "✅ NOAA Medallion pipeline completed successfully",
+        "Subject": "NOAA Pipeline Success"
+      },
+      "End": true
+    },
+    "CatchFailure": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:us-east-1:899626030376:noaa-pipeline-status",
+        "Message": "❌ NOAA Medallion pipeline failed",
+        "Subject": "NOAA Pipeline Failure"
+      },
+      "End": true
+    }
+  }
+}
+

@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: NOAA Federated AI Query API
+
+Resources:
+  NOAAAIQueryLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: noaa-ai-query-dev
+      Runtime: python3.12
+      Role: arn:aws:iam::${AWS::AccountId}:role/noaa-etl-role-dev
+      Handler: ai_query_handler.lambda_handler
+      Code:
+        S3Bucket: !Sub noaa-federated-lake-${AWS::AccountId}-${AWS::Region}
+        S3Key: lambda/ai_query_handler.zip
+      Timeout: 300
+      MemorySize: 1024
+      Environment:
+        Variables:
+          BRONZE_DB: noaa_bronze_dev
+          SILVER_DB: noaa_silver_dev
+          GOLD_DB: noaa_gold_dev
+          ATHENA_OUTPUT: s3://noaa-federated-lake-dev-query-results
+          ENV: dev
+

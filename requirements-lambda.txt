@@ -1,0 +1,18 @@
+# AWS Lambda Requirements
+# For ai_query_handler.py and data_api_handler.py
+
+# AWS SDK (included in Lambda runtime, but pinning version for consistency)
+boto3==1.34.34
+botocore==1.34.34
+
+# Redis client for ElastiCache
+redis==5.0.1
+
+# HTTP requests for external APIs
+requests==2.31.0
+
+# JSON handling improvements
+simplejson==3.19.2
+
+# Date/time utilities
+python-dateutil==2.8.2

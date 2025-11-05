@@ -1,0 +1,29 @@
+# NOAA AI Query Configuration
+# Bedrock + Athena + Medallion integration
+
+environment: dev
+region: us-east-1
+
+databases:
+  bronze: noaa_bronze_dev
+  silver: noaa_silver_dev
+  gold: noaa_gold_dev
+
+athena:
+  output_bucket: s3://noaa-federated-lake-dev-query-results
+  workgroup: primary
+
+bedrock:
+  default_model: anthropic.claude-3-5-sonnet-20241022-v2:0
+  models:
+    haiku: anthropic.claude-3-5-haiku-20241022-v1:0
+    sonnet: anthropic.claude-3-5-sonnet-20241022-v2:0
+    opus: anthropic.claude-3-opus-20240229-v1:0
+  max_tokens: 500
+  temperature: 0.3
+  region: us-east-1
+
+logging:
+  level: INFO
+  cloudwatch_group: /aws/lambda/noaa-ai-query-dev
+

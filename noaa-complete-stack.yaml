@@ -1,0 +1,837 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "NOAA Federated Data Lake - Complete Stack (Medallion Architecture with AI)"
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+  NOAACDOToken:
+    Type: String
+    NoEcho: true
+    Default: ""
+    Description: NOAA CDO API Token (get from https://www.ncdc.noaa.gov/cdo-web/token)
+
+  BedrockModelId:
+    Type: String
+    Default: anthropic.claude-3-5-haiku-20241022-v1:0
+    Description: Bedrock model ID for AI queries
+
+  DeploymentBucket:
+    Type: String
+    Default: ""
+    Description: S3 bucket containing Lambda and Glue code (leave empty to create new)
+
+  RedisNodeType:
+    Type: String
+    Default: cache.t3.micro
+    AllowedValues:
+      - cache.t3.micro
+      - cache.t3.small
+      - cache.t3.medium
+      - cache.r6g.large
+    Description: ElastiCache Redis node type
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Environment Configuration
+        Parameters:
+          - Environment
+      - Label:
+          default: NOAA API Configuration
+        Parameters:
+          - NOAACDOToken
+      - Label:
+          default: AI Configuration
+        Parameters:
+          - BedrockModelId
+      - Label:
+          default: Cache Configuration
+        Parameters:
+          - RedisNodeType
+
+Resources:
+  # ========================================
+  # S3 BUCKETS - DATA LAKE STORAGE
+  # ========================================
+
+  DataLakeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "noaa-federated-lake-${AWS::AccountId}-${Environment}"
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: BronzeRetention
+            Status: Enabled
+            Prefix: bronze/
+            ExpirationInDays: 90
+          - Id: SilverRetention
+            Status: Enabled
+            Prefix: silver/
+            ExpirationInDays: 365
+          - Id: GoldRetention
+            Status: Enabled
+            Prefix: gold/
+            ExpirationInDays: 730
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+
+  AthenaResultsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "noaa-athena-results-${AWS::AccountId}-${Environment}"
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldResults
+            Status: Enabled
+            ExpirationInDays: 30
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  # LambdaCodeBucket is now provided via DeploymentBucket parameter
+  # This allows using pre-created bucket from deployment script
+
+  # ========================================
+  # GLUE DATA CATALOG - DATABASES
+  # ========================================
+
+  BronzeDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Sub "noaa_bronze_${Environment}"
+        Description: Bronze layer - Raw ingestion from NOAA endpoints
+
+  SilverDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Sub "noaa_silver_${Environment}"
+        Description: Silver layer - Cleaned and normalized data
+
+  GoldDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Sub "noaa_gold_${Environment}"
+        Description: Gold layer - Analytics-ready aggregated data
+
+  # ========================================
+  # GLUE TABLES - ATMOSPHERIC POND
+  # ========================================
+
+  AtmosphericBronzeTable:
+    Type: AWS::Glue::Table
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref BronzeDatabase
+      TableInput:
+        Name: atmospheric_raw
+        StorageDescriptor:
+          Location: !Sub "s3://${DataLakeBucket}/bronze/atmospheric/"
+          InputFormat: org.apache.hadoop.mapred.TextInputFormat
+          OutputFormat: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+          SerdeInfo:
+            SerializationLibrary: org.openx.data.jsonserde.JsonSerDe
+          Columns:
+            - Name: id
+              Type: string
+            - Name: properties
+              Type: struct<event:string,headline:string,severity:string,certainty:string,urgency:string,onset:string,expires:string>
+            - Name: geometry
+              Type: string
+            - Name: ingestion_timestamp
+              Type: timestamp
+
+  AtmosphericGoldTable:
+    Type: AWS::Glue::Table
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref GoldDatabase
+      TableInput:
+        Name: atmospheric_aggregated
+        StorageDescriptor:
+          Location: !Sub "s3://${DataLakeBucket}/gold/atmospheric/"
+          InputFormat: org.apache.hadoop.mapred.TextInputFormat
+          OutputFormat: org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat
+          SerdeInfo:
+            SerializationLibrary: org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe
+          Columns:
+            - Name: region
+              Type: string
+            - Name: event_type
+              Type: string
+            - Name: severity
+              Type: string
+            - Name: alert_count
+              Type: bigint
+            - Name: avg_certainty
+              Type: double
+            - Name: date
+              Type: date
+
+  # ========================================
+  # GLUE TABLES - OCEANIC POND
+  # ========================================
+
+  OceanicBronzeTable:
+    Type: AWS::Glue::Table
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref BronzeDatabase
+      TableInput:
+        Name: oceanic_raw
+        StorageDescriptor:
+          Location: !Sub "s3://${DataLakeBucket}/bronze/oceanic/"
+          InputFormat: org.apache.hadoop.mapred.TextInputFormat
+          OutputFormat: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+          SerdeInfo:
+            SerializationLibrary: org.openx.data.jsonserde.JsonSerDe
+          Columns:
+            - Name: station_id
+              Type: string
+            - Name: timestamp
+              Type: string
+            - Name: water_level
+              Type: double
+            - Name: water_temp
+              Type: double
+            - Name: ingestion_timestamp
+              Type: timestamp
+
+  OceanicGoldTable:
+    Type: AWS::Glue::Table
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref GoldDatabase
+      TableInput:
+        Name: oceanic_aggregated
+        StorageDescriptor:
+          Location: !Sub "s3://${DataLakeBucket}/gold/oceanic/"
+          InputFormat: org.apache.hadoop.mapred.TextInputFormat
+          OutputFormat: org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat
+          SerdeInfo:
+            SerializationLibrary: org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe
+          Columns:
+            - Name: station_id
+              Type: string
+            - Name: region
+              Type: string
+            - Name: avg_water_level
+              Type: double
+            - Name: avg_water_temp
+              Type: double
+            - Name: date
+              Type: date
+
+  # ========================================
+  # IAM ROLES
+  # ========================================
+
+  GlueServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "noaa-glue-service-role-${Environment}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+      Policies:
+        - PolicyName: GlueS3Access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub "${DataLakeBucket.Arn}/*"
+                  - !GetAtt DataLakeBucket.Arn
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "noaa-lambda-execution-role-${Environment}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+      Policies:
+        - PolicyName: LambdaS3Access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub "${DataLakeBucket.Arn}/*"
+                  - !GetAtt DataLakeBucket.Arn
+        - PolicyName: AthenaAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - athena:StartQueryExecution
+                  - athena:GetQueryExecution
+                  - athena:GetQueryResults
+                  - glue:GetDatabase
+                  - glue:GetTable
+                  - glue:GetPartitions
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub "${AthenaResultsBucket.Arn}/*"
+                  - !GetAtt AthenaResultsBucket.Arn
+        - PolicyName: BedrockAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - bedrock:InvokeModel
+                Resource: "*"
+        - PolicyName: ElastiCacheAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - elasticache:DescribeCacheClusters
+                Resource: "*"
+
+  StepFunctionsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "noaa-stepfunctions-role-${Environment}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: states.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: StepFunctionsExecution
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - glue:StartJobRun
+                  - glue:GetJobRun
+                  - glue:BatchStopJobRun
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                Resource: !Ref PipelineNotificationTopic
+
+  # ========================================
+  # ELASTICACHE REDIS
+  # ========================================
+
+  RedisSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      Description: Subnet group for NOAA Redis cache
+      SubnetIds:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+
+  RedisSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for NOAA Redis cache
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 6379
+          ToPort: 6379
+          SourceSecurityGroupId: !Ref LambdaSecurityGroup
+
+  RedisCluster:
+    Type: AWS::ElastiCache::CacheCluster
+    Properties:
+      CacheNodeType: !Ref RedisNodeType
+      Engine: redis
+      NumCacheNodes: 1
+      CacheSubnetGroupName: !Ref RedisSubnetGroup
+      VpcSecurityGroupIds:
+        - !Ref RedisSecurityGroup
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+
+  # ========================================
+  # VPC CONFIGURATION
+  # ========================================
+
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub "noaa-vpc-${Environment}"
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      Tags:
+        - Key: Name
+          Value: !Sub "noaa-private-subnet-1-${Environment}"
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [1, !GetAZs ""]
+      Tags:
+        - Key: Name
+          Value: !Sub "noaa-private-subnet-2-${Environment}"
+
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for NOAA Lambda functions
+      VpcId: !Ref VPC
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  # ========================================
+  # GLUE ETL JOBS
+  # ========================================
+
+  BronzeToSilverJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub "noaa-bronze-to-silver-${Environment}"
+      Role: !GetAtt GlueServiceRole.Arn
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub "s3://noaa-deployment-${AWS::AccountId}-${Environment}/glue-scripts/bronze_to_silver.py"
+        PythonVersion: "3"
+      DefaultArguments:
+        "--job-bookmark-option": job-bookmark-enable
+        "--LAKE_BUCKET": !Ref DataLakeBucket
+        "--ENV": !Ref Environment
+      GlueVersion: "4.0"
+      MaxRetries: 1
+      Timeout: 60
+      NumberOfWorkers: 2
+      WorkerType: G.1X
+
+  SilverToGoldJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub "noaa-silver-to-gold-${Environment}"
+      Role: !GetAtt GlueServiceRole.Arn
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub "s3://noaa-deployment-${AWS::AccountId}-${Environment}/glue-scripts/silver_to_gold.py"
+        PythonVersion: "3"
+      DefaultArguments:
+        "--job-bookmark-option": job-bookmark-enable
+        "--LAKE_BUCKET": !Ref DataLakeBucket
+        "--ENV": !Ref Environment
+      GlueVersion: "4.0"
+      MaxRetries: 1
+      Timeout: 60
+      NumberOfWorkers: 2
+      WorkerType: G.1X
+
+  BronzeIngestNWSJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub "noaa-bronze-ingest-nws-${Environment}"
+      Role: !GetAtt GlueServiceRole.Arn
+      Command:
+        Name: pythonshell
+        ScriptLocation: !Sub "s3://noaa-deployment-${AWS::AccountId}-${Environment}/glue-scripts/bronze_ingest_nws.py"
+        PythonVersion: "3.9"
+      DefaultArguments:
+        "--LAKE_BUCKET": !Ref DataLakeBucket
+        "--ENV": !Ref Environment
+      MaxRetries: 2
+      Timeout: 30
+
+  BronzeIngestCDOJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub "noaa-bronze-ingest-cdo-${Environment}"
+      Role: !GetAtt GlueServiceRole.Arn
+      Command:
+        Name: pythonshell
+        ScriptLocation: !Sub "s3://noaa-deployment-${AWS::AccountId}-${Environment}/glue-scripts/bronze_ingest_cdo.py"
+        PythonVersion: "3.9"
+      DefaultArguments:
+        "--LAKE_BUCKET": !Ref DataLakeBucket
+        "--ENV": !Ref Environment
+        "--NOAA_CDO_TOKEN": !Ref NOAACDOToken
+      MaxRetries: 2
+      Timeout: 30
+
+  # ========================================
+  # LAMBDA FUNCTIONS
+  # ========================================
+
+  AIQueryLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "noaa-ai-query-${Environment}"
+      Runtime: python3.12
+      Handler: ai_query_handler.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: !Sub "noaa-deployment-${AWS::AccountId}-${Environment}"
+        S3Key: lambda/ai_query_handler.zip
+      Timeout: 300
+      MemorySize: 1024
+      Environment:
+        Variables:
+          BRONZE_DB: !Ref BronzeDatabase
+          SILVER_DB: !Ref SilverDatabase
+          GOLD_DB: !Ref GoldDatabase
+          ATHENA_OUTPUT: !Sub "s3://${AthenaResultsBucket}/"
+          ENV: !Ref Environment
+          BEDROCK_MODEL: !Ref BedrockModelId
+          REDIS_ENDPOINT: !GetAtt RedisCluster.RedisEndpoint.Address
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+
+  DataAPILambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "noaa-data-api-${Environment}"
+      Runtime: python3.12
+      Handler: data_api_handler.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: !Sub "noaa-deployment-${AWS::AccountId}-${Environment}"
+        S3Key: lambda/data_api_handler.zip
+      Timeout: 30
+      MemorySize: 512
+      Environment:
+        Variables:
+          GOLD_DB: !Ref GoldDatabase
+          ATHENA_OUTPUT: !Sub "s3://${AthenaResultsBucket}/"
+          REDIS_ENDPOINT: !GetAtt RedisCluster.RedisEndpoint.Address
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - !Ref PrivateSubnet1
+          - !Ref PrivateSubnet2
+
+  # ========================================
+  # API GATEWAY
+  # ========================================
+
+  RestAPI:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub "noaa-api-${Environment}"
+      Description: NOAA Federated Data Lake API
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  DataResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref RestAPI
+      ParentId: !GetAtt RestAPI.RootResourceId
+      PathPart: data
+
+  QueryResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref RestAPI
+      ParentId: !GetAtt RestAPI.RootResourceId
+      PathPart: query
+
+  DataGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref RestAPI
+      ResourceId: !Ref DataResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DataAPILambda.Arn}/invocations"
+
+  QueryPostMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref RestAPI
+      ResourceId: !Ref QueryResource
+      HttpMethod: POST
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${AIQueryLambda.Arn}/invocations"
+
+  APIDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - DataGetMethod
+      - QueryPostMethod
+    Properties:
+      RestApiId: !Ref RestAPI
+      StageName: !Ref Environment
+
+  DataAPILambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref DataAPILambda
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestAPI}/*"
+
+  AIQueryLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref AIQueryLambda
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestAPI}/*"
+
+  # ========================================
+  # STEP FUNCTIONS - MEDALLION PIPELINE
+  # ========================================
+
+  PipelineNotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub "noaa-pipeline-status-${Environment}"
+      DisplayName: NOAA Pipeline Notifications
+
+  MedallionStateMachine:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: !Sub "noaa-medallion-pipeline-${Environment}"
+      RoleArn: !GetAtt StepFunctionsRole.Arn
+      DefinitionString: !Sub |
+        {
+          "Comment": "NOAA Medallion Pipeline - Bronze to Silver to Gold",
+          "StartAt": "IngestNWSData",
+          "States": {
+            "IngestNWSData": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Parameters": {
+                "JobName": "${BronzeIngestNWSJob}"
+              },
+              "Next": "IngestCDOData",
+              "Catch": [{
+                "ErrorEquals": ["States.ALL"],
+                "Next": "NotifyFailure"
+              }]
+            },
+            "IngestCDOData": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Parameters": {
+                "JobName": "${BronzeIngestCDOJob}"
+              },
+              "Next": "BronzeToSilver",
+              "Catch": [{
+                "ErrorEquals": ["States.ALL"],
+                "Next": "NotifyFailure"
+              }]
+            },
+            "BronzeToSilver": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Parameters": {
+                "JobName": "${BronzeToSilverJob}"
+              },
+              "Next": "SilverToGold",
+              "Catch": [{
+                "ErrorEquals": ["States.ALL"],
+                "Next": "NotifyFailure"
+              }]
+            },
+            "SilverToGold": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::glue:startJobRun.sync",
+              "Parameters": {
+                "JobName": "${SilverToGoldJob}"
+              },
+              "Next": "NotifySuccess",
+              "Catch": [{
+                "ErrorEquals": ["States.ALL"],
+                "Next": "NotifyFailure"
+              }]
+            },
+            "NotifySuccess": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::sns:publish",
+              "Parameters": {
+                "TopicArn": "${PipelineNotificationTopic}",
+                "Message": "✅ NOAA Medallion pipeline completed successfully",
+                "Subject": "NOAA Pipeline Success"
+              },
+              "End": true
+            },
+            "NotifyFailure": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::sns:publish",
+              "Parameters": {
+                "TopicArn": "${PipelineNotificationTopic}",
+                "Message": "❌ NOAA Medallion pipeline failed",
+                "Subject": "NOAA Pipeline Failure"
+              },
+              "End": true
+            }
+          }
+        }
+
+  # ========================================
+  # CLOUDWATCH EVENTS - SCHEDULED PIPELINE
+  # ========================================
+
+  ScheduledPipelineTrigger:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: !Sub "noaa-pipeline-trigger-${Environment}"
+      Description: Trigger NOAA pipeline every 6 hours
+      ScheduleExpression: rate(6 hours)
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt MedallionStateMachine.Arn
+          RoleArn: !GetAtt EventBridgeRole.Arn
+          Id: MedallionPipeline
+
+  EventBridgeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: StartStateMachine
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: states:StartExecution
+                Resource: !GetAtt MedallionStateMachine.Arn
+
+Outputs:
+  DataLakeBucketName:
+    Description: S3 bucket for data lake storage
+    Value: !Ref DataLakeBucket
+    Export:
+      Name: !Sub "${AWS::StackName}-DataLakeBucket"
+
+  AthenaResultsBucketName:
+    Description: S3 bucket for Athena query results
+    Value: !Ref AthenaResultsBucket
+    Export:
+      Name: !Sub "${AWS::StackName}-AthenaResultsBucket"
+
+  BronzeDatabase:
+    Description: Glue database for Bronze layer
+    Value: !Ref BronzeDatabase
+
+  SilverDatabase:
+    Description: Glue database for Silver layer
+    Value: !Ref SilverDatabase
+
+  GoldDatabase:
+    Description: Glue database for Gold layer
+    Value: !Ref GoldDatabase
+
+  APIEndpoint:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${RestAPI}.execute-api.${AWS::Region}.amazonaws.com/${Environment}"
+    Export:
+      Name: !Sub "${AWS::StackName}-APIEndpoint"
+
+  RedisEndpoint:
+    Description: ElastiCache Redis endpoint
+    Value: !GetAtt RedisCluster.RedisEndpoint.Address
+
+  StateMachineArn:
+    Description: Step Functions state machine ARN
+    Value: !GetAtt MedallionStateMachine.Arn
+
+  AIQueryLambdaArn:
+    Description: AI Query Lambda function ARN
+    Value: !GetAtt AIQueryLambda.Arn
+
+  DataAPILambdaArn:
+    Description: Data API Lambda function ARN
+    Value: !GetAtt DataAPILambda.Arn

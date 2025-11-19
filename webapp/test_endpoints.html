@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endpoint Loading Diagnostics</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #0066cc;
+            margin-top: 0;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 10px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0052a3;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .endpoint-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .endpoint-card {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 4px solid #0066cc;
+        }
+        .endpoint-card strong {
+            color: #0066cc;
+        }
+        .service-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+        .count-badge {
+            background: #17a2b8;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0066cc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 NOAA Endpoint Loading Diagnostics</h1>
+        <p>This tool tests the endpoint and service status loading functionality.</p>
+
+        <div></div>
+            <button onclick="testFallbackData()">Test Fallback Data</button>
+            <button onclick="testAPIConnection()">Test API Connection</button>
+            <button onclick="clearResults()">Clear Results</button>
+        </div>
+    </div>
+
+    <div class="container" id="results">
+        <h2>Results</h2>
+        <div class="status info">
+            Click a button above to run diagnostics.
+        </div>
+    </div>
+
+    <div class="container" id="endpoints-display" style="display:none;">
+        <h2>Endpoints by Pond <span class="count-badge" id="total-endpoints">0</span></h2>
+        <div id="endpoints-list"></div>
+    </div>
+
+    <div class="container" id="services-display" style="display:none;">
+        <h2>Service Status <span class="count-badge" id="total-services">0</span></h2>
+        <div id="services-list"></div>
+    </div>
+
+    <script>
+        // Fallback pond metadata (same as in app.js)
+        const FALLBACK_PONDS = {
+            atmospheric: {
+                name: "Atmospheric",
+                description: "Weather forecasts, alerts, and observations from NWS",
+                icon: "fa-cloud-sun",
+                endpoints: [
+                    { name: "Active Alerts", service: "NWS", url: "/alerts/active" },
+                    { name: "Point Forecasts", service: "NWS", url: "/gridpoints" },
+                    { name: "Hourly Forecasts", service: "NWS", url: "/gridpoints/*/forecast/hourly" },
+                    { name: "Observations", service: "NWS", url: "/stations/*/observations" },
+                    { name: "Radar Stations", service: "NWS", url: "/radar/stations" },
+                    { name: "Zone Forecasts", service: "NWS", url: "/zones" },
+                    { name: "Products", service: "NWS", url: "/products" },
+                    { name: "Glossary", service: "NWS", url: "/glossary" }
+                ]
+            },
+            oceanic: {
+                name: "Oceanic",
+                description: "Tides, currents, and water levels from CO-OPS",
+                icon: "fa-water",
+                endpoints: [
+                    { name: "Water Level", service: "COOPS", url: "/datagetter?product=water_level" },
+                    { name: "Predictions", service: "COOPS", url: "/datagetter?product=predictions" },
+                    { name: "Currents", service: "COOPS", url: "/datagetter?product=currents" },
+                    { name: "Air Temperature", service: "COOPS", url: "/datagetter?product=air_temperature" },
+                    { name: "Water Temperature", service: "COOPS", url: "/datagetter?product=water_temperature" },
+                    { name: "Wind", service: "COOPS", url: "/datagetter?product=wind" },
+                    { name: "Air Pressure", service: "COOPS", url: "/datagetter?product=air_pressure" },
+                    { name: "Datums", service: "COOPS", url: "/mdapi/prod/webapi/stations/*/datums.json" }
+                ]
+            },
+            buoy: {
+                name: "Buoy",
+                description: "Real-time marine buoy data from NDBC",
+                icon: "fa-ship",
+                endpoints: [
+                    { name: "Standard Met Data", service: "NDBC", url: "/data/realtime2/*.txt" },
+                    { name: "Spectral Wave Data", service: "NDBC", url: "/data/realtime2/*.spec" },
+                    { name: "Ocean Data", service: "NDBC", url: "/data/realtime2/*.ocean" },
+                    { name: "Active Stations", service: "NDBC", url: "/activestations.xml" },
+                    { name: "Station Metadata", service: "NDBC", url: "/station_page.php" }
+                ]
+            },
+            climate: {
+                name: "Climate",
+                description: "Historical climate data from CDO",
+                icon: "fa-temperature-high",
+                endpoints: [
+                    { name: "Datasets", service: "CDO", url: "/datasets" },
+                    { name: "Data Categories", service: "CDO", url: "/datacategories" },
+                    { name: "Data Types", service: "CDO", url: "/datatypes" },
+                    { name: "Location Categories", service: "CDO", url: "/locationcategories" },
+                    { name: "Locations", service: "CDO", url: "/locations" },
+                    { name: "Stations", service: "CDO", url: "/stations" },
+                    { name: "Data", service: "CDO", url: "/data" }
+                ]
+            },
+            spatial: {
+                name: "Spatial",
+                description: "Radar and satellite imagery metadata",
+                icon: "fa-satellite",
+                endpoints: [
+                    { name: "Radar Products", service: "NEXRAD", url: "/ridge/RadarImg" },
+                    { name: "Satellite Imagery", service: "GOES", url: "/satellite" }
+                ]
+            },
+            terrestrial: {
+                name: "Terrestrial",
+                description: "River gauges and stream data from USGS",
+                icon: "fa-mountain",
+                endpoints: [
+                    { name: "Instantaneous Values", service: "USGS", url: "/nwis/iv" },
+                    { name: "Daily Values", service: "USGS", url: "/nwis/dv" },
+                    { name: "Site Info", service: "USGS", url: "/nwis/site" }
+                ]
+            }
+        };
+
+        const API_BASE_URL = "https://u35c31x306.execute-api.us-east-1.amazonaws.com/dev";
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = `
+                <h2>Results</h2>
+                <div class="status info">
+                    Click a button above to run diagnostics.
+                </div>
+            `;
+            document.getElementById('endpoints-display').style.display = 'none';
+            document.getElementById('services-display').style.display = 'none';
+        }
+
+        function showLoading(message) {
+            document.getElementById('results').innerHTML = `
+                <h2>Results</h2>
+                <div class="status info">
+                    <div class="loading"></div>
+                    ${message}
+                </div>
+            `;
+        }
+
+        function showSuccess(message, data) {
+            let html = `
+                <h2>Results</h2>
+                <div class="status success">
+                    ✓ ${message}
+                </div>
+            `;
+
+            if (data) {
+                html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+
+            document.getElementById('results').innerHTML = html;
+        }
+
+        function showError(message, error) {
+            let html = `
+                <h2>Results</h2>
+                <div class="status error">
+                    ✗ ${message}
+                </div>
+            `;
+
+            if (error) {
+                html += `<pre>Error: ${error.toString()}</pre>`;
+            }
+
+            document.getElementById('results').innerHTML = html;
+        }
+
+        function testFallbackData() {
+            showLoading('Processing fallback data...');
+
+            setTimeout(() => {
+                try {
+                    const ponds = FALLBACK_PONDS;
+                    const pondCount = Object.keys(ponds).length;
+
+                    // Count endpoints
+                    let totalEndpoints = 0;
+                    Object.values(ponds).forEach(pond => {
+                        totalEndpoints += (pond.endpoints || []).length;
+                    });
+
+                    showSuccess(`Successfully loaded ${pondCount} ponds with ${totalEndpoints} total endpoints`, {
+                        ponds: pondCount,
+                        endpoints: totalEndpoints,
+                        pond_names: Object.keys(ponds)
+                    });
+
+                    // Display endpoints
+                    displayEndpoints(ponds);
+                    displayServices(ponds);
+
+                } catch (error) {
+                    showError('Failed to process fallback data', error);
+                }
+            }, 500);
+        }
+
+        async function testAPIConnection() {
+            showLoading('Testing API connection...');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/ask`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: 'get_ponds_metadata'
+                    })
+                });
+
+                if (!response.ok) {
+                    showError(`API returned status ${response.status}`, new Error(`HTTP ${response.status}`));
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (data.ponds || (data.data && data.data.ponds)) {
+                    const ponds = data.ponds || data.data.ponds;
+                    const pondCount = Object.keys(ponds).length;
+
+                    let totalEndpoints = 0;
+                    Object.values(ponds).forEach(pond => {
+                        totalEndpoints += (pond.endpoints || []).length;
+                    });
+
+                    showSuccess(`API connection successful! Loaded ${pondCount} ponds with ${totalEndpoints} endpoints`, {
+                        ponds: pondCount,
+                        endpoints: totalEndpoints,
+                        pond_names: Object.keys(ponds)
+                    });
+
+                    displayEndpoints(ponds);
+                    displayServices(ponds);
+                } else {
+                    showError('API returned unexpected data format', new Error('No ponds data in response'));
+                    console.log('Full response:', data);
+                }
+
+            } catch (error) {
+                showError('Failed to connect to API (using fallback data instead)', error);
+                testFallbackData();
+            }
+        }
+
+        function displayEndpoints(ponds) {
+            const container = document.getElementById('endpoints-list');
+            const display = document.getElementById('endpoints-display');
+
+            let html = '';
+            let totalEndpoints = 0;
+
+            Object.keys(ponds).forEach(pondName => {
+                const pond = ponds[pondName];
+                const endpoints = pond.endpoints || [];
+
+                if (endpoints.length > 0) {
+                    totalEndpoints += endpoints.length;
+
+                    html += `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #0066cc; margin-bottom: 10px;">
+                                ${pond.name || pondName}
+                                <span class="count-badge">${endpoints.length}</span>
+                            </h3>
+                            <div class="endpoint-list">
+                    `;
+
+                    endpoints.forEach(endpoint => {
+                        html += `
+                            <div class="endpoint-card">
+                                <strong>${endpoint.name}</strong>
+                                <span class="service-badge">${endpoint.service}</span>
+                                <div style="font-size: 11px; color: #666; margin-top: 5px;">
+                                    ${endpoint.url}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (totalEndpoints === 0) {
+                html = '<div class="status error">No endpoints found</div>';
+            }
+
+            container.innerHTML = html;
+            document.getElementById('total-endpoints').textContent = totalEndpoints;
+            display.style.display = 'block';
+        }
+
+        function displayServices(ponds) {
+            const container = document.getElementById('services-list');
+            const display = document.getElementById('services-display');
+
+            // Count services and endpoints
+            const serviceMap = {};
+            let totalEndpoints = 0;
+
+            Object.keys(ponds).forEach(pondName => {
+                const pond = ponds[pondName];
+                const endpoints = pond.endpoints || [];
+
+                endpoints.forEach(endpoint => {
+                    const serviceName = endpoint.service || 'unknown';
+                    if (!serviceMap[serviceName]) {
+                        serviceMap[serviceName] = {
+                            name: serviceName,
+                            endpoints: 0,
+                            ponds: new Set()
+                        };
+                    }
+                    serviceMap[serviceName].endpoints++;
+                    serviceMap[serviceName].ponds.add(pondName);
+                    totalEndpoints++;
+                });
+            });
+
+            // Build HTML
+            let html = `
+                <div style="margin-bottom: 15px; padding: 15px; background: #e7f3ff; border-radius: 6px;">
+                    <div style="font-size: 18px; font-weight: bold; color: #0066cc;">
+                        ${Object.keys(serviceMap).length} Active Services
+                    </div>
+                    <div style="font-size: 14px; color: #666; margin-top: 5px;">
+                        ${totalEndpoints} Total Endpoints across ${Object.keys(ponds).length} Data Ponds
+                    </div>
+                </div>
+            `;
+
+            Object.values(serviceMap).forEach(service => {
+                const pondList = Array.from(service.ponds).join(', ');
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center;
+                                padding: 12px; margin: 8px 0; background: #f8f9fa;
+                                border-radius: 4px; border-left: 4px solid #28a745;">
+                        <div>
+                            <strong style="color: #333;">${service.name}</strong>
+                            <div style="font-size: 11px; color: #666; margin-top: 3px;">
+                                ${service.endpoints} endpoint${service.endpoints > 1 ? 's' : ''} |
+                                Ponds: ${pondList}
+                            </div>
+                        </div>
+                        <span class="service-badge">Active</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            document.getElementById('total-services').textContent = Object.keys(serviceMap).length;
+            display.style.display = 'block';
+        }
+
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            console.log('Page loaded, testing fallback data...');
+            testFallbackData();
+        });
+    </script>
+</body>
+</html>

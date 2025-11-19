@@ -1,0 +1,19 @@
+# Flask Web Server Dependencies
+Flask==3.0.0
+flask-cors==4.0.0
+Werkzeug==3.0.1
+
+# HTTP Requests
+requests==2.32.3
+
+# AWS SDK (for local Lambda handler execution)
+boto3==1.34.51
+
+# Additional dependencies for Lambda handlers
+# (only needed if running in LOCAL mode)
+
+# Note: If you're only using PROXY mode (forwarding to API Gateway),
+# you only need Flask, flask-cors, and requests
+
+# Development dependencies (optional)
+python-dotenv==1.0.0  # For managing environment variables

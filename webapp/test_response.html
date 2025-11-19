@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test NOAA Response</title>
+    <script>
+        // Simulate the API response
+        const apiResponse = {
+            "success": true,
+            "query": "Plan a safe maritime route from Boston to Portland Maine",
+            "answer": "Queried 2 data ponds. Found 200 total records.",
+            "total_records": 200,
+            "ponds_queried": [
+                {
+                    "pond": "Atmospheric Pond",
+                    "relevance_score": 0.95,
+                    "why_relevant": "Weather conditions along route",
+                    "data_contribution": "Wind, visibility, storms",
+                    "records_found": 100,
+                    "success": true
+                },
+                {
+                    "pond": "Oceanic Pond",
+                    "relevance_score": 0.9,
+                    "why_relevant": "Ocean conditions and currents",
+                    "data_contribution": "Currents, water levels, tides",
+                    "records_found": 100,
+                    "success": true
+                }
+            ],
+            "raw_data": {
+                "atmospheric": [
+                    {"station_id": "KBOS", "avg_wind_speed": 23.8, "avg_temperature": 3.0}
+                ],
+                "oceanic": [
+                    {"station_id": "9449880", "avg_wind_speed": 1.84}
+                ]
+            },
+            "metadata": {
+                "execution_time_ms": 2838
+            }
+        };
+
+        window.onload = function() {
+            document.getElementById('output').textContent = JSON.stringify(apiResponse, null, 2);
+            
+            // Test record count extraction
+            const recordCount = apiResponse.total_records || 0;
+            document.getElementById('record-count').textContent = recordCount;
+            
+            // Test pond data extraction  
+            let pondHTML = '';
+            if (apiResponse.ponds_queried) {
+                apiResponse.ponds_queried.forEach(pond => {
+                    const records = pond.records_found || pond.record_count || 0;
+                    pondHTML += `<div>${pond.pond}: ${records} records</div>`;
+                });
+            }
+            document.getElementById('pond-data').innerHTML = pondHTML;
+        };
+    </script>
+</head>
+<body>
+    <h1>NOAA API Response Test</h1>
+    <h2>Total Records: <span id="record-count">0</span></h2>
+    <h2>Pond Data:</h2>
+    <div id="pond-data"></div>
+    <h2>Full Response:</h2>
+    <pre id="output"></pre>
+</body>
+</html>

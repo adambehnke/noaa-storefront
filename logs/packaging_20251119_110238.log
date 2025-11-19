@@ -1,0 +1,12 @@
+[0;34m========================================[0m
+[0;34mNOAA Lambda Function Packaging[0m
+[0;34m========================================[0m
+Environment: dev
+Package Directory: /Users/adambehnke/Projects/noaa_storefront/lambda-packages
+Upload to S3: true
+S3 Bucket: noaa-deployment-packages-899626030376-dev
+[0;34m========================================[0m
+
+[1;33mCleaning existing packages...[0m
+[0;32m✓ Clean complete[0m
+

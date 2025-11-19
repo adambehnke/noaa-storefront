@@ -1,0 +1,28 @@
+[0;34m╔════════════════════════════════════════════════════════════════╗[0m
+[0;34m║   NOAA Federated Data Lake - Glue ETL Pipeline Deployment     ║[0m
+[0;34m╚════════════════════════════════════════════════════════════════╝[0m
+
+[0;32mConfiguration:[0m
+  Environment:        dev
+  AWS Region:         us-east-1
+  AWS Account:        899626030376
+  Data Lake Bucket:   noaa-data-lake-dev
+  Glue Script Bucket: noaa-glue-scripts-dev
+  CloudFormation:     noaa-glue-etl-pipeline-dev
+
+[1;33m[1/6] Creating Glue script bucket...[0m
+make_bucket: noaa-glue-scripts-dev
+[0;32m✓ Created bucket: noaa-glue-scripts-dev[0m
+
+[1;33m[2/6] Uploading Glue ETL scripts...[0m
+Completed 9.6 KiB/9.6 KiB (45.5 KiB/s) with 1 file(s) remainingupload: ./json_array_to_jsonlines.py to s3://noaa-glue-scripts-dev/glue-etl/json_array_to_jsonlines.py
+[0;32m✓ Uploaded json_array_to_jsonlines.py[0m
+
+[1;33m[3/6] Deploying CloudFormation stack...[0m
+
+Waiting for changeset to be created..
+Waiting for stack create/update to complete
+
+Failed to create/update the stack. Run the following command
+to fetch the list of events leading up to the failure
+aws cloudformation describe-stack-events --stack-name noaa-glue-etl-pipeline-dev

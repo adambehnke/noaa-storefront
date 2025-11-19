@@ -1,0 +1,161 @@
+[0;34m[INFO][0m ==========================================
+[0;34m[INFO][0m NOAA 24/7 Comprehensive Ingestion Deployment
+[0;34m[INFO][0m ==========================================
+
+[0;34m[INFO][0m Initializing comprehensive ingestion deployment...
+[0;34m[INFO][0m Deployment log: /Users/adambehnke/Projects/noaa_storefront/deployment/logs/deployment_20251114_113246.log
+[0;34m[INFO][0m Project root: /Users/adambehnke/Projects/noaa_storefront
+[0;34m[INFO][0m Environment: dev
+[0;34m[INFO][0m Region: us-east-1
+[0;34m[INFO][0m Account ID: 899626030376
+[0;32m[SUCCESS][0m Initialization complete
+
+[0;34m[INFO][0m Setting up S3 buckets and medallion structure...
+[0;34m[INFO][0m Creating bucket noaa-data-lake-dev...
+make_bucket: noaa-data-lake-dev
+[0;32m[SUCCESS][0m Created bucket noaa-data-lake-dev
+[0;34m[INFO][0m Creating deployment bucket noaa-deployment-dev-899626030376...
+make_bucket: noaa-deployment-dev-899626030376
+[0;32m[SUCCESS][0m Created deployment bucket noaa-deployment-dev-899626030376
+[0;34m[INFO][0m Creating medallion structure for atmospheric pond...
+[0;34m[INFO][0m Creating medallion structure for oceanic pond...
+[0;34m[INFO][0m Creating medallion structure for buoy pond...
+[0;34m[INFO][0m Creating medallion structure for climate pond...
+[0;34m[INFO][0m Creating medallion structure for spatial pond...
+[0;34m[INFO][0m Creating medallion structure for terrestrial pond...
+[0;32m[SUCCESS][0m S3 structure created
+
+[0;34m[INFO][0m Setting up IAM roles...
+[0;32m[SUCCESS][0m IAM role ARN: arn:aws:iam::899626030376:role/[0;34m[INFO][0m Creating IAM role: noaa-ingestion-lambda-role-dev...
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "noaa-ingestion-lambda-role-dev",
+        "RoleId": "AROAVCVRR2ZJFRGQXBCHG",
+        "Arn": "arn:aws:iam::899626030376:role/noaa-ingestion-lambda-role-dev",
+        "CreateDate": "2025-11-14T17:32:54+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "lambda.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
+[0;32m[SUCCESS][0m Created IAM role: noaa-ingestion-lambda-role-dev
+noaa-ingestion-lambda-role-dev
+
+[0;34m[INFO][0m Creating Glue database: noaa_federated_dev...
+[0;32m[SUCCESS][0m Glue database ready: noaa_federated_dev
+[0;34m[INFO][0m Creating Glue tables for all ponds...
+[0;34m[INFO][0m Creating table: atmospheric_bronze...
+[0;34m[INFO][0m Creating table: atmospheric_silver...
+[0;34m[INFO][0m Creating table: atmospheric_gold...
+[0;34m[INFO][0m Creating table: oceanic_bronze...
+[0;34m[INFO][0m Creating table: oceanic_silver...
+[0;34m[INFO][0m Creating table: oceanic_gold...
+[0;34m[INFO][0m Creating table: buoy_bronze...
+[0;34m[INFO][0m Creating table: buoy_silver...
+[0;34m[INFO][0m Creating table: buoy_gold...
+[0;34m[INFO][0m Creating table: climate_bronze...
+[0;34m[INFO][0m Creating table: climate_silver...
+[0;34m[INFO][0m Creating table: climate_gold...
+[0;34m[INFO][0m Creating table: spatial_bronze...
+[0;34m[INFO][0m Creating table: spatial_silver...
+[0;34m[INFO][0m Creating table: spatial_gold...
+[0;34m[INFO][0m Creating table: terrestrial_bronze...
+[0;34m[INFO][0m Creating table: terrestrial_silver...
+[0;34m[INFO][0m Creating table: terrestrial_gold...
+[0;32m[SUCCESS][0m Glue tables created
+
+[0;34m[INFO][0m Deploying ingestion lambdas...
+[0;34m[INFO][0m ----------------------------------------
+ERROR:root:code for hash md5 was not found.
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 147, in <module>
+    globals()[__func_name] = __get_hash(__func_name)
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 97, in __get_builtin_constructor
+    raise ValueError('unsupported hash type ' + name)
+ValueError: unsupported hash type md5
+ERROR:root:code for hash sha1 was not found.
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 147, in <module>
+    globals()[__func_name] = __get_hash(__func_name)
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 97, in __get_builtin_constructor
+    raise ValueError('unsupported hash type ' + name)
+ValueError: unsupported hash type sha1
+ERROR:root:code for hash sha224 was not found.
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 147, in <module>
+    globals()[__func_name] = __get_hash(__func_name)
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 97, in __get_builtin_constructor
+    raise ValueError('unsupported hash type ' + name)
+ValueError: unsupported hash type sha224
+ERROR:root:code for hash sha256 was not found.
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 147, in <module>
+    globals()[__func_name] = __get_hash(__func_name)
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 97, in __get_builtin_constructor
+    raise ValueError('unsupported hash type ' + name)
+ValueError: unsupported hash type sha256
+ERROR:root:code for hash sha384 was not found.
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 147, in <module>
+    globals()[__func_name] = __get_hash(__func_name)
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 97, in __get_builtin_constructor
+    raise ValueError('unsupported hash type ' + name)
+ValueError: unsupported hash type sha384
+ERROR:root:code for hash sha512 was not found.
+Traceback (most recent call last):
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 147, in <module>
+    globals()[__func_name] = __get_hash(__func_name)
+  File "/usr/local/Cellar/python@2/2.7.15_3/Frameworks/Python.framework/Versions/2.7/lib/python2.7/hashlib.py", line 97, in __get_builtin_constructor
+    raise ValueError('unsupported hash type ' + name)
+ValueError: unsupported hash type sha512
+Traceback (most recent call last):
+  File "/usr/local/bin/pip", line 11, in <module>
+    load_entry_point('pip==19.0.2', 'console_scripts', 'pip')()
+  File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 489, in load_entry_point
+    return get_distribution(dist).load_entry_point(group, name)
+  File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 2793, in load_entry_point
+    return ep.load()
+  File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 2411, in load
+    return self.resolve()
+  File "/usr/local/lib/python2.7/site-packages/pkg_resources/__init__.py", line 2417, in resolve
+    module = __import__(self.module_name, fromlist=['__name__'], level=0)
+  File "/usr/local/lib/python2.7/site-packages/pip/_internal/__init__.py", line 19, in <module>
+    from pip._vendor.urllib3.exceptions import DependencyWarning
+  File "/usr/local/lib/python2.7/site-packages/pip/_vendor/urllib3/__init__.py", line 8, in <module>
+    from .connectionpool import (
+  File "/usr/local/lib/python2.7/site-packages/pip/_vendor/urllib3/connectionpool.py", line 29, in <module>
+    from .connection import (
+  File "/usr/local/lib/python2.7/site-packages/pip/_vendor/urllib3/connection.py", line 38, in <module>
+    from .util.ssl_ import (
+  File "/usr/local/lib/python2.7/site-packages/pip/_vendor/urllib3/util/__init__.py", line 6, in <module>
+    from .ssl_ import (
+  File "/usr/local/lib/python2.7/site-packages/pip/_vendor/urllib3/util/ssl_.py", line 8, in <module>
+    from hashlib import md5, sha1, sha256
+ImportError: cannot import name md5
+
+Error parsing parameter '--zip-file': Unable to load paramfile fileb://[0;34m[INFO][0m Packaging atmospheric lambda...
+[0;34m[INFO][0m Installing dependencies for atmospheric...
+[0;32m[SUCCESS][0m Packaged atmospheric: /Users/adambehnke/Projects/noaa_storefront/deployment/logs/atmospheric_20251114_113246.zip
+/Users/adambehnke/Projects/noaa_storefront/deployment/logs/atmospheric_20251114_113246.zip: [Errno 2] No such file or directory: '\x1b[0;34m[INFO]\x1b[0m Packaging atmospheric lambda...\n\x1b[0;34m[INFO]\x1b[0m Installing dependencies for atmospheric...\n\x1b[0;32m[SUCCESS]\x1b[0m Packaged atmospheric: /Users/adambehnke/Projects/noaa_storefront/deployment/logs/atmospheric_20251114_113246.zip\n/Users/adambehnke/Projects/noaa_storefront/deployment/logs/atmospheric_20251114_113246.zip'
+[0;34m[INFO][0m Creating EventBridge rule: [0;34m[INFO][0m Deploying lambda: noaa-ingest-atmospheric-dev...
+[0;34m[INFO][0m Creating new lambda: noaa-ingest-atmospheric-dev...
+[0;32m[SUCCESS][0m Deployed lambda: noaa-ingest-atmospheric-dev
+noaa-ingest-atmospheric-dev-incremental...
+
+An error occurred (ValidationException) when calling the PutRule operation: 2 validation errors detected: Value '[0;34m[INFO][0m Deploying lambda: noaa-ingest-atmospheric-dev...
+[0;34m[INFO][0m Creating new lambda: noaa-ingest-atmospheric-dev...
+[0;32m[SUCCESS][0m Deployed lambda: noaa-ingest-atmospheric-dev
+noaa-ingest-atmospheric-dev-incremental' at 'name' failed to satisfy constraint: Member must satisfy regular expression pattern: [\.\-_A-Za-z0-9]+; Value '[0;34m[INFO][0m Deploying lambda: noaa-ingest-atmospheric-dev...
+[0;34m[INFO][0m Creating new lambda: noaa-ingest-atmospheric-dev...
+[0;32m[SUCCESS][0m Deployed lambda: noaa-ingest-atmospheric-dev
+noaa-ingest-atmospheric-dev-incremental' at 'name' failed to satisfy constraint: Member must have length less than or equal to 64

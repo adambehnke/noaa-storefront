@@ -1,0 +1,172 @@
+[0;34m=================================[0m
+[0;34mNOAA Comprehensive Data Ingestion[0m
+[0;34mDeployment Script[0m
+[0;34m=================================[0m
+
+Environment: [0;32mdev[0m
+Region:      [0;32mus-east-1[0m
+Account ID:  [0;32m899626030376[0m
+
+[1;33m[1/10] Creating S3 bucket for data lake...[0m
+make_bucket: noaa-datalake-dev
+[0;32m✓ Created S3 bucket: noaa-datalake-dev[0m
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "C5.TVtJcIqsLckff4QtRYkTVwfhp0emQ"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "pL_d2iMWS5sn53.kbOlyowXPtIx_wRxZ"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "TJDV8DOZB7NdPBEWcPDGMDIqNjrjiDpY"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "rNBEUdI0nPI3oI2t1JARVpkXf3rxnn4a"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "nvIsAOO.1q8a.kmPuLH_UJ64iNH38e9X"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "24PgvGd2TiDOt4NYdnL1vit2_C1woQKW"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "Bs4smoy2UVm5TWkcOn.C3OYXbGsHUpk3"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "7p1Yjwb2aZGOPCfsPvKlcnubfgmismek"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "BEvrVJ6RkDruw9fG1wPNlcWma.MDzdAA"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "qgWACH7B4Zw2zrMArweLeb_f86q82kp."
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "CZquLGUt97oBMllQMhuyCy6.93VSijGE"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "muaB.QMegJ29RgWW6TiKD_Aciy9vrz7x"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "WdzrZIkC8OYq85s6ljxBstoblsrBAeee"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "WdeTdu6L2tIKDOxadvYjf0DdyHORawJp"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "79ev_aDZxb9ODYUOgkj6scmI_AIcQB.I"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "XZYv23DCEOcIqg30_0lGWKYaNTgdWQzM"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "OfOLQ1RTK2nzsTQjlWlYqOn92_GGLxIo"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "n.sCzL7kqiHhbcCEy0DyvwP6HCjJvuGv"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "hAM9Cx6DKfgVsT6_B5SqUg1lFzepHN9L"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "UI1eyzAevUEiw_AeuQ7YUa_Pu5iZ1uY5"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "hsUoajhUftGg3o6vsemkJdGrQJd3TEmO"
+}
+{
+    "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+    "ChecksumCRC64NVME": "AAAAAAAAAAA=",
+    "ChecksumType": "FULL_OBJECT",
+    "ServerSideEncryption": "AES256",
+    "VersionId": "VbL8Y4HgC3yGjmkpzWzFgxTiZZ1eWwDG"
+}
+[0;32m✓ Created folder structure[0m
+
+Parameter validation failed:
+Unknown parameter in LifecycleConfiguration.Rules[0]: "Id", must be one of: Expiration, ID, Prefix, Filter, Status, Transitions, NoncurrentVersionTransitions, NoncurrentVersionExpiration, AbortIncompleteMultipartUpload
+Unknown parameter in LifecycleConfiguration.Rules[1]: "Id", must be one of: Expiration, ID, Prefix, Filter, Status, Transitions, NoncurrentVersionTransitions, NoncurrentVersionExpiration, AbortIncompleteMultipartUpload
+Unknown parameter in LifecycleConfiguration.Rules[2]: "Id", must be one of: Expiration, ID, Prefix, Filter, Status, Transitions, NoncurrentVersionTransitions, NoncurrentVersionExpiration, AbortIncompleteMultipartUpload

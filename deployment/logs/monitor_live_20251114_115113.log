@@ -1,0 +1,2998 @@
+
+==========================================
+NOAA Table Fix & 24-Hour Monitor
+==========================================
+
+Step 1: Creating proper Athena tables...
+
+
+Creating Atmospheric tables...
+  Running: Drop old atmospheric_observations_gold...
+[0;32m✓ Drop old atmospheric_observations_gold[0m
+  Running: Create atmospheric_observations_gold...
+[0;32m✓ Create atmospheric_observations_gold[0m
+  Running: Repair atmospheric_observations_gold partitions...
+[0;32m✓ Repair atmospheric_observations_gold partitions[0m
+  Running: Drop old atmospheric_alerts_gold...
+[0;32m✓ Drop old atmospheric_alerts_gold[0m
+  Running: Create atmospheric_alerts_gold...
+[0;32m✓ Create atmospheric_alerts_gold[0m
+  Running: Repair atmospheric_alerts_gold partitions...
+[0;32m✓ Repair atmospheric_alerts_gold partitions[0m
+  Running: Drop old atmospheric_stations_gold...
+[0;32m✓ Drop old atmospheric_stations_gold[0m
+  Running: Create atmospheric_stations_gold...
+[0;32m✓ Create atmospheric_stations_gold[0m
+  Running: Repair atmospheric_stations_gold partitions...
+[0;32m✓ Repair atmospheric_stations_gold partitions[0m
+
+Creating Buoy tables...
+  Running: Drop old buoy_metadata_gold...
+[0;32m✓ Drop old buoy_metadata_gold[0m
+  Running: Create buoy_metadata_gold...
+[0;32m✓ Create buoy_metadata_gold[0m
+  Running: Repair buoy_metadata_gold partitions...
+[0;32m✓ Repair buoy_metadata_gold partitions[0m
+
+Creating Spatial tables...
+  Running: Drop old spatial_zones_gold...
+[0;32m✓ Drop old spatial_zones_gold[0m
+  Running: Create spatial_zones_gold...
+[0;32m✓ Create spatial_zones_gold[0m
+  Running: Repair spatial_zones_gold partitions...
+[0;32m✓ Repair spatial_zones_gold partitions[0m
+  Running: Drop old spatial_locations_gold...
+[0;32m✓ Drop old spatial_locations_gold[0m
+  Running: Create spatial_locations_gold...
+[0;32m✓ Create spatial_locations_gold[0m
+  Running: Repair spatial_locations_gold partitions...
+[0;32m✓ Repair spatial_locations_gold partitions[0m
+
+Creating Terrestrial tables...
+  Running: Drop old terrestrial_observations_gold...
+[0;32m✓ Drop old terrestrial_observations_gold[0m
+  Running: Create terrestrial_observations_gold...
+[0;32m✓ Create terrestrial_observations_gold[0m
+  Running: Repair terrestrial_observations_gold partitions...
+[0;32m✓ Repair terrestrial_observations_gold partitions[0m
+  Running: Drop old terrestrial_metadata_gold...
+[0;32m✓ Drop old terrestrial_metadata_gold[0m
+  Running: Create terrestrial_metadata_gold...
+[0;32m✓ Create terrestrial_metadata_gold[0m
+  Running: Repair terrestrial_metadata_gold partitions...
+[0;32m✓ Repair terrestrial_metadata_gold partitions[0m
+
+Creating Climate tables...
+  Running: Drop old climate_metadata_gold...
+[0;32m✓ Drop old climate_metadata_gold[0m
+  Running: Create climate_metadata_gold...
+[0;32m✓ Create climate_metadata_gold[0m
+  Running: Repair climate_metadata_gold partitions...
+[0;32m✓ Repair climate_metadata_gold partitions[0m
+
+==========================================
+Step 2: Verifying tables have data...
+==========================================
+
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 7510 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 49269 records[0m
+Checking atmospheric_stations_gold...
+[0;32m✓ atmospheric_stations_gold: 35010 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 69012 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 974008 records[0m
+Checking spatial_locations_gold...
+[0;32m✓ spatial_locations_gold: 1126 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 1324 records[0m
+Checking terrestrial_metadata_gold...
+[0;32m✓ terrestrial_metadata_gold: 1522 records[0m
+Checking climate_metadata_gold...
+[0;32m✓ climate_metadata_gold: 784 records[0m
+
+==========================================
+Step 3: Starting 24-Hour Monitoring...
+==========================================
+
+Monitoring log: deployment/logs/monitor_24h_20251114_115307.log
+
+Will check every 15 minutes for 24 hours (96 checks total)
+Press Ctrl+C to stop monitoring
+
+==========================================
+CHECK #1 of 96
+Time: 2025-11-14 11:53:07
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 7510 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 49269 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 86265 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 974008 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 1324 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 32
+  Size: 47449363 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #2 of 96
+Time: 2025-11-14 12:08:33
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 8256 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 59315 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 138024 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 1461012 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 1986 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 44
+  Size: 69870042 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #3 of 96
+Time: 2025-11-14 12:24:01
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 9746 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 69702 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 189783 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 1948016 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 2648 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 56
+  Size: 92338193 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #4 of 96
+Time: 2025-11-14 12:39:29
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 11248 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 80089 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 241542 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 2435020 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 3310 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 68
+  Size: 114806882 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #5 of 96
+Time: 2025-11-14 12:54:57
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 12750 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 90600 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 293301 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 2922024 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 3973 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 80
+  Size: 137285567 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #6 of 96
+Time: 2025-11-14 13:10:24
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 13496 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 101390 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 345060 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 3409028 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 4636 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[1;33m⚠ oceanic: No recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 92
+  Size: 159763752 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #7 of 96
+Time: 2025-11-14 13:25:52
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 14986 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 112211 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 396819 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 3896032 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 5300 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 105
+  Size: 182761418 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #8 of 96
+Time: 2025-11-14 13:41:19
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 16488 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 123032 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 465831 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 4383036 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 5965 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 117
+  Size: 205264197 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #9 of 96
+Time: 2025-11-14 13:56:48
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 17990 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 133853 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 517590 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 4870040 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 6630 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 129
+  Size: 227765180 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #10 of 96
+Time: 2025-11-14 14:12:15
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 18736 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 144612 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 569349 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 5357044 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 7296 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[1;33m⚠ oceanic: No recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 141
+  Size: 250240393 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #11 of 96
+Time: 2025-11-14 14:27:43
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 20214 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 155433 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 621108 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 5844048 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 7962 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 153
+  Size: 272736570 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #12 of 96
+Time: 2025-11-14 14:43:10
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 21716 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 166347 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 672867 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 6331052 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 8629 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 165
+  Size: 295240905 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #13 of 96
+Time: 2025-11-14 14:58:37
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 23218 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 177292 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 724626 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 6818056 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 9296 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 177
+  Size: 317745042 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #14 of 96
+Time: 2025-11-14 15:14:05
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 23964 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 188392 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 
+An error occurred (InvalidRequestException) when calling the GetQueryResults operation: Query has not yet finished. Current state: RUNNING records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 7305060 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 9962 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 189
+  Size: 340240273 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #15 of 96
+Time: 2025-11-14 15:29:32
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 25454 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 199492 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 828144 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 7792064 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 10629 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 201
+  Size: 362755633 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #16 of 96
+Time: 2025-11-14 15:44:59
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 26956 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 210716 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 879903 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 8279068 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 11295 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 213
+  Size: 385279332 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #17 of 96
+Time: 2025-11-14 16:00:27
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 28458 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 221940 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 931662 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 8766072 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 11961 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 225
+  Size: 407802891 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #18 of 96
+Time: 2025-11-14 16:15:55
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 29204 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 233164 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 983421 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 9253076 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 12627 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 237
+  Size: 430304778 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #19 of 96
+Time: 2025-11-14 16:31:25
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 
+An error occurred (InvalidRequestException) when calling the GetQueryResults operation: Query has not yet finished. Current state: RUNNING records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 244357 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1035180 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 9740080 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 13293 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 249
+  Size: 452824960 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #20 of 96
+Time: 2025-11-14 16:47:17
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 32184 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 255550 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1086939 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 10227084 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 13959 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 261
+  Size: 475347088 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #21 of 96
+Time: 2025-11-14 17:02:44
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 33686 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 266743 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1138698 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 10714088 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 14625 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 273
+  Size: 497868669 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #22 of 96
+Time: 2025-11-14 17:18:11
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 34432 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 277657 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1190457 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 11201092 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 15291 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 285
+  Size: 520347538 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #23 of 96
+Time: 2025-11-14 17:33:39
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 35910 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 288540 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1242216 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 11688096 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 15957 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 297
+  Size: 542842231 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #24 of 96
+Time: 2025-11-14 17:49:06
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 37412 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 299423 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1293975 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12175100 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 16621 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 309
+  Size: 565337493 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #25 of 96
+Time: 2025-11-14 18:04:33
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 321
+  Size: 587835303 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #26 of 96
+Time: 2025-11-14 18:20:02
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 335
+  Size: 611313114 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #27 of 96
+Time: 2025-11-14 18:35:30
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 350
+  Size: 675858016 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #28 of 96
+Time: 2025-11-14 18:50:57
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 363
+  Size: 721083844 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #29 of 96
+Time: 2025-11-14 19:06:25
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 375
+  Size: 765833084 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #30 of 96
+Time: 2025-11-14 19:21:53
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 388
+  Size: 833663771 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #31 of 96
+Time: 2025-11-14 19:37:21
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 399
+  Size: 878411277 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #32 of 96
+Time: 2025-11-14 19:52:48
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 410
+  Size: 923163559 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #33 of 96
+Time: 2025-11-14 20:08:16
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 431
+  Size: 989529989 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #34 of 96
+Time: 2025-11-14 20:23:46
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 444
+  Size: 1059205877 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #35 of 96
+Time: 2025-11-14 20:39:14
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 455
+  Size: 1103726835 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #36 of 96
+Time: 2025-11-14 20:54:42
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 466
+  Size: 1148249148 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #37 of 96
+Time: 2025-11-14 21:10:10
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[1;33m⚠ oceanic: No recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 477
+  Size: 1192771036 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #38 of 96
+Time: 2025-11-14 21:25:37
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 488
+  Size: 1237310414 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #39 of 96
+Time: 2025-11-14 21:41:04
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 499
+  Size: 1281859485 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #40 of 96
+Time: 2025-11-14 21:56:31
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 510
+  Size: 1326412573 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #41 of 96
+Time: 2025-11-14 22:11:59
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[1;33m⚠ oceanic: No recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 521
+  Size: 1370964236 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #42 of 96
+Time: 2025-11-14 22:27:27
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 532
+  Size: 1415542320 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #43 of 96
+Time: 2025-11-14 22:42:55
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 543
+  Size: 1460127857 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #44 of 96
+Time: 2025-11-14 22:58:22
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 
+An error occurred (InvalidRequestException) when calling the GetQueryResults operation: Query has not yet finished. Current state: RUNNING records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 554
+  Size: 1504717899 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #45 of 96
+Time: 2025-11-14 23:13:50
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 565
+  Size: 1549293531 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #46 of 96
+Time: 2025-11-14 23:29:17
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 577
+  Size: 1571733362 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #47 of 96
+Time: 2025-11-14 23:44:45
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[0;32m✓ buoy: Recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 589
+  Size: 1616838789 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #48 of 96
+Time: 2025-11-15 00:00:13
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 601
+  Size: 1639296995 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #49 of 96
+Time: 2025-11-15 00:15:41
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 613
+  Size: 1661736180 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #50 of 96
+Time: 2025-11-15 00:31:12
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 625
+  Size: 1684201984 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #51 of 96
+Time: 2025-11-15 00:46:40
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 637
+  Size: 1706668596 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #52 of 96
+Time: 2025-11-15 01:02:07
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 649
+  Size: 1729138607 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #53 of 96
+Time: 2025-11-15 01:17:35
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 661
+  Size: 1751589098 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #54 of 96
+Time: 2025-11-15 01:33:03
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 673
+  Size: 1774059588 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #55 of 96
+Time: 2025-11-15 01:48:31
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 685
+  Size: 1796543909 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #56 of 96
+Time: 2025-11-15 02:03:58
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 697
+  Size: 1819027930 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #57 of 96
+Time: 2025-11-15 02:19:25
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 709
+  Size: 1841489976 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #58 of 96
+Time: 2025-11-15 02:34:52
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 723
+  Size: 1864994525 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #59 of 96
+Time: 2025-11-15 02:50:20
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 736
+  Size: 1906737643 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #60 of 96
+Time: 2025-11-15 03:05:47
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 753
+  Size: 1930346699 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #61 of 96
+Time: 2025-11-15 03:21:15
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 766
+  Size: 1952829414 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #62 of 96
+Time: 2025-11-15 03:36:42
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 779
+  Size: 1975353144 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #63 of 96
+Time: 2025-11-15 03:52:09
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 791
+  Size: 1997839649 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #64 of 96
+Time: 2025-11-15 04:07:37
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 804
+  Size: 2020801676 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #65 of 96
+Time: 2025-11-15 04:23:07
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 816
+  Size: 2043287874 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #66 of 96
+Time: 2025-11-15 04:38:35
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 828
+  Size: 2065777362 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #67 of 96
+Time: 2025-11-15 04:54:02
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 840
+  Size: 2088266420 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #68 of 96
+Time: 2025-11-15 05:09:30
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[1;33m⚠ oceanic: No recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 852
+  Size: 2110721401 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #69 of 96
+Time: 2025-11-15 05:24:59
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 864
+  Size: 2133196441 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #70 of 96
+Time: 2025-11-15 05:40:26
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 877
+  Size: 2156167579 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #71 of 96
+Time: 2025-11-15 05:55:53
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 889
+  Size: 2178645806 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #72 of 96
+Time: 2025-11-15 06:11:22
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[1;33m⚠ oceanic: No recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 901
+  Size: 2201104446 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #73 of 96
+Time: 2025-11-15 06:26:49
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 913
+  Size: 2223589799 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #74 of 96
+Time: 2025-11-15 06:42:22
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 925
+  Size: 2246082711 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #75 of 96
+Time: 2025-11-15 06:57:49
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 937
+  Size: 2268648058 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #76 of 96
+Time: 2025-11-15 07:13:17
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 949
+  Size: 2291221715 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #77 of 96
+Time: 2025-11-15 07:28:44
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 961
+  Size: 2313814695 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #78 of 96
+Time: 2025-11-15 07:44:11
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 
+An error occurred (InvalidRequestException) when calling the GetQueryResults operation: Query has not yet finished. Current state: RUNNING records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 973
+  Size: 2336490184 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #79 of 96
+Time: 2025-11-15 07:59:38
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 985
+  Size: 2359173524 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #80 of 96
+Time: 2025-11-15 08:15:05
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 997
+  Size: 2381700932 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #81 of 96
+Time: 2025-11-15 08:30:33
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1009
+  Size: 2404250404 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #82 of 96
+Time: 2025-11-15 08:46:02
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1021
+  Size: 2426800882 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #83 of 96
+Time: 2025-11-15 09:01:35
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1033
+  Size: 2449355041 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #84 of 96
+Time: 2025-11-15 09:17:03
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1045
+  Size: 2471872192 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #85 of 96
+Time: 2025-11-15 09:32:31
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1057
+  Size: 2494406440 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #86 of 96
+Time: 2025-11-15 09:48:00
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1069
+  Size: 2516935012 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #87 of 96
+Time: 2025-11-15 10:03:28
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1081
+  Size: 2539465694 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #88 of 96
+Time: 2025-11-15 10:18:55
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 
+An error occurred (InvalidRequestException) when calling the GetQueryResults operation: Query has not yet finished. Current state: RUNNING records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[1;33m⚠ oceanic: No recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1093
+  Size: 2561982063 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #89 of 96
+Time: 2025-11-15 10:34:24
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1105
+  Size: 2584519474 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #90 of 96
+Time: 2025-11-15 10:49:51
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1119
+  Size: 2607060541 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #91 of 96
+Time: 2025-11-15 11:05:19
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1132
+  Size: 2650008537 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #92 of 96
+Time: 2025-11-15 11:20:47
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[1;33m⚠ climate: No recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1149
+  Size: 2673694827 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #93 of 96
+Time: 2025-11-15 11:36:15
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[1;33m⚠ terrestrial: No recent execution[0m
+
+S3 Data Volume:
+  Files: 1162
+  Size: 2696330933 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #94 of 96
+Time: 2025-11-15 11:51:42
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1175
+  Size: 2719011468 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #95 of 96
+Time: 2025-11-15 12:07:09
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 12662104 records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 
+An error occurred (InvalidRequestException) when calling the GetQueryResults operation: Query has not yet finished. Current state: RUNNING records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1184
+  Size: 2740412939 
+
+Next check in 15 minutes...
+==========================================
+
+==========================================
+CHECK #96 of 96
+Time: 2025-11-15 12:22:37
+==========================================
+Checking atmospheric_observations_gold...
+[0;32m✓ atmospheric_observations_gold: 38914 records[0m
+Checking atmospheric_alerts_gold...
+[0;32m✓ atmospheric_alerts_gold: 310368 records[0m
+Checking buoy_metadata_gold...
+[0;32m✓ buoy_metadata_gold: 1345734 records[0m
+Checking spatial_zones_gold...
+[0;32m✓ spatial_zones_gold: 
+An error occurred (InvalidRequestException) when calling the GetQueryResults operation: Query has not yet finished. Current state: RUNNING records[0m
+Checking terrestrial_observations_gold...
+[0;32m✓ terrestrial_observations_gold: 17285 records[0m
+
+Recent Lambda executions:
+[0;32m✓ atmospheric: Recent execution[0m
+[0;32m✓ oceanic: Recent execution[0m
+[1;33m⚠ buoy: No recent execution[0m
+[0;32m✓ climate: Recent execution[0m
+[0;32m✓ spatial: Recent execution[0m
+[0;32m✓ terrestrial: Recent execution[0m
+
+S3 Data Volume:
+  Files: 1196
+  Size: 2763077220 
+
+Next check in 15 minutes...
+==========================================
+
+
+==========================================
+24-Hour Monitoring Complete!
+==========================================
+Total checks: 96
+Log file: deployment/logs/monitor_24h_20251114_115307.log
+

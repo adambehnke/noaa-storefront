@@ -1,0 +1,1148 @@
+#!/usr/bin/env python3
+"""
+Intelligent Multi-Pond Query Handler for NOAA Federated Data Lake
+Uses Amazon Bedrock (Claude) to semantically understand queries and route to relevant data ponds
+
+Author: NOAA Federated Data Lake Team
+Version: 3.0 - AI-Driven Pond Selection
+"""
+
+import json
+import logging
+import os
+import re
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
+from typing import Any, Dict, List, Optional, Tuple
+
+import boto3
+
+# Logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# AWS Clients
+bedrock = boto3.client("bedrock-runtime", region_name="us-east-1")
+athena = boto3.client("athena", region_name="us-east-1")
+lambda_client = boto3.client("lambda", region_name="us-east-1")
+
+# Environment Variables
+GOLD_DB = os.environ.get("GOLD_DB", "noaa_gold_dev")
+ATHENA_OUTPUT = os.environ.get(
+    "ATHENA_OUTPUT", "s3://noaa-athena-results-899626030376-dev/"
+)
+BEDROCK_MODEL = os.environ.get(
+    "BEDROCK_MODEL", "anthropic.claude-3-5-sonnet-20241022-v2:0"
+)
+ENV = os.environ.get("ENV", "dev")
+ENHANCED_HANDLER = f"noaa-enhanced-handler-{ENV}"
+
+# Configuration
+RELEVANCE_THRESHOLD = 0.2  # Lower threshold to include more relevant ponds
+MAX_PARALLEL_PONDS = 6
+QUERY_TIMEOUT = 25.0
+
+# =============================================================================
+# POND METADATA REGISTRY - The AI uses this to understand what each pond contains
+# =============================================================================
+
+POND_METADATA = {
+    "atmospheric": {
+        "name": "Atmospheric Pond",
+        "description": "Weather observations, forecasts, alerts, and warnings from NOAA National Weather Service",
+        "data_types": [
+            "current weather conditions",
+            "temperature (air)",
+            "wind speed and direction",
+            "humidity and pressure",
+            "visibility",
+            "precipitation",
+            "weather forecasts (7-day)",
+            "severe weather alerts",
+            "weather warnings",
+            "storm predictions",
+            "atmospheric advisories",
+        ],
+        "geographic_coverage": "United States, territories, coastal waters",
+        "update_frequency": "Real-time (5-15 minute updates)",
+        "relevance_keywords": [
+            "weather",
+            "temperature",
+            "wind",
+            "rain",
+            "snow",
+            "forecast",
+            "alert",
+            "warning",
+            "storm",
+            "atmospheric",
+            "air",
+            "visibility",
+            "conditions",
+            "advisory",
+            "precipitation",
+        ],
+        "sample_use_cases": [
+            "Current weather conditions in a city",
+            "Weather forecasts for trip planning",
+            "Active weather warnings and alerts",
+            "Storm predictions and advisories",
+        ],
+    },
+    "oceanic": {
+        "name": "Oceanic Pond",
+        "description": "Ocean and coastal data from NOAA CO-OPS including tides, water levels, temperatures, and currents",
+        "data_types": [
+            "water levels",
+            "tide predictions and observations",
+            "water temperature",
+            "ocean currents",
+            "sea surface temperature",
+            "storm surge predictions",
+            "coastal flooding risk",
+            "high tide times",
+        ],
+        "geographic_coverage": "US coastal waters, bays, harbors, major rivers",
+        "update_frequency": "Real-time (6-minute intervals)",
+        "relevance_keywords": [
+            "tide",
+            "water",
+            "ocean",
+            "sea",
+            "coastal",
+            "marine",
+            "current",
+            "surge",
+            "flooding",
+            "water level",
+            "water temperature",
+            "high tide",
+            "low tide",
+            "sea level",
+        ],
+        "sample_use_cases": [
+            "Tide predictions for fishing or boating",
+            "Water temperature for swimming",
+            "Storm surge predictions",
+            "Coastal flooding risk assessment",
+            "Ocean currents for navigation",
+        ],
+    },
+    "buoy": {
+        "name": "Buoy Pond",
+        "description": "Offshore marine observations from NOAA buoys including waves, winds, and ocean conditions",
+        "data_types": [
+            "wave height and period",
+            "wave direction",
+            "offshore wind speed",
+            "offshore wind direction",
+            "sea surface temperature",
+            "air temperature (offshore)",
+            "barometric pressure",
+            "water depth",
+        ],
+        "geographic_coverage": "Offshore waters, continental shelf, open ocean",
+        "update_frequency": "Hourly observations",
+        "relevance_keywords": [
+            "wave",
+            "buoy",
+            "offshore",
+            "swell",
+            "marine",
+            "sea state",
+            "wave height",
+            "maritime",
+            "navigation",
+            "boating",
+            "sailing",
+            "fishing",
+        ],
+        "sample_use_cases": [
+            "Wave conditions for boating safety",
+            "Offshore weather for maritime navigation",
+            "Fishing conditions in offshore waters",
+            "Sailing route planning",
+        ],
+    },
+    "climate": {
+        "name": "Climate Pond",
+        "description": "Historical climate data, trends, and patterns from NOAA NCEI",
+        "data_types": [
+            "historical temperature records",
+            "precipitation history",
+            "climate trends",
+            "seasonal patterns",
+            "climate normals",
+            "historical extremes",
+            "long-term averages",
+            "climate change indicators",
+        ],
+        "geographic_coverage": "United States, global datasets available",
+        "update_frequency": "Monthly updates",
+        "relevance_keywords": [
+            "historical",
+            "past",
+            "history",
+            "trend",
+            "pattern",
+            "climate",
+            "average",
+            "normal",
+            "record",
+            "previous",
+            "long-term",
+            "seasonal",
+            "monthly",
+            "yearly",
+        ],
+        "sample_use_cases": [
+            "Historical flooding patterns",
+            "Temperature trends over time",
+            "Seasonal weather patterns",
+            "Climate change analysis",
+            "Comparing current conditions to historical averages",
+        ],
+    },
+    "spatial": {
+        "name": "Spatial Pond",
+        "description": "Geographic and location-based data for route planning and distance calculations",
+        "data_types": [
+            "geographic coordinates",
+            "coastal features",
+            "navigation waypoints",
+            "distance calculations",
+            "route optimization",
+            "geographic boundaries",
+        ],
+        "geographic_coverage": "United States and coastal waters",
+        "update_frequency": "Static/reference data",
+        "relevance_keywords": [
+            "route",
+            "from",
+            "to",
+            "between",
+            "distance",
+            "navigation",
+            "path",
+            "waypoint",
+            "location",
+            "geography",
+        ],
+        "sample_use_cases": [
+            "Maritime route planning",
+            "Distance calculations",
+            "Navigation waypoints",
+            "Geographic analysis",
+        ],
+    },
+}
+
+
+# =============================================================================
+# MAIN LAMBDA HANDLER
+# =============================================================================
+
+
+def lambda_handler(event, context):
+    """
+    Main entry point for AI-powered multi-pond queries
+    """
+    start_time = time.time()
+
+    try:
+        # Parse request
+        if isinstance(event, str):
+            event = json.loads(event)
+
+        body = event.get("body")
+        if body and isinstance(body, str):
+            body = json.loads(body)
+        else:
+            body = event
+
+        query = body.get("query") or body.get("question")
+        include_raw_data = body.get("include_raw_data", False)
+        max_results_per_pond = body.get("max_results_per_pond", 50)
+
+        if not query:
+            return respond(400, {"error": "Missing 'query' parameter"})
+
+        logger.info(f"Processing query: {query}")
+
+        # Step 1: Use AI to understand the query semantically
+        query_understanding = understand_query_with_ai(query)
+        logger.info(f"Query understanding: {json.dumps(query_understanding, indent=2)}")
+
+        # Step 2: Use AI to select relevant ponds with reasoning
+        pond_selections = select_ponds_with_ai(query, query_understanding)
+        logger.info(
+            f"Selected {len(pond_selections)} ponds: {[p['pond_name'] for p in pond_selections]}"
+        )
+
+        # Step 3: Query all selected ponds in parallel
+        pond_results = query_ponds_parallel(pond_selections, query, query_understanding)
+
+        # Step 4: Use AI to synthesize results and explain relationships
+        final_response = synthesize_results_with_ai(
+            query=query,
+            query_understanding=query_understanding,
+            pond_selections=pond_selections,
+            pond_results=pond_results,
+            include_raw_data=include_raw_data,
+        )
+
+        # Add metadata
+        execution_time_ms = int((time.time() - start_time) * 1000)
+        final_response["metadata"] = {
+            "execution_time_ms": execution_time_ms,
+            "ponds_queried": len([r for r in pond_results if r.get("success")]),
+            "ponds_considered": len(pond_selections),
+            "total_records": sum(r.get("record_count", 0) for r in pond_results),
+            "timestamp": datetime.utcnow().isoformat(),
+        }
+
+        logger.info(f"Query completed in {execution_time_ms}ms")
+
+        return respond(200, final_response)
+
+    except Exception as e:
+        logger.exception("Error processing query")
+        return respond(
+            500,
+            {
+                "error": str(e),
+                "message": "An error occurred while processing your query",
+            },
+        )
+
+
+# =============================================================================
+# AI-POWERED QUERY UNDERSTANDING
+# =============================================================================
+
+
+def understand_query_with_ai(query: str) -> Dict:
+    """
+    Use Bedrock/Claude to semantically understand what the user is asking
+    """
+
+    prompt = f"""Analyze this user query about environmental/weather/ocean data:
+
+Query: "{query}"
+
+Provide a semantic understanding of what the user is asking. Consider:
+1. What is the primary intent? (observation, forecast, historical, comparison, risk_assessment, route_planning, etc.)
+2. What specific information are they seeking?
+3. What geographic location(s) are involved?
+4. What time frame is relevant? (current, forecast, historical, etc.)
+5. What are the implicit requirements? (e.g., "safe route" implies need for weather, waves, currents, visibility)
+6. Is this a simple factual question or complex multi-domain analysis?
+
+Respond with JSON only:
+{{
+    "primary_intent": "observation|forecast|historical|comparison|risk_assessment|route_planning|conditions_check",
+    "information_sought": ["specific data points needed"],
+    "locations": ["location1", "location2"],
+    "time_frame": "current|forecast|historical|specific_date",
+    "implicit_requirements": ["things the user needs but didn't explicitly mention"],
+    "complexity": "simple|moderate|complex|multi-domain",
+    "question_type": "factual|analytical|comparative|predictive|planning"
+}}"""
+
+    try:
+        response = bedrock.invoke_model(
+            modelId=BEDROCK_MODEL,
+            body=json.dumps(
+                {
+                    "anthropic_version": "bedrock-2023-05-31",
+                    "max_tokens": 1000,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.1,
+                }
+            ),
+        )
+
+        result = json.loads(response["body"].read())
+        content = result["content"][0]["text"]
+
+        # Extract JSON
+        json_match = re.search(r"\{.*\}", content, re.DOTALL)
+        if json_match:
+            understanding = json.loads(json_match.group())
+            return understanding
+        else:
+            logger.warning("Could not parse AI understanding, using fallback")
+            return get_fallback_understanding(query)
+
+    except Exception as e:
+        logger.error(f"Error in AI understanding: {e}")
+        return get_fallback_understanding(query)
+
+
+def get_fallback_understanding(query: str) -> Dict:
+    """Fallback understanding if AI fails"""
+    query_lower = query.lower()
+
+    # Simple heuristics
+    intent = "observation"
+    if any(
+        w in query_lower for w in ["forecast", "will", "future", "tomorrow", "next"]
+    ):
+        intent = "forecast"
+    elif any(
+        w in query_lower for w in ["historical", "past", "was", "previous", "history"]
+    ):
+        intent = "historical"
+    elif any(w in query_lower for w in ["route", "from", "to", "plan", "navigate"]):
+        intent = "route_planning"
+    elif any(w in query_lower for w in ["risk", "safe", "danger", "flooding"]):
+        intent = "risk_assessment"
+
+    return {
+        "primary_intent": intent,
+        "information_sought": ["general information"],
+        "locations": ["location from query"],
+        "time_frame": "current",
+        "implicit_requirements": [],
+        "complexity": "moderate",
+        "question_type": "factual",
+    }
+
+
+# =============================================================================
+# AI-POWERED POND SELECTION
+# =============================================================================
+
+
+def select_ponds_with_ai(query: str, understanding: Dict) -> List[Dict]:
+    """
+    Use Bedrock/Claude to intelligently determine which ponds are relevant
+    """
+
+    # Build pond descriptions for AI
+    ponds_description = ""
+    for pond_name, metadata in POND_METADATA.items():
+        ponds_description += f"""
+POND: {metadata["name"]} ({pond_name})
+Description: {metadata["description"]}
+Data Types: {", ".join(metadata["data_types"])}
+Geographic Coverage: {metadata["geographic_coverage"]}
+Update Frequency: {metadata["update_frequency"]}
+Sample Use Cases:
+{chr(10).join(f"  - {uc}" for uc in metadata["sample_use_cases"])}
+---
+"""
+
+    prompt = f"""You are a data analyst for NOAA's Federated Data Lake. A user has asked a question and you need to determine which data ponds to query.
+
+USER QUERY: "{query}"
+
+QUERY ANALYSIS:
+{json.dumps(understanding, indent=2)}
+
+AVAILABLE DATA PONDS:
+{ponds_description}
+
+Your task: Determine which ponds should be queried and why. Be thorough - consider ALL ponds that might contribute relevant information.
+
+SCORING GUIDELINES:
+- 0.95-1.0: CRITICAL - Essential data, query cannot be properly answered without this pond
+- 0.80-0.94: PRIMARY - Major data source for this query
+- 0.60-0.79: IMPORTANT - Significant supporting data
+- 0.40-0.59: RELEVANT - Provides useful context or supporting information
+- 0.30-0.39: SUPPORTING - Minor supporting data, helps complete the picture
+- Below 0.30: Not relevant (omit from response)
+
+EXAMPLES:
+- "What's the weather in Boston?" → atmospheric (1.0)
+- "Plan a route from Boston to Portland" → atmospheric (0.90), oceanic (0.90), buoy (0.85), spatial (0.80)
+- "Coastal flooding risk in Charleston considering storm surge, tides, rainfall, and historical patterns" → atmospheric (0.95), oceanic (0.95), climate (0.85)
+- "Sailing conditions in San Francisco Bay" → atmospheric (0.90), oceanic (0.85), buoy (0.80)
+
+For EACH relevant pond (score ≥ 0.30), provide:
+{{
+    "pond_name": "pond_identifier",
+    "relevance_score": 0.30-1.0,
+    "reasoning": "Specific explanation of why THIS pond matters for THIS query",
+    "data_contribution": "What specific information this pond provides to answer the query",
+    "priority": "critical|high|medium|low"
+}}
+
+Respond with a JSON array ordered by relevance_score (highest first). Include ALL ponds with score ≥ 0.30.
+JSON array only, no other text."""
+
+    try:
+        response = bedrock.invoke_model(
+            modelId=BEDROCK_MODEL,
+            body=json.dumps(
+                {
+                    "anthropic_version": "bedrock-2023-05-31",
+                    "max_tokens": 2500,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.2,
+                }
+            ),
+        )
+
+        result = json.loads(response["body"].read())
+        content = result["content"][0]["text"]
+
+        # Extract JSON array
+        json_match = re.search(r"\[.*\]", content, re.DOTALL)
+        if json_match:
+            selections = json.loads(json_match.group())
+            # Filter by threshold and validate
+            valid_selections = [
+                s
+                for s in selections
+                if s.get("relevance_score", 0) >= RELEVANCE_THRESHOLD
+                and s.get("pond_name") in POND_METADATA
+            ]
+
+            logger.info(
+                f"AI selected {len(valid_selections)} ponds with scores: {[(s['pond_name'], s['relevance_score']) for s in valid_selections]}"
+            )
+
+            return valid_selections
+        else:
+            logger.warning("Could not parse pond selections, using fallback")
+            return get_fallback_pond_selection(query, understanding)
+
+    except Exception as e:
+        logger.error(f"Error in pond selection: {e}")
+        return get_fallback_pond_selection(query, understanding)
+
+
+def get_fallback_pond_selection(query: str, understanding: Dict) -> List[Dict]:
+    """Fallback pond selection using simple heuristics"""
+    query_lower = query.lower()
+    selections = []
+
+    # Maritime/Route planning queries need multiple ponds (check keywords too)
+    is_route_query = (
+        understanding.get("primary_intent") == "route_planning"
+        or any(keyword in query_lower for keyword in [
+            "route", "maritime", "navigation", "navigate", "sail", "sailing",
+            "vessel", "ship", "boat", "plan a", "from", "to"
+        ])
+    )
+
+    if is_route_query:
+</text>
+
+<old_text line=591>
+    # Marine/ocean queries
+    elif any(
+        w in query_lower for w in ["ocean", "tide", "water", "marine", "coastal", "sea"]
+    ):
+        selections.extend(
+            [
+                {
+                    "pond_name": "oceanic",
+                    "relevance_score": 0.95,
+                    "reasoning": "Primary ocean data source",
+                    "data_contribution": "Tides, water temp, currents",
+                    "priority": "critical",
+                },
+                {
+                    "pond_name": "atmospheric",
+                    "relevance_score": 0.70,
+                    "reasoning": "Weather affects ocean conditions",
+                    "data_contribution": "Marine weather",
+                    "priority": "medium",
+                },
+            ]
+        )
+        selections.extend(
+            [
+                {
+                    "pond_name": "atmospheric",
+                    "relevance_score": 0.90,
+                    "reasoning": "Weather conditions along route",
+                    "data_contribution": "Wind, visibility, storms",
+                    "priority": "critical",
+                },
+                {
+                    "pond_name": "oceanic",
+                    "relevance_score": 0.90,
+                    "reasoning": "Ocean conditions and currents",
+                    "data_contribution": "Currents, water levels, tides",
+                    "priority": "critical",
+                },
+                {
+                    "pond_name": "buoy",
+                    "relevance_score": 0.85,
+                    "reasoning": "Offshore wave conditions",
+                    "data_contribution": "Wave heights, sea state",
+                    "priority": "high",
+                },
+            ]
+        )
+
+    # Flooding/risk queries need multiple ponds
+    elif (
+        understanding.get("primary_intent") == "risk_assessment"
+        or "flood" in query_lower
+    ):
+        selections.extend(
+            [
+                {
+                    "pond_name": "atmospheric",
+                    "relevance_score": 0.95,
+                    "reasoning": "Weather and storm data",
+                    "data_contribution": "Rainfall, storm predictions",
+                    "priority": "critical",
+                },
+                {
+                    "pond_name": "oceanic",
+                    "relevance_score": 0.95,
+                    "reasoning": "Coastal water levels and surge",
+                    "data_contribution": "Storm surge, high tide times",
+                    "priority": "critical",
+                },
+                {
+                    "pond_name": "climate",
+                    "relevance_score": 0.80,
+                    "reasoning": "Historical flooding patterns",
+                    "data_contribution": "Past flooding events",
+                    "priority": "high",
+                },
+            ]
+        )
+
+    # Marine/ocean queries
+    elif any(
+        w in query_lower for w in ["ocean", "tide", "water", "marine", "coastal", "sea"]
+    ):
+        selections.extend(
+            [
+                {
+                    "pond_name": "oceanic",
+                    "relevance_score": 0.95,
+                    "reasoning": "Primary ocean data source",
+                    "data_contribution": "Tides, water temp, currents",
+                    "priority": "critical",
+                },
+                {
+                    "pond_name": "atmospheric",
+                    "relevance_score": 0.70,
+                    "reasoning": "Weather affects ocean conditions",
+                    "data_contribution": "Marine weather",
+                    "priority": "medium",
+                },
+            ]
+        )
+
+    # Weather queries
+    elif any(w in query_lower for w in ["weather", "temperature", "wind", "forecast"]):
+        selections.append(
+            {
+                "pond_name": "atmospheric",
+                "relevance_score": 0.95,
+                "reasoning": "Primary weather data source",
+                "data_contribution": "Weather conditions",
+                "priority": "critical",
+            }
+        )
+
+    # Default to atmospheric if nothing matches
+    if not selections:
+        selections.append(
+            {
+                "pond_name": "atmospheric",
+                "relevance_score": 0.60,
+                "reasoning": "Default general weather data",
+                "data_contribution": "General conditions",
+                "priority": "medium",
+            }
+        )
+
+    return selections
+
+
+# =============================================================================
+# PARALLEL POND QUERYING
+# =============================================================================
+
+
+def query_ponds_parallel(
+    pond_selections: List[Dict], query: str, understanding: Dict
+) -> List[Dict]:
+    """
+    Query multiple ponds in parallel using ThreadPoolExecutor
+    """
+    results = []
+
+    with ThreadPoolExecutor(max_workers=MAX_PARALLEL_PONDS) as executor:
+        future_to_pond = {
+            executor.submit(
+                query_single_pond, selection, query, understanding
+            ): selection
+            for selection in pond_selections
+        }
+
+        for future in as_completed(future_to_pond, timeout=QUERY_TIMEOUT):
+            pond_selection = future_to_pond[future]
+            try:
+                result = future.result(timeout=5.0)
+                results.append(result)
+            except Exception as e:
+                logger.error(f"Error querying {pond_selection['pond_name']}: {e}")
+                results.append(
+                    {
+                        "pond_name": pond_selection["pond_name"],
+                        "success": False,
+                        "error": str(e),
+                        "record_count": 0,
+                    }
+                )
+
+    return results
+
+
+def query_single_pond(selection: Dict, query: str, understanding: Dict) -> Dict:
+    """
+    Query a single pond (both Gold layer and passthrough APIs)
+    """
+    pond_name = selection["pond_name"]
+    start_time = time.time()
+
+    logger.info(f"Querying {pond_name} pond...")
+
+    try:
+        # Try Gold layer first
+        gold_results = query_gold_layer(pond_name, understanding)
+
+        # Also try passthrough API for real-time data
+        passthrough_results = query_passthrough(pond_name, query, understanding)
+
+        # Combine results
+        combined_data = []
+        if gold_results.get("success"):
+            combined_data.extend(gold_results.get("data", []))
+        if passthrough_results.get("success"):
+            combined_data.extend(passthrough_results.get("data", []))
+
+        execution_time = int((time.time() - start_time) * 1000)
+
+        return {
+            "pond_name": pond_name,
+            "success": True,
+            "record_count": len(combined_data),
+            "data": combined_data,
+            "sources": {
+                "gold_layer": gold_results.get("success", False),
+                "passthrough_api": passthrough_results.get("success", False),
+            },
+            "execution_time_ms": execution_time,
+            "relevance_score": selection["relevance_score"],
+            "reasoning": selection["reasoning"],
+        }
+
+    except Exception as e:
+        logger.error(f"Error querying {pond_name}: {e}")
+        return {
+            "pond_name": pond_name,
+            "success": False,
+            "error": str(e),
+            "record_count": 0,
+        }
+
+
+def get_table_schema(database: str, table: str) -> Dict:
+    """Get table schema from Glue catalog"""
+    try:
+        glue = boto3.client("glue", region_name="us-east-1")
+        response = glue.get_table(DatabaseName=database, Name=table)
+
+        columns = []
+        for col in response["Table"]["StorageDescriptor"]["Columns"]:
+            columns.append({"name": col["Name"], "type": col["Type"]})
+
+        # Include partition keys
+        if "PartitionKeys" in response["Table"]:
+            for col in response["Table"]["PartitionKeys"]:
+                columns.append(
+                    {"name": col["Name"], "type": col["Type"], "is_partition": True}
+                )
+
+        return {
+            "table": table,
+            "columns": columns,
+            "location": response["Table"]["StorageDescriptor"]["Location"],
+        }
+    except Exception as e:
+        logger.error(f"Error getting schema for {database}.{table}: {e}")
+        return None
+
+
+def generate_sql_with_ai(
+    pond_name: str, understanding: Dict, table_schema: Dict
+) -> str:
+    """Use AI to generate optimized SQL query based on understanding and schema"""
+    try:
+        # Build column description
+        columns_desc = "\n".join(
+            [
+                f"  - {col['name']} ({col['type']})"
+                + (" [PARTITION]" if col.get("is_partition") else "")
+                for col in table_schema["columns"]
+            ]
+        )
+
+        prompt = f"""You are an expert SQL query generator for AWS Athena/Presto.
+
+Generate an optimized SQL query based on this user request and table schema.
+
+USER REQUEST ANALYSIS:
+- Primary Intent: {understanding.get("primary_intent")}
+- Information Sought: {", ".join(understanding.get("information_sought", []))}
+- Locations: {", ".join(understanding.get("locations", []))}
+- Time Frame: {understanding.get("time_frame")}
+- Complexity: {understanding.get("complexity")}
+
+AVAILABLE TABLE:
+Database: {GOLD_DB}
+Table: {table_schema["table"]}
+Columns:
+{columns_desc}
+
+REQUIREMENTS:
+1. Generate a valid Athena/Presto SQL query
+2. Use proper partition filtering (year, month, day) for performance
+3. Include WHERE clauses for location/station filtering if mentioned
+4. Order by most recent time/hour first
+5. Limit to 100 records maximum
+6. Select only relevant columns, not SELECT *
+7. Use proper date/time filtering if time_frame is specified
+
+Return ONLY the SQL query, no explanation. Format it as a single line or use proper SQL formatting."""
+
+        response = bedrock.invoke_model(
+            modelId=BEDROCK_MODEL,
+            body=json.dumps(
+                {
+                    "anthropic_version": "bedrock-2023-05-31",
+                    "max_tokens": 1000,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.1,
+                }
+            ),
+        )
+
+        result = json.loads(response["body"].read())
+        sql = result["content"][0]["text"].strip()
+
+        # Clean up SQL - remove markdown code blocks if present
+        sql = re.sub(r"```sql\n?", "", sql)
+        sql = re.sub(r"```\n?", "", sql)
+        sql = sql.strip()
+
+        logger.info(f"Generated SQL for {pond_name}: {sql[:200]}...")
+        return sql
+
+    except Exception as e:
+        logger.error(f"Error generating SQL with AI: {e}")
+        # Fallback to simple query with higher limit for more data
+        return f"SELECT * FROM {GOLD_DB}.{table_schema['table']} LIMIT 500"
+
+
+def query_gold_layer(pond_name: str, understanding: Dict) -> Dict:
+    """Query the Gold layer via Athena with AI-generated SQL"""
+    try:
+        # Discover available tables for this pond
+        glue = boto3.client("glue", region_name="us-east-1")
+
+        try:
+            tables_response = glue.get_tables(DatabaseName=GOLD_DB)
+            available_tables = [t["Name"] for t in tables_response["TableList"]]
+        except Exception as e:
+            logger.warning(f"Could not list tables in {GOLD_DB}: {e}")
+            return {"success": False, "error": f"Database {GOLD_DB} not accessible"}
+
+        if not available_tables:
+            return {"success": False, "error": f"No tables found in {GOLD_DB}"}
+
+        logger.info(f"Available tables in {GOLD_DB}: {available_tables}")
+
+        # Determine best table for this pond
+        # Table naming: observations, stations, oceanic, etc.
+        table_candidates = []
+
+        if pond_name == "atmospheric":
+            table_candidates = [
+                "observations",
+                "atmospheric_observations",
+                "stations",
+                "alerts",
+            ]
+        elif pond_name == "oceanic":
+            table_candidates = ["oceanic", "water_level", "water_temperature", "wind"]
+        elif pond_name == "buoy":
+            table_candidates = ["buoy", "buoy_data"]
+        else:
+            table_candidates = [pond_name]
+
+        # Find first matching table
+        table = None
+        for candidate in table_candidates:
+            if candidate in available_tables:
+                table = candidate
+                break
+
+        if not table:
+            # Try any table that contains the pond name
+            for t in available_tables:
+                if pond_name in t.lower():
+                    table = t
+                    break
+
+        if not table:
+            logger.warning(
+                f"No matching table found for {pond_name}. Available: {available_tables}"
+            )
+            return {"success": False, "error": f"No table found for pond {pond_name}"}
+
+        logger.info(f"Selected table: {table} for pond {pond_name}")
+
+        # Get table schema
+        table_schema = get_table_schema(GOLD_DB, table)
+        if not table_schema:
+            return {"success": False, "error": "Could not retrieve table schema"}
+
+        # Generate SQL with AI
+        sql = generate_sql_with_ai(pond_name, understanding, table_schema)
+
+        logger.info(f"Executing SQL: {sql}")
+
+        # Execute Athena query
+        response = athena.start_query_execution(
+            QueryString=sql,
+            QueryExecutionContext={"Database": GOLD_DB},
+            ResultConfiguration={"OutputLocation": ATHENA_OUTPUT},
+        )
+
+        query_id = response["QueryExecutionId"]
+
+        # Wait for completion (with timeout)
+        max_wait = 10
+        waited = 0
+        while waited < max_wait:
+            status = athena.get_query_execution(QueryExecutionId=query_id)
+            state = status["QueryExecution"]["Status"]["State"]
+
+            if state == "SUCCEEDED":
+                break
+            elif state in ["FAILED", "CANCELLED"]:
+                return {"success": False, "error": f"Query {state}"}
+
+            time.sleep(1)
+            waited += 1
+
+        if waited >= max_wait:
+            return {"success": False, "error": "Query timeout"}
+
+        # Get results
+        results = athena.get_query_results(QueryExecutionId=query_id)
+
+        # Parse results
+        data = []
+        if len(results["ResultSet"]["Rows"]) > 1:
+            headers = [
+                col["VarCharValue"] for col in results["ResultSet"]["Rows"][0]["Data"]
+            ]
+            for row in results["ResultSet"]["Rows"][1:]:
+                row_data = {
+                    headers[i]: col.get("VarCharValue", "")
+                    for i, col in enumerate(row["Data"])
+                }
+                data.append(row_data)
+
+        return {"success": True, "data": data, "source": "gold_layer"}
+
+    except Exception as e:
+        logger.warning(f"Gold layer query failed for {pond_name}: {e}")
+        return {"success": False, "error": str(e)}
+
+
+def query_passthrough(pond_name: str, query: str, understanding: Dict) -> Dict:
+    """Query real-time passthrough APIs via enhanced handler"""
+    try:
+        # Call the enhanced handler Lambda which has passthrough API logic
+        response = lambda_client.invoke(
+            FunctionName=ENHANCED_HANDLER,
+            InvocationType="RequestResponse",
+            Payload=json.dumps({"query": query, "pond_filter": pond_name}),
+        )
+
+        result = json.loads(response["Payload"].read())
+
+        if result.get("statusCode") == 200:
+            body = json.loads(result.get("body", "{}"))
+            return {
+                "success": True,
+                "data": [body.get("data", {})],
+                "source": "passthrough_api",
+            }
+        else:
+            return {"success": False, "error": "Passthrough failed"}
+
+    except Exception as e:
+        logger.warning(f"Passthrough query failed for {pond_name}: {e}")
+        return {"success": False, "error": str(e)}
+
+
+# =============================================================================
+# AI-POWERED RESULT SYNTHESIS
+# =============================================================================
+
+
+def synthesize_results_with_ai(
+    query: str,
+    query_understanding: Dict,
+    pond_selections: List[Dict],
+    pond_results: List[Dict],
+    include_raw_data: bool,
+) -> Dict:
+    """
+    Use Bedrock/Claude to synthesize results and explain data relationships
+    """
+
+    # Build context about what we queried and found
+    ponds_queried = []
+    for selection in pond_selections:
+        pond_name = selection["pond_name"]
+        result = next((r for r in pond_results if r["pond_name"] == pond_name), None)
+
+        ponds_queried.append(
+            {
+                "pond": POND_METADATA[pond_name]["name"],
+                "relevance_score": selection["relevance_score"],
+                "why_relevant": selection["reasoning"],
+                "data_contribution": selection["data_contribution"],
+                "records_found": result.get("record_count", 0) if result else 0,
+                "success": result.get("success", False) if result else False,
+            }
+        )
+
+    # Prepare data summary (not full data, too large for prompt)
+    data_summary = []
+    for result in pond_results:
+        if result.get("success") and result.get("record_count", 0) > 0:
+            data_summary.append(
+                {
+                    "pond": result["pond_name"],
+                    "record_count": result["record_count"],
+                    "sample": result["data"][0] if result["data"] else None,
+                }
+            )
+
+    prompt = f"""You are answering a user's question about environmental/weather/ocean data using NOAA's Federated Data Lake.
+
+USER QUERY: "{query}"
+
+PONDS QUERIED AND WHY:
+{json.dumps(ponds_queried, indent=2)}
+
+DATA FOUND:
+{json.dumps(data_summary, indent=2)}
+
+Your task:
+1. Answer the user's question directly and comprehensively
+2. Explain which data ponds were queried and WHY they're relevant to this specific question
+3. Explain HOW the data from different ponds relates to each other for this query
+4. If some ponds returned no data, note that and explain what it means
+5. Provide insights by correlating data across ponds
+
+Format your response as:
+
+## Answer to Your Question
+[Direct answer to what they asked]
+
+## Data Sources Consulted
+[Explain which ponds were queried and why each is relevant to THIS question]
+
+## How the Data Relates
+[Explain the relationships between data from different ponds and why we need multiple sources for this query]
+
+## Insights
+[Key takeaways from analyzing the data across ponds]
+
+If data is incomplete or unavailable, explain that clearly and suggest alternatives.
+
+Use clear, helpful language. Be specific about what data came from which pond."""
+
+    try:
+        response = bedrock.invoke_model(
+            modelId=BEDROCK_MODEL,
+            body=json.dumps(
+                {
+                    "anthropic_version": "bedrock-2023-05-31",
+                    "max_tokens": 4000,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.3,
+                }
+            ),
+        )
+
+        result = json.loads(response["body"].read())
+        answer = result["content"][0]["text"]
+
+        # Build final response
+        final_response = {
+            "success": True,
+            "query": query,
+            "answer": answer,
+            "ponds_queried": ponds_queried,
+            "total_records": sum(r.get("record_count", 0) for r in pond_results),
+        }
+
+        if include_raw_data:
+            final_response["raw_data"] = {
+                r["pond_name"]: r.get("data", [])
+                for r in pond_results
+                if r.get("success")
+            }
+
+        return final_response
+
+    except Exception as e:
+        logger.error(f"Error synthesizing results: {e}")
+
+        # Fallback response
+        return {
+            "success": True,
+            "query": query,
+            "answer": f"Queried {len([r for r in pond_results if r.get('success')])} data ponds. Found {sum(r.get('record_count', 0) for r in pond_results)} total records.",
+            "ponds_queried": ponds_queried,
+            "total_records": sum(r.get("record_count", 0) for r in pond_results),
+            "note": "AI synthesis unavailable, showing raw data",
+            "raw_data": {
+                r["pond_name"]: r.get("data", [])
+                for r in pond_results
+                if r.get("success")
+            },
+        }
+
+
+# =============================================================================
+# UTILITY FUNCTIONS
+# =============================================================================
+
+
+def respond(status_code: int, body: Dict) -> Dict:
+    """
+    Format Lambda response for API Gateway
+    """
+    return {
+        "statusCode": status_code,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+        },
+        "body": json.dumps(body, default=str),
+    }
+

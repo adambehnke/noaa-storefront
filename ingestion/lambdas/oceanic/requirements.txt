@@ -1,0 +1,25 @@
+# AWS SDK (usually pre-installed in Lambda, but specifying for local development)
+boto3>=1.34.0
+botocore>=1.34.0
+
+# HTTP requests for NOAA API calls
+requests>=2.31.0
+urllib3>=2.0.0
+
+# JSON handling (standard library, but specifying for clarity)
+# json - standard library
+
+# Date/time handling (standard library)
+# datetime - standard library
+
+# Logging (standard library)
+# logging - standard library
+
+# Type hints (standard library for Python 3.12)
+# typing - standard library
+
+# Hashing (standard library)
+# hashlib - standard library
+
+# Regular expressions (standard library)
+# re - standard library

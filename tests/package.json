@@ -1,0 +1,39 @@
+{
+  "name": "noaa-federated-data-lake-tests",
+  "version": "1.0.0",
+  "description": "End-to-end testing suite for NOAA Federated Data Lake webapp",
+  "main": "test_e2e_puppeteer.js",
+  "scripts": {
+    "test": "node test_e2e_puppeteer.js",
+    "test:local": "node test_e2e_puppeteer.js http://localhost:8000",
+    "test:cloudfront": "node test_e2e_puppeteer.js https://d3m3e2kbgwdfko.cloudfront.net",
+    "test:dev": "node test_e2e_puppeteer.js https://z0rld53i7a.execute-api.us-east-1.amazonaws.com/dev",
+    "test:visible": "HEADLESS=false node test_e2e_puppeteer.js",
+    "serve": "cd webapp && python3 -m http.server 8000",
+    "lint": "eslint webapp/app.js",
+    "validate": "node validate_deployment.js"
+  },
+  "keywords": [
+    "noaa",
+    "testing",
+    "puppeteer",
+    "e2e",
+    "chatbot",
+    "data-lake"
+  ],
+  "author": "NOAA Data Lake Team",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^21.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/noaa-storefront"
+  }
+}

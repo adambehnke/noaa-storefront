@@ -1,0 +1,31 @@
+#!/bin/bash
+# NOAA Maritime Navigation Chatbot Launcher
+
+# Colors
+BLUE='\033[0;34m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+echo -e "${CYAN}================================================${NC}"
+echo -e "${BLUE}🌊 NOAA Maritime Navigation Chatbot ⛵${NC}"
+echo -e "${CYAN}================================================${NC}"
+echo ""
+
+# Check for Python
+if ! command -v python3 &> /dev/null; then
+    echo -e "${RED}Error: Python 3 is not installed.${NC}"
+    exit 1
+fi
+
+# Check for boto3
+if ! python3 -c "import boto3" 2>/dev/null; then
+    echo -e "${GREEN}Installing boto3...${NC}"
+    pip3 install boto3
+fi
+
+# Launch chatbot
+echo -e "${GREEN}Starting chatbot...${NC}"
+echo ""
+python3 maritime-chatbot.py
+

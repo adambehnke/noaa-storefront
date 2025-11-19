@@ -1,0 +1,36 @@
+[0;36m
+╔════════════════════════════════════════════════════════════╗
+║   NOAA Federated Data Lake - AWS Deployment Script        ║
+║   Version 1.0                                              ║
+╚════════════════════════════════════════════════════════════╝
+[0m
+
+[0;34mChecking prerequisites...[0m
+[0;32m✓ AWS Account ID: 899626030376[0m
+[0;32m✓ Python 3 found[0m
+[0;32m✓ Python dependencies OK[0m
+
+[0;36m========================================[0m
+[0;36mNOAA Federated Data Lake Deployment[0m
+[0;36m========================================[0m
+Environment:       [0;32mdev[0m
+AWS Region:        [0;32mus-east-1[0m
+AWS Account:       [0;32m899626030376[0m
+NOAA Token:        [0;32mNot provided[0m
+Skip Packaging:    [0;32mNo[0m
+Skip Tables:       [0;32mNo[0m
+Validate:          [1;33mNo[0m
+[0;36m========================================[0m
+
+[0;34mResources to be deployed:[0m
+  • S3 Buckets (data lake + athena results)
+  • 6 Lambda ingestion functions
+  • 2 Lambda query/handler functions
+  • EventBridge schedules (15-minute intervals)
+  • Athena database and 8+ tables
+  • IAM roles and policies
+  • CloudWatch log groups
+
+[0;34m========================================[0m
+[0;34mStep 1: Packaging Lambda Functions[0m
+[0;34m========================================[0m

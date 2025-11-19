@@ -1,0 +1,599 @@
+{
+  "timestamp": "2025-11-19T18:30:45.920603Z",
+  "environment": "dev",
+  "summary": {
+    "total_endpoints": 13,
+    "successful": 13,
+    "failed": 0,
+    "success_rate": 100.0
+  },
+  "endpoints": [
+    {
+      "name": "Tides - Boston",
+      "url": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter",
+      "status": "success",
+      "response_time": 0.40313220024108887,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "metadata": {
+          "id": "str",
+          "name": "str",
+          "lat": "str",
+          "lon": "str"
+        },
+        "data": [
+          {
+            "type": "dict"
+          }
+        ]
+      },
+      "status_code": 200,
+      "data_count": 1
+    },
+    {
+      "name": "Tides - San Francisco",
+      "url": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter",
+      "status": "success",
+      "response_time": 0.1885383129119873,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "metadata": {
+          "id": "str",
+          "name": "str",
+          "lat": "str",
+          "lon": "str"
+        },
+        "data": [
+          {
+            "type": "dict"
+          }
+        ]
+      },
+      "status_code": 200,
+      "data_count": 1
+    },
+    {
+      "name": "Currents - New York Harbor",
+      "url": "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter",
+      "status": "success",
+      "response_time": 0.19889616966247559,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "error": {
+          "message": "str"
+        }
+      },
+      "status_code": 200
+    },
+    {
+      "name": "Active Weather Alerts",
+      "url": "https://api.weather.gov/alerts/active",
+      "status": "success",
+      "response_time": 0.17133092880249023,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "@context": [
+          {
+            "type": "str"
+          }
+        ],
+        "type": "str",
+        "features": [
+          {
+            "type": "dict"
+          }
+        ],
+        "title": "str",
+        "updated": "str"
+      },
+      "status_code": 200,
+      "data_count": 240
+    },
+    {
+      "name": "Alerts - New York",
+      "url": "https://api.weather.gov/alerts/active",
+      "status": "success",
+      "response_time": 0.3721039295196533,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "@context": {
+          "@version": "str"
+        },
+        "type": "str",
+        "features": {},
+        "title": "str",
+        "updated": "str"
+      },
+      "status_code": 200
+    },
+    {
+      "name": "Alerts - California",
+      "url": "https://api.weather.gov/alerts/active",
+      "status": "success",
+      "response_time": 1.585787057876587,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "@context": [
+          {
+            "type": "str"
+          }
+        ],
+        "type": "str",
+        "features": [
+          {
+            "type": "dict"
+          }
+        ],
+        "title": "str",
+        "updated": "str"
+      },
+      "status_code": 200,
+      "data_count": 3
+    },
+    {
+      "name": "Forecast - New York",
+      "url": "https://api.weather.gov/gridpoints/OKX/33,37/forecast",
+      "status": "success",
+      "response_time": 0.5585401058197021,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "@context": [
+          {
+            "type": "str"
+          }
+        ],
+        "type": "str",
+        "geometry": {
+          "type": "str",
+          "coordinates": {
+            "type": "list"
+          }
+        },
+        "properties": {
+          "units": "str",
+          "forecastGenerator": "str",
+          "generatedAt": "str",
+          "updateTime": "str",
+          "validTimes": "str"
+        }
+      },
+      "status_code": 200,
+      "data_count": 1
+    },
+    {
+      "name": "Forecast - Los Angeles",
+      "url": "https://api.weather.gov/gridpoints/LOX/154,44/forecast",
+      "status": "success",
+      "response_time": 1.2062017917633057,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "@context": [
+          {
+            "type": "str"
+          }
+        ],
+        "type": "str",
+        "geometry": {
+          "type": "str",
+          "coordinates": {
+            "type": "list"
+          }
+        },
+        "properties": {
+          "units": "str",
+          "forecastGenerator": "str",
+          "generatedAt": "str",
+          "updateTime": "str",
+          "validTimes": "str"
+        }
+      },
+      "status_code": 200,
+      "data_count": 1
+    },
+    {
+      "name": "Forecast - Chicago",
+      "url": "https://api.weather.gov/gridpoints/LOT/76,73/forecast",
+      "status": "success",
+      "response_time": 0.099945068359375,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "@context": [
+          {
+            "type": "str"
+          }
+        ],
+        "type": "str",
+        "geometry": {
+          "type": "str",
+          "coordinates": {
+            "type": "list"
+          }
+        },
+        "properties": {
+          "units": "str",
+          "forecastGenerator": "str",
+          "generatedAt": "str",
+          "updateTime": "str",
+          "validTimes": "str"
+        }
+      },
+      "status_code": 200,
+      "data_count": 1
+    },
+    {
+      "name": "Hourly Forecast - New York",
+      "url": "https://api.weather.gov/gridpoints/OKX/33,37/forecast/hourly",
+      "status": "success",
+      "response_time": 0.08796000480651855,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "@context": [
+          {
+            "type": "str"
+          }
+        ],
+        "type": "str",
+        "geometry": {
+          "type": "str",
+          "coordinates": {
+            "type": "list"
+          }
+        },
+        "properties": {
+          "units": "str",
+          "forecastGenerator": "str",
+          "generatedAt": "str",
+          "updateTime": "str",
+          "validTimes": "str"
+        }
+      },
+      "status_code": 200,
+      "data_count": 1
+    },
+    {
+      "name": "Observation Stations",
+      "url": "https://api.weather.gov/stations",
+      "status": "success",
+      "response_time": 0.09667682647705078,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "@context": [
+          {
+            "type": "str"
+          }
+        ],
+        "type": "str",
+        "features": [
+          {
+            "type": "dict"
+          }
+        ],
+        "observationStations": [
+          {
+            "type": "str"
+          }
+        ],
+        "pagination": {
+          "next": "str"
+        }
+      },
+      "status_code": 200,
+      "data_count": 500
+    },
+    {
+      "name": "USGS Water Services",
+      "url": "https://waterservices.usgs.gov/nwis/iv/",
+      "status": "success",
+      "response_time": 0.3964657783508301,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "name": "str",
+        "declaredType": "str",
+        "scope": "str",
+        "value": {
+          "queryInfo": {
+            "type": "dict"
+          },
+          "timeSeries": {
+            "type": "list"
+          }
+        },
+        "nil": "bool"
+      },
+      "status_code": 200
+    },
+    {
+      "name": "NWS Precipitation",
+      "url": "https://api.weather.gov/products/types",
+      "status": "success",
+      "response_time": 0.15505385398864746,
+      "data_available": true,
+      "error": null,
+      "data_sample": {
+        "@context": {
+          "@version": "str",
+          "@vocab": "str"
+        },
+        "@graph": [
+          {
+            "type": "dict"
+          }
+        ]
+      },
+      "status_code": 200
+    }
+  ],
+  "common_elements": {
+    "temperature": {
+      "ponds": [
+        "oceanic",
+        "atmospheric",
+        "climate",
+        "buoy"
+      ],
+      "fields": [
+        "temperature",
+        "temp",
+        "air_temperature",
+        "water_temperature",
+        "sea_surface_temperature"
+      ],
+      "description": "Temperature measurements (air, water, surface)"
+    },
+    "location": {
+      "ponds": [
+        "oceanic",
+        "atmospheric",
+        "climate",
+        "spatial",
+        "terrestrial"
+      ],
+      "fields": [
+        "latitude",
+        "longitude",
+        "location",
+        "coordinates",
+        "geometry"
+      ],
+      "description": "Geographic location data"
+    },
+    "wind": {
+      "ponds": [
+        "oceanic",
+        "atmospheric",
+        "buoy"
+      ],
+      "fields": [
+        "wind_speed",
+        "wind_direction",
+        "wind_gust",
+        "windSpeed",
+        "windDirection"
+      ],
+      "description": "Wind measurements (speed, direction, gusts)"
+    },
+    "precipitation": {
+      "ponds": [
+        "atmospheric",
+        "climate",
+        "terrestrial"
+      ],
+      "fields": [
+        "precipitation",
+        "rainfall",
+        "precip",
+        "rain"
+      ],
+      "description": "Precipitation and rainfall data"
+    },
+    "pressure": {
+      "ponds": [
+        "oceanic",
+        "atmospheric",
+        "buoy"
+      ],
+      "fields": [
+        "pressure",
+        "barometric_pressure",
+        "atmospheric_pressure",
+        "sea_level_pressure"
+      ],
+      "description": "Atmospheric and barometric pressure"
+    },
+    "wave": {
+      "ponds": [
+        "oceanic",
+        "buoy"
+      ],
+      "fields": [
+        "wave_height",
+        "significant_wave_height",
+        "wave_period",
+        "swell_height"
+      ],
+      "description": "Wave and swell measurements"
+    },
+    "water_level": {
+      "ponds": [
+        "oceanic",
+        "terrestrial"
+      ],
+      "fields": [
+        "water_level",
+        "tide",
+        "sea_level",
+        "river_level",
+        "gauge_height"
+      ],
+      "description": "Water level and tide data"
+    },
+    "visibility": {
+      "ponds": [
+        "atmospheric",
+        "spatial"
+      ],
+      "fields": [
+        "visibility",
+        "vis"
+      ],
+      "description": "Visibility measurements"
+    },
+    "humidity": {
+      "ponds": [
+        "atmospheric",
+        "climate"
+      ],
+      "fields": [
+        "humidity",
+        "relative_humidity",
+        "dewpoint"
+      ],
+      "description": "Humidity and dewpoint data"
+    },
+    "alerts": {
+      "ponds": [
+        "atmospheric"
+      ],
+      "fields": [
+        "alerts",
+        "warnings",
+        "watches",
+        "advisories"
+      ],
+      "description": "Weather alerts and warnings"
+    }
+  },
+  "query_templates": [
+    {
+      "name": "Coastal Temperature Analysis",
+      "description": "Compare air and water temperatures along coastlines",
+      "ponds": [
+        "atmospheric",
+        "oceanic",
+        "buoy"
+      ],
+      "query": "SELECT\n    a.location_name,\n    a.state,\n    a.current_temperature as air_temp,\n    o.water_temperature as water_temp,\n    b.air_temperature as buoy_air_temp,\n    b.sea_surface_temperature as buoy_water_temp,\n    a.date\nFROM noaa_gold_{env}.atmospheric_forecasts a\nLEFT JOIN noaa_gold_{env}.oceanic_tides o\n    ON a.state = o.state\n    AND a.date = o.date\nLEFT JOIN noaa_gold_{env}.oceanic_buoys b\n    ON CAST(a.latitude AS DECIMAL(10,4)) = CAST(b.latitude AS DECIMAL(10,4))\n    AND a.date = b.date\nWHERE a.date >= date_format(current_date - interval '7' day, '%Y-%m-%d')\nORDER BY a.date DESC, a.state\nLIMIT 100;",
+      "use_cases": [
+        "Coastal climate analysis",
+        "Marine weather forecasting",
+        "Beach safety monitoring"
+      ]
+    },
+    {
+      "name": "Regional Weather Snapshot",
+      "description": "Complete weather picture for a region",
+      "ponds": [
+        "atmospheric",
+        "climate"
+      ],
+      "query": "SELECT\n    a.location_name,\n    a.state,\n    a.region,\n    a.current_temperature,\n    a.wind_speed,\n    a.short_forecast,\n    c.precipitation,\n    c.temperature_max as historical_max,\n    c.temperature_min as historical_min,\n    a.date\nFROM noaa_gold_{env}.atmospheric_forecasts a\nLEFT JOIN noaa_gold_{env}.climate_daily c\n    ON a.state = c.state\n    AND a.date = c.date\nWHERE a.date >= date_format(current_date - interval '3' day, '%Y-%m-%d')\nORDER BY a.region, a.state, a.date DESC;",
+      "use_cases": [
+        "Regional weather summaries",
+        "Travel planning",
+        "Event planning"
+      ]
+    },
+    {
+      "name": "Extreme Weather Identification",
+      "description": "Identify areas with extreme conditions",
+      "ponds": [
+        "atmospheric",
+        "oceanic",
+        "climate"
+      ],
+      "query": "WITH extreme_temps AS (\n    SELECT\n        location_name,\n        state,\n        current_temperature,\n        'atmospheric' as source,\n        date\n    FROM noaa_gold_{env}.atmospheric_forecasts\n    WHERE current_temperature > 95 OR current_temperature < 20\n),\nextreme_waves AS (\n    SELECT\n        station_name as location_name,\n        state,\n        wave_height,\n        'oceanic' as source,\n        date\n    FROM noaa_gold_{env}.oceanic_buoys\n    WHERE wave_height > 10\n)\nSELECT * FROM extreme_temps\nUNION ALL\nSELECT\n    location_name,\n    state,\n    wave_height as current_temperature,\n    source,\n    date\nFROM extreme_waves\nORDER BY date DESC, state\nLIMIT 100;",
+      "use_cases": [
+        "Emergency management",
+        "Safety alerts",
+        "Risk assessment"
+      ]
+    },
+    {
+      "name": "Multi-Source Location Data",
+      "description": "All available data for specific coordinates",
+      "ponds": [
+        "atmospheric",
+        "oceanic",
+        "climate",
+        "terrestrial"
+      ],
+      "query": "-- For a specific location (e.g., 40.7N, -74.0W - New York area)\nSELECT\n    'atmospheric' as data_source,\n    location_name,\n    latitude,\n    longitude,\n    current_temperature as value,\n    'temperature_f' as metric,\n    date\nFROM noaa_gold_{env}.atmospheric_forecasts\nWHERE latitude BETWEEN 40.5 AND 41.0\n  AND longitude BETWEEN -74.5 AND -73.5\n  AND date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\n\nUNION ALL\n\nSELECT\n    'oceanic' as data_source,\n    station_name as location_name,\n    latitude,\n    longitude,\n    water_temperature as value,\n    'water_temp_c' as metric,\n    date\nFROM noaa_gold_{env}.oceanic_tides\nWHERE latitude BETWEEN 40.5 AND 41.0\n  AND longitude BETWEEN -74.5 AND -73.5\n  AND date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\n\nORDER BY date DESC, data_source;",
+      "use_cases": [
+        "Location-specific analysis",
+        "Mobile apps",
+        "Navigation systems"
+      ]
+    },
+    {
+      "name": "Time Series Analysis",
+      "description": "Track changes over time across multiple data sources",
+      "ponds": [
+        "atmospheric",
+        "oceanic",
+        "climate"
+      ],
+      "query": "SELECT\n    date,\n    COUNT(DISTINCT a.location_name) as atmospheric_locations,\n    AVG(a.current_temperature) as avg_air_temp,\n    COUNT(DISTINCT o.station_id) as oceanic_stations,\n    AVG(o.water_temperature) as avg_water_temp,\n    COUNT(DISTINCT c.station_id) as climate_stations,\n    AVG(c.temperature_max) as avg_daily_high\nFROM noaa_gold_{env}.atmospheric_forecasts a\nFULL OUTER JOIN noaa_gold_{env}.oceanic_buoys o ON a.date = o.date\nFULL OUTER JOIN noaa_gold_{env}.climate_daily c ON a.date = c.date\nWHERE a.date >= date_format(current_date - interval '30' day, '%Y-%m-%d')\nGROUP BY date\nORDER BY date DESC;",
+      "use_cases": [
+        "Trend analysis",
+        "Climate research",
+        "Data quality monitoring"
+      ]
+    },
+    {
+      "name": "State-Level Weather Summary",
+      "description": "Comprehensive weather data by state",
+      "ponds": [
+        "atmospheric",
+        "climate",
+        "terrestrial"
+      ],
+      "query": "SELECT\n    COALESCE(a.state, c.state) as state,\n    COUNT(DISTINCT a.location_name) as forecast_locations,\n    AVG(a.current_temperature) as avg_current_temp,\n    MAX(a.forecast_high_temp) as forecast_high,\n    MIN(a.forecast_low_temp) as forecast_low,\n    AVG(c.precipitation) as avg_precipitation,\n    date_format(current_date, '%Y-%m-%d') as report_date\nFROM noaa_gold_{env}.atmospheric_forecasts a\nFULL OUTER JOIN noaa_gold_{env}.climate_daily c\n    ON a.state = c.state\n    AND a.date = c.date\nWHERE a.date = date_format(current_date, '%Y-%m-%d')\n   OR c.date = date_format(current_date, '%Y-%m-%d')\nGROUP BY COALESCE(a.state, c.state)\nORDER BY state;",
+      "use_cases": [
+        "State weather reports",
+        "Agricultural planning",
+        "Public information"
+      ]
+    },
+    {
+      "name": "Marine Conditions Overview",
+      "description": "Complete marine weather and ocean conditions",
+      "ponds": [
+        "oceanic",
+        "buoy",
+        "atmospheric"
+      ],
+      "query": "SELECT\n    b.station_id,\n    b.station_name,\n    b.latitude,\n    b.longitude,\n    b.wave_height,\n    b.sea_surface_temperature,\n    b.wind_speed as buoy_wind_speed,\n    o.water_level,\n    a.wind_speed as forecast_wind_speed,\n    a.short_forecast,\n    b.date\nFROM noaa_gold_{env}.oceanic_buoys b\nLEFT JOIN noaa_gold_{env}.oceanic_tides o\n    ON b.station_id = o.station_id\n    AND b.date = o.date\nLEFT JOIN noaa_gold_{env}.atmospheric_forecasts a\n    ON CAST(b.latitude AS DECIMAL(10,2)) = CAST(a.latitude AS DECIMAL(10,2))\n    AND b.date = a.date\nWHERE b.date >= date_format(current_date - interval '1' day, '%Y-%m-%d')\nORDER BY b.wave_height DESC, b.date DESC\nLIMIT 100;",
+      "use_cases": [
+        "Maritime navigation",
+        "Fishing operations",
+        "Coastal recreation"
+      ]
+    },
+    {
+      "name": "Alert Context Enrichment",
+      "description": "Weather alerts with current conditions",
+      "ponds": [
+        "atmospheric"
+      ],
+      "query": "SELECT\n    al.timestamp,\n    al.total_alerts,\n    al.alert_summary,\n    f.location_name,\n    f.state,\n    f.current_temperature,\n    f.wind_speed,\n    f.short_forecast,\n    al.date\nFROM noaa_gold_{env}.atmospheric_alerts al\nJOIN noaa_gold_{env}.atmospheric_forecasts f\n    ON al.date = f.date\nWHERE al.total_alerts > 0\n  AND al.date >= date_format(current_date - interval '7' day, '%Y-%m-%d')\nORDER BY al.total_alerts DESC, al.date DESC;",
+      "use_cases": [
+        "Emergency notifications",
+        "Safety monitoring",
+        "Alert distribution"
+      ]
+    }
+  ],
+  "data_gaps": []
+}

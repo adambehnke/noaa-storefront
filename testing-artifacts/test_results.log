@@ -1,0 +1,506 @@
+[3J[H[2J
+╔══════════════════════════════════════════════════════════════════════╗
+║     NOAA Intelligent Orchestrator - Comprehensive Test Suite        ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+API Endpoint: https://z0rld53i7a.execute-api.us-east-1.amazonaws.com/dev/ask
+Region: us-east-1
+Environment: dev
+
+Starting tests at Thu Nov  6 16:32:12 CST 2025
+
+
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+[0;35mCATEGORY 1: Single-Pond Queries (Baseline)[0m
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 1.1:[0m Ocean Temperature Query (Oceanic Pond)
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "what is the ocean temp on the coast off georgia"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 4265ce46-b4e7-42dd-ba5d-9cb3a10a19d9
+[0;35m📊 DATA:[0m Answer: Found 2 records across 2 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy (Total: 2)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 1252ms | Records: 2
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 2 ponds (expected: ≥1)
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (1252ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 2 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 387ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 1115ms) - Offshore marine conditions may be relevant
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 1.2:[0m Weather Query (Atmospheric Pond)
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "current weather conditions in florida"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: a98ecd16-1729-4d4f-98fb-d6dc27709014
+[0;35m📊 DATA:[0m Answer: Found 1 records across 1 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: atmospheric (Total: 1)
+[0;35m📊 DATA:[0m Federated: false | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 706ms | Records: 1
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 1 ponds (expected: ≥1)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (706ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 1 records
+
+[0;36mPond Details:[0m
+  • atmospheric: 1 records (relevance: 0.95, 488ms) - Query contains weather keywords
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 1.3:[0m Tide Query (Oceanic Pond)
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "tide predictions for san francisco bay"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 614a162a-7ab8-4b0a-b137-436544f3e3d1
+[0;35m📊 DATA:[0m Answer: Found 2 records across 2 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy (Total: 2)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 212ms | Records: 2
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 2 ponds (expected: ≥1)
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (212ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 2 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 127ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 118ms) - Offshore marine conditions may be relevant
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+[0;35mCATEGORY 2: Dual-Pond Queries (Cross-Domain)[0m
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 2.1:[0m Weather AND Ocean Conditions
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "weather and ocean conditions near georgia coast"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 2f77f17a-d9f2-4370-b42a-a5fdb15c5464
+[0;35m📊 DATA:[0m Answer: Found 3 records across 3 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy,atmospheric (Total: 3)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 579ms | Records: 3
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 3 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (579ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 3 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 107ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 98ms) - Offshore marine conditions may be relevant
+  • atmospheric: 1 records (relevance: 0.95, 370ms) - Query contains weather keywords
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 2.2:[0m Coastal Marine Conditions
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "coastal weather and water temperature in florida"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 8d11e6b9-204e-43b4-a2ff-764c9828aec3
+[0;35m📊 DATA:[0m Answer: Found 3 records across 3 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy,atmospheric (Total: 3)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 523ms | Records: 3
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 3 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (523ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 3 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 141ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 151ms) - Offshore marine conditions may be relevant
+  • atmospheric: 1 records (relevance: 0.95, 318ms) - Query contains weather keywords
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 2.3:[0m Maritime Safety Conditions
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "sailing conditions including wind and waves off california"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 910027d4-e2ed-4008-a3d0-51540b7ac835
+[0;35m📊 DATA:[0m Answer: Found 1 records across 1 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: atmospheric (Total: 1)
+[0;35m📊 DATA:[0m Federated: false | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 520ms | Records: 1
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;31m✗ FAIL:[0m Only queried 1 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;31m✗ FAIL:[0m Expected pond 'oceanic' was NOT queried
+[0;32m✓ PASS:[0m Execution time acceptable (520ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 1 records
+
+[0;36mPond Details:[0m
+  • atmospheric: 1 records (relevance: 0.95, 330ms) - Query contains weather keywords
+
+[0;31m✗✗✗ TEST FAILED ✗✗✗[0m
+
+
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+[0;35mCATEGORY 3: Multi-Pond Queries (Complex)[0m
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 3.1:[0m Shipping Route Analysis
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "comprehensive weather and ocean conditions affecting shipping routes near georgia coast"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 1e2c1b6a-1963-4a1c-8bda-89237be4f807
+[0;35m📊 DATA:[0m Answer: Found 3 records across 3 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy,atmospheric (Total: 3)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 1665ms | Records: 3
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 3 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (1665ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 3 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 141ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 139ms) - Offshore marine conditions may be relevant
+  • atmospheric: 1 records (relevance: 0.95, 1462ms) - Query contains weather keywords
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 3.2:[0m Complete Coastal Assessment
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "all environmental conditions including weather ocean and coastal data for texas gulf coast"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 7c303d44-1aa9-4a26-9294-0805b164c678
+[0;35m📊 DATA:[0m Answer: Found 3 records across 3 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy,atmospheric (Total: 3)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 535ms | Records: 3
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 3 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (535ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 3 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 135ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 105ms) - Offshore marine conditions may be relevant
+  • atmospheric: 1 records (relevance: 0.95, 326ms) - Query contains weather keywords
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 3.3:[0m Marine Operations Planning
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "weather forecast ocean temperature and wave conditions for offshore operations near boston"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 4a15b727-1e57-4342-a992-a3b1f94b71ea
+[0;35m📊 DATA:[0m Answer: Found 3 records across 3 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy,atmospheric (Total: 3)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 666ms | Records: 3
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 3 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (666ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 3 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 142ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 104ms) - Offshore marine conditions may be relevant
+  • atmospheric: 1 records (relevance: 0.95, 470ms) - Query contains weather keywords
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+[0;35mCATEGORY 4: Context & Implicit Requirements[0m
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 4.1:[0m Fishing Conditions (Implicit Multi-Pond)
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "what are the fishing conditions off the georgia coast today"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 5a1e7714-c18c-4175-b457-17136a765af1
+[0;35m📊 DATA:[0m Answer: Found 1 records across 1 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: atmospheric (Total: 1)
+[0;35m📊 DATA:[0m Federated: false | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 509ms | Records: 1
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;31m✗ FAIL:[0m Only queried 1 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;31m✗ FAIL:[0m Expected pond 'oceanic' was NOT queried
+[0;32m✓ PASS:[0m Execution time acceptable (509ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 1 records
+
+[0;36mPond Details:[0m
+  • atmospheric: 1 records (relevance: 0.6, 310ms) - Default pond for general queries
+
+[0;31m✗✗✗ TEST FAILED ✗✗✗[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 4.2:[0m Beach Safety (Implicit Multi-Pond)
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "is it safe to swim at the beach in miami today"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 7f2bbabc-8eb3-431f-b86a-448887181515
+[0;35m📊 DATA:[0m Answer: Found 1 records across 1 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: atmospheric (Total: 1)
+[0;35m📊 DATA:[0m Federated: false | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 505ms | Records: 1
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;31m✗ FAIL:[0m Only queried 1 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;31m✗ FAIL:[0m Expected pond 'oceanic' was NOT queried
+[0;32m✓ PASS:[0m Execution time acceptable (505ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 1 records
+
+[0;36mPond Details:[0m
+  • atmospheric: 1 records (relevance: 0.6, 309ms) - Default pond for general queries
+
+[0;31m✗✗✗ TEST FAILED ✗✗✗[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 4.3:[0m Storm Impact Assessment
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "how will the weather affect coastal areas in florida"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 6978a889-0a22-49c3-8382-988b90fd68c1
+[0;35m📊 DATA:[0m Answer: Found 3 records across 3 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy,atmospheric (Total: 3)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 567ms | Records: 3
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 3 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (567ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 3 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 372ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 100ms) - Offshore marine conditions may be relevant
+  • atmospheric: 1 records (relevance: 0.95, 324ms) - Query contains weather keywords
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+[0;35mCATEGORY 5: Geographic Coverage[0m
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 5.1:[0m West Coast (California)
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "ocean and weather conditions for san francisco bay area"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 2e42f8d0-94da-455a-bba8-eae2e33b313e
+[0;35m📊 DATA:[0m Answer: Found 3 records across 3 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy,atmospheric (Total: 3)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 506ms | Records: 3
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 3 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (506ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 3 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 116ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 115ms) - Offshore marine conditions may be relevant
+  • atmospheric: 1 records (relevance: 0.95, 315ms) - Query contains weather keywords
+
+[0;32m✓✓✓ TEST PASSED ✓✓✓[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 5.2:[0m East Coast (New York)
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "maritime conditions in new york harbor"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: c05ae97b-9459-43c1-b9d2-ab495ea728a9
+[0;35m📊 DATA:[0m Answer: Found 1 records across 1 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: atmospheric (Total: 1)
+[0;35m📊 DATA:[0m Federated: false | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 516ms | Records: 1
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;31m✗ FAIL:[0m Only queried 1 ponds (expected: ≥2)
+[0;32m✓ PASS:[0m Pond 'atmospheric' was queried
+[0;31m✗ FAIL:[0m Expected pond 'oceanic' was NOT queried
+[0;32m✓ PASS:[0m Execution time acceptable (516ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 1 records
+
+[0;36mPond Details:[0m
+  • atmospheric: 1 records (relevance: 0.6, 320ms) - Default pond for general queries
+
+[0;31m✗✗✗ TEST FAILED ✗✗✗[0m
+
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[0;34mTEST 5.3:[0m Pacific Northwest (Seattle)
+[0;36m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[0m
+[1;33mℹ INFO:[0m Query: "coastal conditions near seattle washington"
+
+[1;33mℹ INFO:[0m Making API call...
+[0;35m📊 DATA:[0m Query ID: 3a0347f0-90c2-4861-85c9-e473d79c45ba
+[0;35m📊 DATA:[0m Answer: Found 2 records across 2 data sources....
+[0;35m📊 DATA:[0m Ponds Queried: oceanic,buoy (Total: 2)
+[0;35m📊 DATA:[0m Federated: true | AI-Powered: true
+[0;35m📊 DATA:[0m Execution Time: 219ms | Records: 2
+
+[0;32m✓ PASS:[0m AI-powered routing
+[0;32m✓ PASS:[0m Answer generated
+[0;32m✓ PASS:[0m Queried 2 ponds (expected: ≥2)
+[0;31m✗ FAIL:[0m Expected pond 'atmospheric' was NOT queried
+[0;32m✓ PASS:[0m Pond 'oceanic' was queried
+[0;32m✓ PASS:[0m Execution time acceptable (219ms < 10s)
+[0;32m✓ PASS:[0m Retrieved 2 records
+
+[0;36mPond Details:[0m
+  • oceanic: 1 records (relevance: 0.95, 135ms) - Query contains ocean/water keywords
+  • buoy: 1 records (relevance: 0.7, 107ms) - Offshore marine conditions may be relevant
+
+[0;31m✗✗✗ TEST FAILED ✗✗✗[0m
+
+
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+[0;35mANALYSIS: Learning System Performance[0m
+[0;35m═══════════════════════════════════════════════════════════════════[0m
+
+[1;33mℹ INFO:[0m Analyzing learning data from DynamoDB...
+
+[1;33mℹ INFO:[0m Recent queries logged:
+
+[1;33mℹ INFO:[0m Learned patterns:
+
+[0;35m📊 DATA:[0m Total queries logged: 0
+
+
+╔══════════════════════════════════════════════════════════════════════╗
+║                         TEST SUMMARY                                 ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Overall Results                                                      │
+├──────────────────────────────────────────────────────────────────────┤
+│ Total Tests:        15
+│ Passed:             93
+│ Failed:             9
+│ Pass Rate:          620%
+└──────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Test Results by Category                                             │
+├──────────────────────────────────────────────────────────────────────┤
+│ 1.1      Ocean Temperature Query (Oceanic Pond)      \033[0;32m✓ PASS\033[0m │
+│ 1.2      Weather Query (Atmospheric Pond)            \033[0;32m✓ PASS\033[0m │
+│ 1.3      Tide Query (Oceanic Pond)                   \033[0;32m✓ PASS\033[0m │
+│ 2.1      Weather AND Ocean Conditions                \033[0;32m✓ PASS\033[0m │
+│ 2.2      Coastal Marine Conditions                   \033[0;32m✓ PASS\033[0m │
+│ 2.3      Maritime Safety Conditions                  \033[0;31m✗ FAIL\033[0m │
+│ 3.1      Shipping Route Analysis                     \033[0;32m✓ PASS\033[0m │
+│ 3.2      Complete Coastal Assessment                 \033[0;32m✓ PASS\033[0m │
+│ 3.3      Marine Operations Planning                  \033[0;32m✓ PASS\033[0m │
+│ 4.1      Fishing Conditions (Implicit Multi-Pond)    \033[0;31m✗ FAIL\033[0m │
+│ 4.2      Beach Safety (Implicit Multi-Pond)          \033[0;31m✗ FAIL\033[0m │
+│ 4.3      Storm Impact Assessment                     \033[0;32m✓ PASS\033[0m │
+│ 5.1      West Coast (California)                     \033[0;32m✓ PASS\033[0m │
+│ 5.2      East Coast (New York)                       \033[0;31m✗ FAIL\033[0m │
+│ 5.3      Pacific Northwest (Seattle)                 \033[0;31m✗ FAIL\033[0m │
+└──────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ AI Orchestrator Performance                                          │
+├──────────────────────────────────────────────────────────────────────┤
+│ Average Ponds per Query:    178.9
+│ Average Execution Time:     0ms
+│ Multi-Pond Queries:         1
+│ Single-Pond Queries:        1
+└──────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Learning System Status                                               │
+├──────────────────────────────────────────────────────────────────────┤
+│ Queries Logged:             0
+│ Learning Tables:            3 (DynamoDB)
+│ Auto-Training:              ENABLED
+│ Pattern Detection:          ACTIVE
+└──────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────┐
+│ Recommendations                                                      │
+├──────────────────────────────────────────────────────────────────────┤
+│ [0;31m⚠[0m Some tests failed - review logs above for details
+│ [1;33mℹ[0m Run more queries to improve learning (current: 0)
+└──────────────────────────────────────────────────────────────────────┘
+
+🔄 NEXT STEPS:
+
+1. Review failed tests (if any) and check CloudWatch logs
+2. Run this test suite multiple times to train the AI
+3. Monitor learning patterns in DynamoDB
+4. Check API Gateway metrics for usage
+5. View logs: aws logs tail /aws/lambda/noaa-intelligent-orchestrator-dev --follow
+
+[0;31mTests completed with failures[0m

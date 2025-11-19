@@ -1,0 +1,208 @@
+[0;34m[INFO][0m Deployment started at Tue Nov 18 14:57:59 CST 2025
+[0;34m[INFO][0m Environment: dev
+[0;34m[INFO][0m AWS Account: 899626030376
+[0;34m[INFO][0m Region: us-east-1
+[0;34m[INFO][0m Log file: /Users/adambehnke/Projects/noaa_storefront/deployment/deployment_20251118_145759.log
+[0;34m[INFO][0m Checking prerequisites...
+[0;32m[SUCCESS][0m Prerequisites verified
+[0;34m[INFO][0m [1/7] Creating backup of current handler...
+[0;32m[SUCCESS][0m Backup created at: /Users/adambehnke/Projects/noaa_storefront/backups/20251118_145759
+[0;34m[INFO][0m [2/7] Replacing handler with AI multi-pond code...
+[0;32m[SUCCESS][0m Handler replaced with AI code
+[0;34m[INFO][0m [3/7] Ensuring Bedrock dependencies...
+[0;32m[SUCCESS][0m Dependencies configured
+[0;34m[INFO][0m [4/7] Packaging Lambda function...
+[0;34m[INFO][0m Creating ZIP package...
+[0;32m[SUCCESS][0m Package created: 692K
+[0;34m[INFO][0m [5/7] Deploying to AWS Lambda...
+[0;34m[INFO][0m Updating Lambda: noaa-enhanced-handler-dev
+[0;34m[INFO][0m Checking for in-progress updates...
+[0;32m[SUCCESS][0m Lambda is ready for update
+[0;34m[INFO][0m Uploading new code...
+[0;34m[INFO][0m Waiting for code update to complete...
+[0;34m[INFO][0m Updating function configuration...
+[0;34m[INFO][0m Waiting for configuration update...
+[0;32m[SUCCESS][0m Lambda deployed successfully
+[0;34m[INFO][0m [6/7] Verifying IAM permissions...
+[0;34m[INFO][0m Lambda Role: noaa-lambda-execution-role-dev
+[0;32m[SUCCESS][0m Bedrock permissions already exist
+[0;34m[INFO][0m [7/7] Setting up data ingestion schedules...
+[0;34m[INFO][0m Creating EventBridge schedules for all ponds...
+/Users/adambehnke/Projects/noaa_storefront/ingestion-scheduler/schedule_all_ingestions.py:583: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  print(f"   Time: {datetime.utcnow().isoformat()}")
+
+🌊 NOAA Federated Data Lake - Ingestion Scheduler
+   Environment: dev
+   Action: create_schedules
+   Time: 2025-11-18T20:58:17.583048
+
+======================================================================
+Creating Ingestion Schedules for Environment: dev
+======================================================================
+
+[ATMOSPHERIC] Creating schedule: rate(15 minutes)
+  Function: noaa-ingest-atmospheric-dev
+  Priority: critical
+  ✓ Created/Updated EventBridge rule: noaa-ingest-atmospheric-schedule-dev
+  ✓ Added Lambda target to rule
+  ℹ️  Permission already exists (OK)
+  ✅ Schedule created successfully
+
+[OCEANIC] Creating schedule: rate(15 minutes)
+  Function: noaa-ingest-oceanic-dev
+  Priority: critical
+  ✓ Created/Updated EventBridge rule: noaa-ingest-oceanic-schedule-dev
+  ✓ Added Lambda target to rule
+  ℹ️  Permission already exists (OK)
+  ✅ Schedule created successfully
+
+[BUOY] Creating schedule: rate(15 minutes)
+  Function: noaa-ingest-buoy-dev
+  Priority: high
+  ✓ Created/Updated EventBridge rule: noaa-ingest-buoy-schedule-dev
+  ✓ Added Lambda target to rule
+  ℹ️  Permission already exists (OK)
+  ✅ Schedule created successfully
+
+[CLIMATE] Creating schedule: rate(60 minutes)
+  Function: noaa-ingest-climate-dev
+  Priority: medium
+  ✓ Created/Updated EventBridge rule: noaa-ingest-climate-schedule-dev
+  ✓ Added Lambda target to rule
+  ℹ️  Permission already exists (OK)
+  ✅ Schedule created successfully
+
+[SPATIAL] Creating schedule: rate(6 hours)
+  Function: noaa-ingest-spatial-dev
+  Priority: low
+  ✓ Created/Updated EventBridge rule: noaa-ingest-spatial-schedule-dev
+  ✓ Added Lambda target to rule
+  ℹ️  Permission already exists (OK)
+  ✅ Schedule created successfully
+
+[TERRESTRIAL] Creating schedule: rate(30 minutes)
+  Function: noaa-ingest-terrestrial-dev
+  Priority: medium
+  ✓ Created/Updated EventBridge rule: noaa-ingest-terrestrial-schedule-dev
+  ✓ Added Lambda target to rule
+  ℹ️  Permission already exists (OK)
+  ✅ Schedule created successfully
+
+
+======================================================================
+SCHEDULE CREATION SUMMARY
+======================================================================
+✅ Success: 6 ponds
+❌ Failed:  0 ponds
+⚠️  Skipped: 0 ponds
+======================================================================
+
+Successfully scheduled:
+  • atmospheric: rate(15 minutes)
+  • oceanic: rate(15 minutes)
+  • buoy: rate(15 minutes)
+  • climate: rate(60 minutes)
+  • spatial: rate(6 hours)
+  • terrestrial: rate(30 minutes)
+
+✅ Operation completed successfully!
+
+[0;34m[INFO][0m Checking schedule status...
+/Users/adambehnke/Projects/noaa_storefront/ingestion-scheduler/schedule_all_ingestions.py:583: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  print(f"   Time: {datetime.utcnow().isoformat()}")
+/Users/adambehnke/Projects/noaa_storefront/ingestion-scheduler/schedule_all_ingestions.py:365: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  end_time = datetime.utcnow()
+/Users/adambehnke/Projects/noaa_storefront/ingestion-scheduler/schedule_all_ingestions.py:366: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  start_time = datetime.utcnow().replace(
+
+🌊 NOAA Federated Data Lake - Ingestion Scheduler
+   Environment: dev
+   Action: status
+   Time: 2025-11-18T20:58:21.312815
+
+======================================================================
+Checking Ingestion Status for Environment: dev
+======================================================================
+
+[ATMOSPHERIC]
+  Function: noaa-ingest-atmospheric-dev
+  ✓ Lambda exists
+  ℹ️  Invocations (last hour): 7
+  ✓ Schedule enabled: rate(15 minutes)
+
+[OCEANIC]
+  Function: noaa-ingest-oceanic-dev
+  ✓ Lambda exists
+  ℹ️  Invocations (last hour): 12
+  ✓ Schedule enabled: rate(15 minutes)
+
+[BUOY]
+  Function: noaa-ingest-buoy-dev
+  ✓ Lambda exists
+  ℹ️  Invocations (last hour): 21
+  ⚠️  Errors (last hour): 21
+  ✓ Schedule enabled: rate(15 minutes)
+
+[CLIMATE]
+  Function: noaa-ingest-climate-dev
+  ✓ Lambda exists
+  ℹ️  Invocations (last hour): 4
+  ✓ Schedule enabled: rate(60 minutes)
+
+[SPATIAL]
+  Function: noaa-ingest-spatial-dev
+  ✓ Lambda exists
+  ℹ️  Invocations (last hour): 5
+  ✓ Schedule enabled: rate(6 hours)
+
+[TERRESTRIAL]
+  Function: noaa-ingest-terrestrial-dev
+  ✓ Lambda exists
+  ℹ️  Invocations (last hour): 6
+  ✓ Schedule enabled: rate(30 minutes)
+
+
+======================================================================
+STATUS SUMMARY
+======================================================================
+Total Data Ponds:       6
+Lambdas Deployed:       6/6
+Schedules Enabled:      6/6
+Recent Invocations:     55 (last hour)
+Recent Errors:          21 (last hour)
+======================================================================
+
+✅ All ingestion pipelines are operational!
+
+
+✅ Operation completed successfully!
+
+[0;34m[INFO][0m Generating test script...
+[0;32m[SUCCESS][0m Test script created: /Users/adambehnke/Projects/noaa_storefront/test-scripts/test_ai_queries.sh
+[0;32m[SUCCESS][0m ╔═══════════════════════════════════════════════════════════════╗
+[0;32m[SUCCESS][0m ║                 DEPLOYMENT COMPLETED                          ║
+[0;32m[SUCCESS][0m ╚═══════════════════════════════════════════════════════════════╝
+[0;34m[INFO][0m Deployment Summary:
+[0;34m[INFO][0m   Lambda: noaa-enhanced-handler-dev
+[0;34m[INFO][0m   Package: 692K
+[0;34m[INFO][0m   Backup: /Users/adambehnke/Projects/noaa_storefront/backups/20251118_145759
+[0;34m[INFO][0m   Log: /Users/adambehnke/Projects/noaa_storefront/deployment/deployment_20251118_145759.log
+[0;34m[INFO][0m Features Enabled:
+[0;34m[INFO][0m Testing:
+[0;34m[INFO][0m   Run: /Users/adambehnke/Projects/noaa_storefront/test-scripts/test_ai_queries.sh
+[0;34m[INFO][0m Monitoring:
+[0;34m[INFO][0m   CloudWatch Logs: aws logs tail /aws/lambda/noaa-enhanced-handler-dev --follow
+[0;34m[INFO][0m   Schedule Status: cd ingestion-scheduler && python3 schedule_all_ingestions.py --action status --env dev
+[0;34m[INFO][0m Documentation:
+[0;34m[INFO][0m   Full Guide: documentation/AI_MULTI_POND_SYSTEM.md
+[0;34m[INFO][0m   Quick Start: documentation/QUICK_START.txt
+[1;33m[WARN][0m IMPORTANT: Test the deployment now!
+[1;33m[WARN][0m   1. Open your webapp and ask: 'Plan a maritime route from Boston to Portland'
+[1;33m[WARN][0m   2. Verify it queries atmospheric + oceanic + buoy ponds
+[1;33m[WARN][0m   3. Check CloudWatch Logs for 'AI selected X ponds' messages
+[0;34m[INFO][0m Rollback (if needed):
+[0;34m[INFO][0m   cd /Users/adambehnke/Projects/noaa_storefront/lambda-enhanced-handler
+[0;34m[INFO][0m   cp /Users/adambehnke/Projects/noaa_storefront/backups/20251118_145759/lambda_function.py.backup lambda_function.py
+[0;34m[INFO][0m   zip -r lambda-enhanced-handler.zip .
+[0;34m[INFO][0m   aws lambda update-function-code --function-name noaa-enhanced-handler-dev --zip-file fileb://lambda-enhanced-handler.zip
+[0;32m[SUCCESS][0m 🎉 Deployment successful! Your AI multi-pond system is live!

@@ -1,0 +1,380 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "NOAA Federated Data Lake - Glue ETL Pipeline (Simplified - Manual Trigger)"
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    Description: Environment name (dev, staging, prod)
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+
+  DataLakeBucket:
+    Type: String
+    Description: S3 bucket name for NOAA data lake
+    Default: noaa-data-lake-dev
+
+  GlueScriptBucket:
+    Type: String
+    Description: S3 bucket for Glue scripts
+    Default: noaa-glue-scripts-dev
+
+Resources:
+  # =============================================================================
+  # IAM ROLE FOR GLUE JOBS
+  # =============================================================================
+
+  GlueETLRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "noaa-glue-etl-role-${Environment}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+      Policies:
+        - PolicyName: GlueETLS3Access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:GetObject"
+                  - "s3:PutObject"
+                  - "s3:DeleteObject"
+                  - "s3:ListBucket"
+                Resource:
+                  - !Sub "arn:aws:s3:::${DataLakeBucket}/*"
+                  - !Sub "arn:aws:s3:::${DataLakeBucket}"
+                  - !Sub "arn:aws:s3:::${GlueScriptBucket}/*"
+                  - !Sub "arn:aws:s3:::${GlueScriptBucket}"
+              - Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "arn:aws:logs:*:*:/aws-glue/*"
+              - Effect: Allow
+                Action:
+                  - "glue:GetDatabase"
+                  - "glue:GetTable"
+                  - "glue:GetPartition"
+                  - "glue:GetPartitions"
+                  - "glue:CreateTable"
+                  - "glue:UpdateTable"
+                  - "glue:CreatePartition"
+                  - "glue:UpdatePartition"
+                  - "glue:BatchCreatePartition"
+                Resource:
+                  - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+                  - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*"
+                  - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*"
+
+  # =============================================================================
+  # GLUE DATABASE FOR QUERYABLE DATA
+  # =============================================================================
+
+  QueryableGlueDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Sub "noaa_queryable_${Environment}"
+        Description: "NOAA Federated Data Lake - Queryable JSON Lines Format"
+
+  # =============================================================================
+  # GLUE ETL JOBS
+  # =============================================================================
+
+  AtmosphericObservationsETLJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub "noaa-etl-atmospheric-observations-${Environment}"
+      Description: "Convert atmospheric observations from JSON arrays to JSON Lines"
+      Role: !GetAtt GlueETLRole.Arn
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub "s3://${GlueScriptBucket}/glue-etl/json_array_to_jsonlines.py"
+        PythonVersion: "3"
+      DefaultArguments:
+        "--job-language": "python"
+        "--SOURCE_BUCKET": !Ref DataLakeBucket
+        "--SOURCE_PREFIX": "gold/atmospheric/observations/"
+        "--TARGET_BUCKET": !Ref DataLakeBucket
+        "--TARGET_PREFIX": "queryable/atmospheric/observations/"
+        "--POND_NAME": "atmospheric"
+        "--DATA_TYPE": "atmospheric_observations"
+        "--enable-metrics": "true"
+        "--enable-continuous-cloudwatch-log": "true"
+        "--enable-spark-ui": "true"
+        "--spark-event-logs-path": !Sub "s3://${GlueScriptBucket}/spark-logs/"
+      GlueVersion: "4.0"
+      MaxRetries: 1
+      Timeout: 60
+      MaxCapacity: 2.0
+      Tags:
+        Environment: !Ref Environment
+        Project: "NOAA-Data-Lake"
+        Component: "ETL"
+
+  AtmosphericStationsETLJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub "noaa-etl-atmospheric-stations-${Environment}"
+      Description: "Convert atmospheric stations from JSON arrays to JSON Lines"
+      Role: !GetAtt GlueETLRole.Arn
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub "s3://${GlueScriptBucket}/glue-etl/json_array_to_jsonlines.py"
+        PythonVersion: "3"
+      DefaultArguments:
+        "--job-language": "python"
+        "--SOURCE_BUCKET": !Ref DataLakeBucket
+        "--SOURCE_PREFIX": "gold/atmospheric/stations/"
+        "--TARGET_BUCKET": !Ref DataLakeBucket
+        "--TARGET_PREFIX": "queryable/atmospheric/stations/"
+        "--POND_NAME": "atmospheric"
+        "--DATA_TYPE": "atmospheric_stations"
+        "--enable-metrics": "true"
+        "--enable-continuous-cloudwatch-log": "true"
+      GlueVersion: "4.0"
+      MaxRetries: 1
+      Timeout: 30
+      MaxCapacity: 2.0
+      Tags:
+        Environment: !Ref Environment
+        Project: "NOAA-Data-Lake"
+
+  AtmosphericAlertsETLJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub "noaa-etl-atmospheric-alerts-${Environment}"
+      Description: "Convert atmospheric alerts from JSON arrays to JSON Lines"
+      Role: !GetAtt GlueETLRole.Arn
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub "s3://${GlueScriptBucket}/glue-etl/json_array_to_jsonlines.py"
+        PythonVersion: "3"
+      DefaultArguments:
+        "--job-language": "python"
+        "--SOURCE_BUCKET": !Ref DataLakeBucket
+        "--SOURCE_PREFIX": "gold/atmospheric/alerts/"
+        "--TARGET_BUCKET": !Ref DataLakeBucket
+        "--TARGET_PREFIX": "queryable/atmospheric/alerts/"
+        "--POND_NAME": "atmospheric"
+        "--DATA_TYPE": "atmospheric_alerts"
+        "--enable-metrics": "true"
+        "--enable-continuous-cloudwatch-log": "true"
+      GlueVersion: "4.0"
+      MaxRetries: 1
+      Timeout: 30
+      MaxCapacity: 2.0
+      Tags:
+        Environment: !Ref Environment
+        Project: "NOAA-Data-Lake"
+
+  OceanicETLJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub "noaa-etl-oceanic-${Environment}"
+      Description: "Convert oceanic data from JSON arrays to JSON Lines"
+      Role: !GetAtt GlueETLRole.Arn
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub "s3://${GlueScriptBucket}/glue-etl/json_array_to_jsonlines.py"
+        PythonVersion: "3"
+      DefaultArguments:
+        "--job-language": "python"
+        "--SOURCE_BUCKET": !Ref DataLakeBucket
+        "--SOURCE_PREFIX": "gold/oceanic/"
+        "--TARGET_BUCKET": !Ref DataLakeBucket
+        "--TARGET_PREFIX": "queryable/oceanic/"
+        "--POND_NAME": "oceanic"
+        "--DATA_TYPE": "oceanic"
+        "--enable-metrics": "true"
+        "--enable-continuous-cloudwatch-log": "true"
+      GlueVersion: "4.0"
+      MaxRetries: 1
+      Timeout: 60
+      MaxCapacity: 2.0
+      Tags:
+        Environment: !Ref Environment
+        Project: "NOAA-Data-Lake"
+
+  BuoyETLJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub "noaa-etl-buoy-${Environment}"
+      Description: "Convert buoy data from JSON arrays to JSON Lines"
+      Role: !GetAtt GlueETLRole.Arn
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub "s3://${GlueScriptBucket}/glue-etl/json_array_to_jsonlines.py"
+        PythonVersion: "3"
+      DefaultArguments:
+        "--job-language": "python"
+        "--SOURCE_BUCKET": !Ref DataLakeBucket
+        "--SOURCE_PREFIX": "gold/buoy/"
+        "--TARGET_BUCKET": !Ref DataLakeBucket
+        "--TARGET_PREFIX": "queryable/buoy/"
+        "--POND_NAME": "buoy"
+        "--DATA_TYPE": "buoy"
+        "--enable-metrics": "true"
+        "--enable-continuous-cloudwatch-log": "true"
+      GlueVersion: "4.0"
+      MaxRetries: 1
+      Timeout: 60
+      MaxCapacity: 2.0
+      Tags:
+        Environment: !Ref Environment
+        Project: "NOAA-Data-Lake"
+
+  # =============================================================================
+  # GLUE CRAWLERS FOR QUERYABLE DATA
+  # =============================================================================
+
+  QueryableAtmosphericCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: !Sub "noaa-queryable-atmospheric-crawler-${Environment}"
+      Description: "Crawl queryable atmospheric data"
+      Role: !GetAtt GlueETLRole.Arn
+      DatabaseName: !Ref QueryableGlueDatabase
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://${DataLakeBucket}/queryable/atmospheric/observations/"
+          - Path: !Sub "s3://${DataLakeBucket}/queryable/atmospheric/stations/"
+          - Path: !Sub "s3://${DataLakeBucket}/queryable/atmospheric/alerts/"
+      SchemaChangePolicy:
+        UpdateBehavior: UPDATE_IN_DATABASE
+        DeleteBehavior: LOG
+      Configuration: '{"Version":1.0,"CrawlerOutput":{"Partitions":{"AddOrUpdateBehavior":"InheritFromTable"}}}'
+      Tags:
+        Environment: !Ref Environment
+        Project: "NOAA-Data-Lake"
+
+  QueryableOceanicCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: !Sub "noaa-queryable-oceanic-crawler-${Environment}"
+      Description: "Crawl queryable oceanic data"
+      Role: !GetAtt GlueETLRole.Arn
+      DatabaseName: !Ref QueryableGlueDatabase
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://${DataLakeBucket}/queryable/oceanic/"
+      SchemaChangePolicy:
+        UpdateBehavior: UPDATE_IN_DATABASE
+        DeleteBehavior: LOG
+      Configuration: '{"Version":1.0,"CrawlerOutput":{"Partitions":{"AddOrUpdateBehavior":"InheritFromTable"}}}'
+      Tags:
+        Environment: !Ref Environment
+        Project: "NOAA-Data-Lake"
+
+  QueryableBuoyCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: !Sub "noaa-queryable-buoy-crawler-${Environment}"
+      Description: "Crawl queryable buoy data"
+      Role: !GetAtt GlueETLRole.Arn
+      DatabaseName: !Ref QueryableGlueDatabase
+      Targets:
+        S3Targets:
+          - Path: !Sub "s3://${DataLakeBucket}/queryable/buoy/"
+      SchemaChangePolicy:
+        UpdateBehavior: UPDATE_IN_DATABASE
+        DeleteBehavior: LOG
+      Configuration: '{"Version":1.0,"CrawlerOutput":{"Partitions":{"AddOrUpdateBehavior":"InheritFromTable"}}}'
+      Tags:
+        Environment: !Ref Environment
+        Project: "NOAA-Data-Lake"
+
+Outputs:
+  GlueETLRoleArn:
+    Description: IAM Role ARN for Glue ETL Jobs
+    Value: !GetAtt GlueETLRole.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-GlueETLRoleArn"
+
+  QueryableDatabase:
+    Description: Glue Database for queryable data
+    Value: !Ref QueryableGlueDatabase
+    Export:
+      Name: !Sub "${AWS::StackName}-QueryableDatabase"
+
+  AtmosphericObservationsJobName:
+    Description: Name of Atmospheric Observations ETL Job
+    Value: !Ref AtmosphericObservationsETLJob
+    Export:
+      Name: !Sub "${AWS::StackName}-AtmosphericObservationsJob"
+
+  AtmosphericStationsJobName:
+    Description: Name of Atmospheric Stations ETL Job
+    Value: !Ref AtmosphericStationsETLJob
+    Export:
+      Name: !Sub "${AWS::StackName}-AtmosphericStationsJob"
+
+  AtmosphericAlertsJobName:
+    Description: Name of Atmospheric Alerts ETL Job
+    Value: !Ref AtmosphericAlertsETLJob
+    Export:
+      Name: !Sub "${AWS::StackName}-AtmosphericAlertsJob"
+
+  OceanicJobName:
+    Description: Name of Oceanic ETL Job
+    Value: !Ref OceanicETLJob
+    Export:
+      Name: !Sub "${AWS::StackName}-OceanicJob"
+
+  BuoyJobName:
+    Description: Name of Buoy ETL Job
+    Value: !Ref BuoyETLJob
+    Export:
+      Name: !Sub "${AWS::StackName}-BuoyJob"
+
+  AtmosphericCrawlerName:
+    Description: Name of Atmospheric Crawler
+    Value: !Ref QueryableAtmosphericCrawler
+    Export:
+      Name: !Sub "${AWS::StackName}-AtmosphericCrawler"
+
+  OceanicCrawlerName:
+    Description: Name of Oceanic Crawler
+    Value: !Ref QueryableOceanicCrawler
+    Export:
+      Name: !Sub "${AWS::StackName}-OceanicCrawler"
+
+  BuoyCrawlerName:
+    Description: Name of Buoy Crawler
+    Value: !Ref QueryableBuoyCrawler
+    Export:
+      Name: !Sub "${AWS::StackName}-BuoyCrawler"
+
+  QueryableDataPath:
+    Description: S3 path for queryable data
+    Value: !Sub "s3://${DataLakeBucket}/queryable/"
+    Export:
+      Name: !Sub "${AWS::StackName}-QueryableDataPath"
+
+  TriggerAllJobs:
+    Description: Command to trigger all ETL jobs
+    Value: !Sub |
+      aws glue start-job-run --job-name ${AtmosphericObservationsETLJob} && \
+      aws glue start-job-run --job-name ${AtmosphericStationsETLJob} && \
+      aws glue start-job-run --job-name ${AtmosphericAlertsETLJob} && \
+      aws glue start-job-run --job-name ${OceanicETLJob} && \
+      aws glue start-job-run --job-name ${BuoyETLJob}
+
+  TriggerAllCrawlers:
+    Description: Command to trigger all crawlers
+    Value: !Sub |
+      aws glue start-crawler --name ${QueryableAtmosphericCrawler} && \
+      aws glue start-crawler --name ${QueryableOceanicCrawler} && \
+      aws glue start-crawler --name ${QueryableBuoyCrawler}

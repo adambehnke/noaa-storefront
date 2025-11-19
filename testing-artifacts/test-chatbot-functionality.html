@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Function Test</title>
+</head>
+<body>
+    <h1>Testing Chatbot Functionality</h1>
+    <div id="results"></div>
+    <script>
+        const results = document.getElementById('results');
+        
+        function log(msg, status = 'info') {
+            const p = document.createElement('p');
+            p.style.color = status === 'success' ? 'green' : status === 'error' ? 'red' : 'black';
+            p.textContent = msg;
+            results.appendChild(p);
+        }
+        
+        // Test 1: Check if DOM elements exist
+        log('Test 1: Checking DOM elements...');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatMessages = document.getElementById('chatMessages');
+        
+        if (chatInput && sendBtn && chatMessages) {
+            log('✓ All critical DOM elements found', 'success');
+        } else {
+            log(`✗ Missing elements: ${!chatInput ? 'chatInput ' : ''}${!sendBtn ? 'sendBtn ' : ''}${!chatMessages ? 'chatMessages' : ''}`, 'error');
+        }
+        
+        // Test 2: Check if collapsible headers exist
+        log('Test 2: Checking collapsible headers...');
+        const headers = document.querySelectorAll('.collapsible-header');
+        log(`Found ${headers.length} collapsible headers`, headers.length >= 3 ? 'success' : 'error');
+        
+        // Test 3: Check if toggleSection function exists
+        log('Test 3: Checking toggleSection function...');
+        if (typeof window.toggleSection === 'function') {
+            log('✓ toggleSection function exists', 'success');
+        } else {
+            log('✗ toggleSection function NOT found', 'error');
+        }
+        
+        // Test 4: Check tooltips
+        log('Test 4: Checking tooltips...');
+        const tooltips = document.querySelectorAll('[data-tooltip]');
+        log(`Found ${tooltips.length} tooltip elements`, tooltips.length >= 5 ? 'success' : 'error');
+        
+        log('Tests complete!');
+    </script>
+</body>
+</html>

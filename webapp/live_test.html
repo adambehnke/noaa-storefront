@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOAA Live API Test - Maritime Route Query</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #0066cc;
+        }
+
+        .test-section h2 {
+            color: #0066cc;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .status.pending {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .status.success {
+            background: #28a745;
+            color: white;
+        }
+
+        .status.error {
+            background: #dc3545;
+            color: white;
+        }
+
+        .metric {
+            display: inline-block;
+            margin: 10px 15px 10px 0;
+            padding: 15px 25px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #0066cc;
+            margin-top: 5px;
+        }
+
+        .pond-card {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #28a745;
+        }
+
+        .pond-card h3 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .pond-card .pond-stat {
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .pond-card .pond-stat:last-child {
+            border-bottom: none;
+        }
+
+        .data-sample {
+            background: #263238;
+            color: #aed581;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,102,204,0.3);
+        }
+
+        .button:hover {
+            background: #0052a3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,102,204,0.4);
+        }
+
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0066cc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .success-banner {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .error-banner {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1></h1>🚢 NOAA Maritime Route Query - Live Test</h1>
+            <p>Testing: Boston to Portland Maine Maritime Route Planning</p>
+        </div>
+
+        <div class="content">
+            <div class="test-section">
+                <h2>
+                    🧪 Test Status:
+                    <span id="status" class="status pending">PENDING</span>
+                </h2>
+                <button id="runTest" class="button" onclick="runTest()">
+                    🚀 Run Live API Test
+                </button>
+                <span id="loading" style="display: none;"><div class="loading"></div></span>
+                <div id="timestamp" class="timestamp"></div>
+            </div>
+
+            <div id="successBanner" style="display: none;"></div>
+            <div id="errorBanner" style="display: none;"></div>
+
+            <div class="test-section">
+                <h2></h2>📊 Response Metrics</h2>
+                <div id="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Total Records</div>
+                        <div class="metric-value" id="totalRecords">-</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Execution Time</div>
+                        <div class="metric-value" id="executionTime">-</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Ponds Queried</div>
+                        <div class="metric-value" id="pondsQueried">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-section" id="pondsSection" style="display: none;">
+                <h2>🌊 Data Ponds</h2>
+                <div id="pondsData"></div>
+            </div>
+
+            <div class="test-section" id="sampleSection" style="display: none;">
+                <h2>📄 Sample Data</h2>
+                <h3 style="margin: 15px 0 10px 0;">Atmospheric Data (Boston - KBOS):</h3>
+                <div id="atmosphericSample" class="data-sample"></div>
+
+                <h3 style="margin: 15px 0 10px 0;">Oceanic Data (Coastal Station):</h3>
+                <div id="oceanicSample" class="data-sample"></div>
+            </div>
+
+            <div class="test-section">
+                <h2>📡 Full API Response</h2>
+                <div id="fullResponse" class="data-sample">Click "Run Live API Test" to see results...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://u35c31x306.execute-api.us-east-1.amazonaws.com/dev/ask';
+        const QUERY = 'Plan a safe maritime route from Boston to Portland Maine considering wind speed and direction, wave heights, visibility forecasts, ocean currents, and any marine weather advisories along the route';
+
+        async function runTest() {
+            const statusEl = document.getElementById('status');
+            const loadingEl = document.getElementById('loading');
+            const buttonEl = document.getElementById('runTest');
+            const timestampEl = document.getElementById('timestamp');
+
+            // Reset UI
+            statusEl.className = 'status pending';
+            statusEl.textContent = 'RUNNING...';
+            loadingEl.style.display = 'inline-block';
+            buttonEl.disabled = true;
+            document.getElementById('successBanner').style.display = 'none';
+            document.getElementById('errorBanner').style.display = 'none';
+
+            const startTime = Date.now();
+            timestampEl.textContent = `Started: ${new Date().toLocaleTimeString()}`;
+
+            try {
+                console.log('Calling API:', API_URL);
+                console.log('Query:', QUERY);
+
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: QUERY })
+                });
+
+                const endTime = Date.now();
+                const responseTime = endTime - startTime;
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('API Response:', data);
+
+                // Update status
+                statusEl.className = 'status success';
+                statusEl.textContent = '✅ SUCCESS';
+                timestampEl.textContent = `Completed: ${new Date().toLocaleTimeString()} (${responseTime}ms HTTP time)`;
+
+                // Show success banner
+                const totalRecords = data.total_records || 0;
+                const successBanner = document.getElementById('successBanner');
+                successBanner.className = 'success-banner';
+                successBanner.innerHTML = `
+                    <h2>🎉 SYSTEM OPERATIONAL!</h2>
+                    <p>Successfully retrieved ${totalRecords} records from NOAA data lake</p>
+                    <p>Maritime route planning data is available!</p>
+                `;
+                successBanner.style.display = 'block';
+
+                // Update metrics
+                document.getElementById('totalRecords').textContent = totalRecords;
+                document.getElementById('executionTime').textContent = (data.metadata?.execution_time_ms || responseTime) + 'ms';
+                document.getElementById('pondsQueried').textContent = data.ponds_queried?.length || 0;
+
+                // Display pond data
+                if (data.ponds_queried && data.ponds_queried.length > 0) {
+                    const pondsSection = document.getElementById('pondsSection');
+                    const pondsData = document.getElementById('pondsData');
+                    pondsSection.style.display = 'block';
+
+                    let pondsHTML = '';
+                    data.ponds_queried.forEach(pond => {
+                        const recordsFound = pond.records_found || pond.record_count || 0;
+                        const relevance = Math.round((pond.relevance_score || pond.confidence || 0) * 100);
+
+                        pondsHTML += `
+                            <div class="pond-card">
+                                <h3>${pond.pond}</h3>
+                                <div class="pond-stat">
+                                    <span>Records Found:</span>
+                                    <strong>${recordsFound}</strong>
+                                </div>
+                                <div class="pond-stat">
+                                    <span>Relevance Score:</span>
+                                    <strong>${relevance}%</strong>
+                                </div>
+                                <div class="pond-stat">
+                                    <span>Why Relevant:</span>
+                                    <span>${pond.why_relevant || 'N/A'}</span>
+                                </div>
+                                <div class="pond-stat">
+                                    <span>Data Contribution:</span>
+                                    <span>${pond.data_contribution || 'N/A'}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    pondsData.innerHTML = pondsHTML;
+                }
+
+                // Display sample data
+                if (data.raw_data) {
+                    const sampleSection = document.getElementById('sampleSection');
+                    sampleSection.style.display = 'block';
+
+                    if (data.raw_data.atmospheric && data.raw_data.atmospheric.length > 0) {
+                        const sample = data.raw_data.atmospheric[0];
+                        document.getElementById('atmosphericSample').textContent = JSON.stringify(sample, null, 2);
+                    }
+
+                    if (data.raw_data.oceanic && data.raw_data.oceanic.length > 0) {
+                        const sample = data.raw_data.oceanic[0];
+                        document.getElementById('oceanicSample').textContent = JSON.stringify(sample, null, 2);
+                    }
+                }
+
+                // Display full response
+                document.getElementById('fullResponse').textContent = JSON.stringify(data, null, 2);
+
+            } catch (error) {
+                console.error('Test failed:', error);
+
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ FAILED';
+                timestampEl.textContent = `Failed: ${new Date().toLocaleTimeString()}`;
+
+                const errorBanner = document.getElementById('errorBanner');
+                errorBanner.className = 'error-banner';
+                errorBanner.innerHTML = `
+                    <h2>❌ Test Failed</h2>
+                    <p>${error.message}</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;">Check browser console for details</p>
+                `;
+                errorBanner.style.display = 'block';
+
+                document.getElementById('fullResponse').textContent = `Error: ${error.message}\n\nCheck browser console for full details.`;
+            } finally {
+                loadingEl.style.display = 'none';
+                buttonEl.disabled = false;
+            }
+        }
+
+        // Auto-run test on page load
+        window.addEventListener('load', () => {
+            console.log('Page loaded, running test in 1 second...');
+            setTimeout(runTest, 1000);
+        });
+    </script>
+</body>
+</html>

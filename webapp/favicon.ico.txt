@@ -1,0 +1,2 @@
+This is a placeholder. You can replace this with an actual favicon.ico file.
+For now, we'll create a simple SVG favicon.

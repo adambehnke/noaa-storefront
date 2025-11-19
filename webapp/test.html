@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOAA API Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .test-section h2 {
+            color: #0066cc;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0052a3;
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .status.loading {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .status.success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .status.error {
+            background: #f44336;
+            color: white;
+        }
+
+        .result-container {
+            margin-top: 15px;
+        }
+
+        .result-box {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            max-height: 400px;
+            overflow: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .result-box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #2196f3;
+            margin-bottom: 20px;
+        }
+
+        .error-box {
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #f44336;
+            margin-top: 10px;
+        }
+
+        .success-box {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #4caf50;
+            margin-top: 10px;
+        }
+
+        .config-display {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .metric {
+            display: inline-block;
+            margin-right: 15px;
+            padding: 5px 10px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .metric strong {
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 NOAA API Test Suite</h1>
+        <p class="subtitle">Test all API endpoints and verify connectivity</p>
+
+        <div class="info-box">
+            <strong></strong>📍 Current Configuration:</strong>
+            <div class="config-display">
+                API Base URL: <strong>https://u35c31x306.execute-api.us-east-1.amazonaws.com/dev</strong><br>
+                Region: <strong>us-east-1</strong><br>
+                Stage: <strong>dev</strong>
+            </div>
+        </div>
+
+        <!-- Test 1: CORS Preflight -->
+        <div class="test-section">
+            <h2>1. CORS Preflight Test <span id="status-cors" class="status"></span></h2>
+            <p>Tests if OPTIONS requests return proper CORS headers</p>
+            <div class="test-buttons">
+                <button onclick="testCORS('/ask')">Test /ask</button>
+                <button onclick="testCORS('/passthrough')">Test /passthrough</button>
+                <button onclick="testCORS('/data')">Test /data</button>
+                <button onclick="testCORS('/query')">Test /query</button>
+            </div>
+            <div class="result-container">
+                <div id="result-cors" class="result-box" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- Test 2: AI Query Endpoint -->
+        <div class="test-section">
+            <h2>2. AI Query Endpoint (/ask) <span id="status-ask" class="status"></span></h2>
+            <p>Tests the AI-powered natural language query endpoint</p>
+            <div class="test-buttons">
+                <button onclick="testAskEndpoint()">Test Simple Query</button>
+                <button onclick="testAskEndpoint('Show me weather alerts in California')">Weather Query</button>
+                <button onclick="testAskEndpoint('What are the tide levels?')">Tide Query</button>
+            </div>
+            <div class="result-container">
+                <div id="result-ask" class="result-box" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- Test 3: Passthrough Endpoint -->
+        <div class="test-section">
+            <h2>3. Passthrough Endpoint (/passthrough) <span id="status-passthrough" class="status"></span></h2>
+            <p>Tests direct NOAA API passthrough</p>
+            <div class="test-buttons">
+                <button onclick="testPassthrough('nws', 'alerts/active')">NWS Alerts</button>
+                <button onclick="testPassthrough('tides', 'stations')">Tide Stations</button>
+                <button onclick="testPassthrough('cdo', 'datasets')">CDO Datasets</button>
+            </div>
+            <div class="result-container">
+                <div id="result-passthrough" class="result-box" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- Test 4: Connection Test -->
+        <div class="test-section">
+            <h2>4. Overall Connection Test <span id="status-connection" class="status"></span></h2>
+            <p>Tests basic connectivity to all endpoints</p>
+            <div class="test-buttons">
+                <button onclick="runAllTests()">Run All Tests</button>
+                <button onclick="clearResults()">Clear Results</button>
+            </div>
+            <div class="result-container">
+                <div id="result-connection" class="result-box" style="display:none;"></div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div id="summary" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://u35c31x306.execute-api.us-east-1.amazonaws.com/dev';
+        let testResults = {
+            cors: { passed: 0, failed: 0 },
+            ask: { passed: 0, failed: 0 },
+            passthrough: { passed: 0, failed: 0 },
+            connection: { passed: 0, failed: 0 }
+        };
+
+        function setStatus(id, status, text) {
+            const el = document.getElementById(id);
+            el.className = `status ${status}`;
+            el.textContent = text;
+        }
+
+        function showResult(id, content, type = 'info') {
+            const el = document.getElementById(id);
+            el.style.display = 'block';
+            el.innerHTML = content;
+        }
+
+        async function testCORS(endpoint) {
+            setStatus('status-cors', 'loading', '⏳ Testing...');
+            const url = `${API_BASE_URL}${endpoint}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': window.location.origin,
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    }
+                });
+
+                const headers = {};
+                response.headers.forEach((value, key) => {
+                    headers[key] = value;
+                });
+
+                const result = {
+                    status: response.status,
+                    statusText: response.statusText,
+                    headers: headers,
+                    corsEnabled: headers['access-control-allow-origin'] === '*',
+                    allowedMethods: headers['access-control-allow-methods'],
+                    allowedHeaders: headers['access-control-allow-headers']
+                };
+
+                if (response.ok && result.corsEnabled) {
+                    setStatus('status-cors', 'success', '✓ CORS Working');
+                    testResults.cors.passed++;
+                    showResult('result-cors', `
+                        <div class="success-box">
+                            <strong>✓ CORS Test Passed for ${endpoint}</strong><br>
+                            Status: ${response.status} ${response.statusText}<br>
+                            Allow-Origin: ${result.headers['access-control-allow-origin']}<br>
+                            Allow-Methods: ${result.allowedMethods}<br>
+                            Allow-Headers: ${result.allowedHeaders}
+                        </div>
+                        <pre>${JSON.stringify(result, null, 2)}</pre>
+                    `);
+                } else {
+                    throw new Error('CORS not properly configured');
+                }
+            } catch (error) {
+                setStatus('status-cors', 'error', '✗ CORS Failed');
+                testResults.cors.failed++;
+                showResult('result-cors', `
+                    <div class="error-box">
+                        <strong>✗ CORS Test Failed for ${endpoint}</strong><br>
+                        Error: ${error.message}<br>
+                        <br>
+                        This means the browser is blocking requests due to CORS policy.
+                    </div>
+                `);
+            }
+        }
+
+        async function testAskEndpoint(query = 'Test query') {
+            setStatus('status-ask', 'loading', '⏳ Testing...');
+            const url = `${API_BASE_URL}/ask`;
+            const startTime = Date.now();
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        include_raw_data: true,
+                        max_results_per_pond: 10
+                    })
+                });
+
+                const data = await response.json();
+                const duration = Date.now() - startTime;
+
+                if (response.ok) {
+                    setStatus('status-ask', 'success', `✓ Response in ${duration}ms`);
+                    testResults.ask.passed++;
+
+                    const hasData = data.synthesis && data.synthesis.record_count > 0;
+
+                    showResult('result-ask', `
+                        <div class="${hasData ? 'success-box' : 'info-box'}">
+                            <strong>✓ API Response Received</strong><br>
+                            Query: "${query}"<br>
+                            Duration: ${duration}ms<br>
+                            Status: ${response.status}<br>
+                            Records: ${data.synthesis?.record_count || 0}<br>
+                            ${!hasData ? '<br><strong>Note:</strong> No data returned (database may be empty, but API is working!)' : ''}
+                        </div>
+                        <strong>Response:</strong>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `);
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                setStatus('status-ask', 'error', '✗ Failed');
+                testResults.ask.failed++;
+                showResult('result-ask', `
+                    <div class="error-box">
+                        <strong>✗ API Test Failed</strong><br>
+                        Error: ${error.message}<br>
+                        Query: "${query}"<br>
+                        <br>
+                        <strong>Possible causes:</strong>
+                        <ul>
+                            <li>Lambda function not responding</li>
+                            <li>CORS not configured properly</li>
+                            <li>Network connectivity issue</li>
+                            <li>API Gateway timeout</li>
+                        </ul>
+                    </div>
+                `);
+            }
+        }
+
+        async function testPassthrough(service, endpoint) {
+            setStatus('status-passthrough', 'loading', '⏳ Testing...');
+            const url = `${API_BASE_URL}/passthrough?service=${service}&endpoint=${endpoint}`;
+            const startTime = Date.now();
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                const duration = Date.now() - startTime;
+
+                if (response.ok) {
+                    setStatus('status-passthrough', 'success', `✓ Response in ${duration}ms`);
+                    testResults.passthrough.passed++;
+                    showResult('result-passthrough', `
+                        <div class="success-box">
+                            <strong>✓ Passthrough Working</strong><br>
+                            Service: ${service}<br>
+                            Endpoint: ${endpoint}<br>
+                            Duration: ${duration}ms<br>
+                            Status: ${response.status}
+                        </div>
+                        <strong>Response:</strong>
+                        <pre>${JSON.stringify(data, null, 2).substring(0, 2000)}${JSON.stringify(data).length > 2000 ? '...\n(truncated)' : ''}</pre>
+                    `);
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                setStatus('status-passthrough', 'error', '✗ Failed');
+                testResults.passthrough.failed++;
+                showResult('result-passthrough', `
+                    <div class="error-box">
+                        <strong>✗ Passthrough Test Failed</strong><br>
+                        Service: ${service}<br>
+                        Endpoint: ${endpoint}<br>
+                        Error: ${error.message}
+                    </div>
+                `);
+            }
+        }
+
+        async function runAllTests() {
+            // Reset results
+            testResults = {
+                cors: { passed: 0, failed: 0 },
+                ask: { passed: 0, failed: 0 },
+                passthrough: { passed: 0, failed: 0 },
+                connection: { passed: 0, failed: 0 }
+            };
+
+            setStatus('status-connection', 'loading', '⏳ Running tests...');
+            showResult('result-connection', '<p>Running comprehensive test suite...</p>');
+
+            // Test CORS
+            await testCORS('/ask');
+            await new Promise(r => setTimeout(r, 500));
+
+            // Test Ask endpoint
+            await testAskEndpoint('Test query from test suite');
+            await new Promise(r => setTimeout(r, 500));
+
+            // Test Passthrough
+            await testPassthrough('nws', 'alerts/active');
+
+            // Show summary
+            const totalPassed = testResults.cors.passed + testResults.ask.passed + testResults.passthrough.passed;
+            const totalFailed = testResults.cors.failed + testResults.ask.failed + testResults.passthrough.failed;
+            const totalTests = totalPassed + totalFailed;
+            const successRate = totalTests > 0 ? Math.round((totalPassed / totalTests) * 100) : 0;
+
+            showResult('result-connection', `
+                <div class="${totalFailed === 0 ? 'success-box' : 'info-box'}">
+                    <strong>Test Suite Complete</strong><br><br>
+                    <div class="metric"><strong>Total Tests:</strong> ${totalTests}</div>
+                    <div class="metric"><strong>Passed:</strong> ${totalPassed}</div>
+                    <div class="metric"><strong>Failed:</strong> ${totalFailed}</div>
+                    <div class="metric"><strong>Success Rate:</strong> ${successRate}%</div>
+                    <br><br>
+                    <strong>Breakdown:</strong><br>
+                    • CORS Tests: ${testResults.cors.passed} passed, ${testResults.cors.failed} failed<br>
+                    • Ask Endpoint: ${testResults.ask.passed} passed, ${testResults.ask.failed} failed<br>
+                    • Passthrough: ${testResults.passthrough.passed} passed, ${testResults.passthrough.failed} failed
+                </div>
+            `);
+
+            if (totalFailed === 0) {
+                setStatus('status-connection', 'success', '✓ All Tests Passed');
+            } else {
+                setStatus('status-connection', 'error', `✗ ${totalFailed} Test(s) Failed`);
+            }
+        }
+
+        function clearResults() {
+            ['cors', 'ask', 'passthrough', 'connection'].forEach(id => {
+                document.getElementById(`result-${id}`).style.display = 'none';
+                document.getElementById(`status-${id}`).className = 'status';
+                document.getElementById(`status-${id}`).textContent = '';
+            });
+        }
+
+        // Auto-run basic connectivity test on load
+        window.addEventListener('load', () => {
+            console.log('NOAA API Test Suite loaded');
+            console.log('API Base URL:', API_BASE_URL);
+        });
+    </script>
+</body>
+</html>

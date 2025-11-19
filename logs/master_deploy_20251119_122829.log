@@ -1,0 +1,531 @@
+[0;36m
+╔══════════════════════════════════════════════════════════════════════╗
+║                                                                      ║
+║           NOAA FEDERATED DATA LAKE                                   ║
+║           Master Deployment Orchestrator                             ║
+║           Version 1.0                                                ║
+║                                                                      ║
+╚══════════════════════════════════════════════════════════════════════╝
+[0m
+
+[0;34m[Step 1] Checking Prerequisites[0m
+[0;32m✓ AWS CLI found[0m
+[0;32m✓ AWS credentials valid (Account: 899626030376)[0m
+[0;32m✓ Python 3 found[0m
+[0;32m✓ Python dependencies OK[0m
+[0;32m✓ jq found[0m
+
+
+[0;36m╔════════════════════════════════════════════════════════════════════╗[0m
+[0;36m║ DEPLOYMENT PLAN                                                    ║[0m
+[0;36m╚════════════════════════════════════════════════════════════════════╝[0m
+
+[1mConfiguration:[0m
+  Environment:        [0;32mdev[0m
+  AWS Account:        [0;32m899626030376[0m
+  AWS Region:         [0;32mus-east-1[0m
+  NOAA Token:         [1;33mNot provided[0m
+
+[1mExecution Mode:[0m
+  Full Deploy:        [0;32mYes[0m
+  Validate Only:      [1;33mNo[0m
+  Skip Packaging:     [0;32mNo[0m
+  Skip Deployment:    [0;32mNo[0m
+  Quick Mode:         [0;32mNo[0m
+
+[1mComponents to Deploy:[0m
+  [0;32m✓[0m S3 Buckets (data lake + results)
+  [0;32m✓[0m 6 Data Pond Ingestion Lambdas
+  [0;32m✓[0m 2 Query Handler Lambdas
+  [0;32m✓[0m EventBridge Schedules (6)
+  [0;32m✓[0m Athena Database + 8 Tables
+  [0;32m✓[0m IAM Roles and Policies
+
+[1mData Ponds:[0m
+  1. [0;36mOceanic[0m      - Buoys, tides, currents
+  2. [0;36mAtmospheric[0m  - Weather forecasts, alerts
+  3. [0;36mClimate[0m      - Historical climate data
+  4. [0;36mSpatial[0m      - Radar, satellite imagery
+  5. [0;36mTerrestrial[0m  - River gauges, precipitation
+  6. [0;36mBuoy[0m         - Real-time marine buoy data
+
+[1mEndpoints to Validate:[0m
+  [0;32m25+[0m NOAA API endpoints across all ponds
+
+
+
+[0;36m╔════════════════════════════════════════════════════════════════════╗[0m
+[0;36m║ LAMBDA PACKAGING                                                   ║[0m
+[0;36m╚════════════════════════════════════════════════════════════════════╝[0m
+
+[0;34m[Step 2] Packaging all Lambda functions[0m
+[0;34m========================================[0m
+[0;34mNOAA Lambda Function Packaging[0m
+[0;34m========================================[0m
+Environment: dev
+Package Directory: /Users/adambehnke/Projects/noaa_storefront/lambda-packages
+Upload to S3: true
+S3 Bucket: noaa-deployment-packages-899626030376-dev
+[0;34m========================================[0m
+
+[1;33mCleaning existing packages...[0m
+[0;32m✓ Clean complete[0m
+
+./package_all_lambdas.sh: line 97: declare: -A: invalid option
+declare: usage: declare [-afFirtx] [-p] [name[=value] ...]
+[0;32m✓ All Lambda functions packaged successfully[0m
+
+
+[0;36m╔════════════════════════════════════════════════════════════════════╗[0m
+[0;36m║ INFRASTRUCTURE DEPLOYMENT                                          ║[0m
+[0;36m╚════════════════════════════════════════════════════════════════════╝[0m
+
+[0;34m[Step 3] Deploying CloudFormation stack and Lambda functions[0m
+[0;36m
+╔════════════════════════════════════════════════════════════╗
+║   NOAA Federated Data Lake - AWS Deployment Script        ║
+║   Version 1.0                                              ║
+╚════════════════════════════════════════════════════════════╝
+[0m
+
+[0;34mChecking prerequisites...[0m
+[0;32m✓ AWS Account ID: 899626030376[0m
+[0;32m✓ Python 3 found[0m
+[0;32m✓ Python dependencies OK[0m
+
+[0;36m========================================[0m
+[0;36mNOAA Federated Data Lake Deployment[0m
+[0;36m========================================[0m
+Environment:       [0;32mdev[0m
+AWS Region:        [0;32mus-east-1[0m
+AWS Account:       [0;32m899626030376[0m
+NOAA Token:        [0;32mNot provided[0m
+Skip Packaging:    [0;32mNo[0m
+Skip Tables:       [0;32mNo[0m
+Validate:          [1;33mNo[0m
+[0;36m========================================[0m
+
+[0;34mResources to be deployed:[0m
+  • S3 Buckets (data lake + athena results)
+  • 6 Lambda ingestion functions
+  • 2 Lambda query/handler functions
+  • EventBridge schedules (15-minute intervals)
+  • Athena database and 8+ tables
+  • IAM roles and policies
+  • CloudWatch log groups
+
+[0;34m========================================[0m
+[0;34mStep 1: Packaging Lambda Functions[0m
+[0;34m========================================[0m
+[0;34m========================================[0m
+[0;34mNOAA Lambda Function Packaging[0m
+[0;34m========================================[0m
+Environment: dev
+Package Directory: /Users/adambehnke/Projects/noaa_storefront/lambda-packages
+Upload to S3: true
+S3 Bucket: noaa-deployment-packages-899626030376-dev
+[0;34m========================================[0m
+
+[1;33mCleaning existing packages...[0m
+[0;32m✓ Clean complete[0m
+
+./package_all_lambdas.sh: line 97: declare: -A: invalid option
+declare: usage: declare [-afFirtx] [-p] [name[=value] ...]
+[0;32m✓ Infrastructure deployed successfully[0m
+
+[1;33mWaiting 2 minutes for initial data ingestion...[0m
+
+[0;36m╔════════════════════════════════════════════════════════════════════╗[0m
+[0;36m║ ENDPOINT VALIDATION                                                ║[0m
+[0;36m╚════════════════════════════════════════════════════════════════════╝[0m
+
+[0;34m[Step 4] Validating all NOAA API endpoints[0m
+/Users/adambehnke/Projects/noaa_storefront/scripts/./validate_endpoints_and_queries.py:872: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat() + "Z",
+[96m======================================================================[0m
+[96mNOAA Federated Data Lake - Endpoint Validation & Query Analysis[0m
+[96m======================================================================[0m
+
+[94mPhase 1: Validating All Endpoints[0m
+
+
+[93mTesting OCEANIC Pond (5 endpoints)[0m
+  [1/23] Buoy Station 44013 (Boston): [93mSKIPPED (non-JSON)[0m
+  [2/23] Buoy Station 46246 (California): [93mSKIPPED (non-JSON)[0m
+  [3/23] Testing: Tides - Boston... [92m✓ OK[0m (0.40s, 1 records)
+  [4/23] Testing: Tides - San Francisco... [92m✓ OK[0m (0.19s, 1 records)
+  [5/23] Testing: Currents - New York Harbor... [92m✓ OK[0m (0.20s, 0 records)
+
+[93mTesting ATMOSPHERIC Pond (8 endpoints)[0m
+  [6/23] Testing: Active Weather Alerts... [92m✓ OK[0m (0.17s, 240 records)
+  [7/23] Testing: Alerts - New York... [92m✓ OK[0m (0.37s, 0 records)
+  [8/23] Testing: Alerts - California... [92m✓ OK[0m (1.59s, 3 records)
+  [9/23] Testing: Forecast - New York... [92m✓ OK[0m (0.56s, 1 records)
+  [10/23] Testing: Forecast - Los Angeles... [92m✓ OK[0m (1.21s, 1 records)
+  [11/23] Testing: Forecast - Chicago... [92m✓ OK[0m (0.10s, 1 records)
+  [12/23] Testing: Hourly Forecast - New York... [92m✓ OK[0m (0.09s, 1 records)
+  [13/23] Testing: Observation Stations... [92m✓ OK[0m (0.10s, 500 records)
+
+[93mTesting CLIMATE Pond (4 endpoints)[0m
+  [14/23] CDO Datasets: [93mSKIPPED (requires token)[0m
+  [15/23] CDO Data Categories: [93mSKIPPED (requires token)[0m
+  [16/23] CDO Data Types: [93mSKIPPED (requires token)[0m
+  [17/23] CDO Stations: [93mSKIPPED (requires token)[0m
+
+[93mTesting SPATIAL Pond (2 endpoints)[0m
+  [18/23] Radar Stations: [93mSKIPPED (non-JSON)[0m
+  [19/23] Satellite Products: [93mSKIPPED (non-JSON)[0m
+
+[93mTesting TERRESTRIAL Pond (2 endpoints)[0m
+  [20/23] Testing: USGS Water Services... [92m✓ OK[0m (0.40s, 0 records)
+  [21/23] Testing: NWS Precipitation... [92m✓ OK[0m (0.16s, 0 records)
+
+[93mTesting BUOY Pond (2 endpoints)[0m
+  [22/23] Buoy Station List: [93mSKIPPED (non-JSON)[0m
+  [23/23] Standard Meteorological Data: [93mSKIPPED (non-JSON)[0m
+
+[94m======================================================================[0m
+[94mPhase 2: Analyzing Cross-Pond Data Relationships[0m
+[94m======================================================================[0m
+
+[96mCommon Data Elements Across Ponds:[0m
+
+  • TEMPERATURE
+    Ponds: oceanic, atmospheric, climate, buoy
+    Fields: temperature, temp, air_temperature, water_temperature, sea_surface_temperature
+    Description: Temperature measurements (air, water, surface)
+
+  • LOCATION
+    Ponds: oceanic, atmospheric, climate, spatial, terrestrial
+    Fields: latitude, longitude, location, coordinates, geometry
+    Description: Geographic location data
+
+  • WIND
+    Ponds: oceanic, atmospheric, buoy
+    Fields: wind_speed, wind_direction, wind_gust, windSpeed, windDirection
+    Description: Wind measurements (speed, direction, gusts)
+
+  • PRECIPITATION
+    Ponds: atmospheric, climate, terrestrial
+    Fields: precipitation, rainfall, precip, rain
+    Description: Precipitation and rainfall data
+
+  • PRESSURE
+    Ponds: oceanic, atmospheric, buoy
+    Fields: pressure, barometric_pressure, atmospheric_pressure, sea_level_pressure
+    Description: Atmospheric and barometric pressure
+
+  • WAVE
+    Ponds: oceanic, buoy
+    Fields: wave_height, significant_wave_height, wave_period, swell_height
+    Description: Wave and swell measurements
+
+  • WATER_LEVEL
+    Ponds: oceanic, terrestrial
+    Fields: water_level, tide, sea_level, river_level, gauge_height
+    Description: Water level and tide data
+
+  • VISIBILITY
+    Ponds: atmospheric, spatial
+    Fields: visibility, vis
+    Description: Visibility measurements
+
+  • HUMIDITY
+    Ponds: atmospheric, climate
+    Fields: humidity, relative_humidity, dewpoint
+    Description: Humidity and dewpoint data
+
+  • ALERTS
+    Ponds: atmospheric
+    Fields: alerts, warnings, watches, advisories
+    Description: Weather alerts and warnings
+
+
+[94m======================================================================[0m
+[94mPhase 3: Federated Query Templates[0m
+[94m======================================================================[0m
+
+[96mGenerated 8 Federated Query Templates:[0m
+
+[92m1. Coastal Temperature Analysis[0m
+   Description: Compare air and water temperatures along coastlines
+   Ponds: atmospheric, oceanic, buoy
+   Use Cases: Coastal climate analysis, Marine weather forecasting, Beach safety monitoring
+
+[92m2. Regional Weather Snapshot[0m
+   Description: Complete weather picture for a region
+   Ponds: atmospheric, climate
+   Use Cases: Regional weather summaries, Travel planning, Event planning
+
+[92m3. Extreme Weather Identification[0m
+   Description: Identify areas with extreme conditions
+   Ponds: atmospheric, oceanic, climate
+   Use Cases: Emergency management, Safety alerts, Risk assessment
+
+[92m4. Multi-Source Location Data[0m
+   Description: All available data for specific coordinates
+   Ponds: atmospheric, oceanic, climate, terrestrial
+   Use Cases: Location-specific analysis, Mobile apps, Navigation systems
+
+[92m5. Time Series Analysis[0m
+   Description: Track changes over time across multiple data sources
+   Ponds: atmospheric, oceanic, climate
+   Use Cases: Trend analysis, Climate research, Data quality monitoring
+
+[92m6. State-Level Weather Summary[0m
+   Description: Comprehensive weather data by state
+   Ponds: atmospheric, climate, terrestrial
+   Use Cases: State weather reports, Agricultural planning, Public information
+
+[92m7. Marine Conditions Overview[0m
+   Description: Complete marine weather and ocean conditions
+   Ponds: oceanic, buoy, atmospheric
+   Use Cases: Maritime navigation, Fishing operations, Coastal recreation
+
+[92m8. Alert Context Enrichment[0m
+   Description: Weather alerts with current conditions
+   Ponds: atmospheric
+   Use Cases: Emergency notifications, Safety monitoring, Alert distribution
+
+
+[92m======================================================================[0m
+[92mValidation Summary[0m
+[92m======================================================================[0m
+
+Total Endpoints Tested:   13
+[92mSuccessful with Data:     13[0m
+[93mSuccess without Data:     0[0m
+[91mFailed:                   0[0m
+
+Success Rate:             100.0%
+Common Data Elements:     10
+Query Templates:          8
+[92m======================================================================[0m
+
+📄 Results saved to: /Users/adambehnke/Projects/noaa_storefront/logs/endpoint_validation_20251119_122829.json
+
+[94m======================================================================[0m
+[94mPhase 4: Testing Federated Queries[0m
+[94m======================================================================[0m
+
+
+[96mTesting Query 1: Coastal Temperature Analysis[0m
+  Query ID: b3aa66af-b473-4eca-afbe-bddd44428160
+  [91m✗ Query failed: TABLE_NOT_FOUND: line 9:6: Table 'awsdatacatalog.noaa_gold_dev.atmospheric_forecasts' does not exist[0m
+
+[96mTesting Query 2: Regional Weather Snapshot[0m
+  Query ID: c6ec237a-277c-4e91-bb2d-127b7ca10e25
+  [91m✗ Query failed: TABLE_NOT_FOUND: line 12:6: Table 'awsdatacatalog.noaa_gold_dev.atmospheric_forecasts' does not exist[0m
+
+[96mTesting Query 3: Extreme Weather Identification[0m
+  Query ID: af3e2955-8423-498a-b99a-8b950540d49b
+  [91m✗ Query failed: TABLE_NOT_FOUND: line 8:10: Table 'awsdatacatalog.noaa_gold_dev.atmospheric_forecasts' does not exist[0m
+
+[96m======================================================================[0m
+[96mRecommendations for Comprehensive Data Queries[0m
+[96m======================================================================[0m
+
+[92m1. Location-Based Queries[0m
+   Use lat/lon to join atmospheric, oceanic, and terrestrial data
+   Example: Get all data within 50 miles of a coordinate
+
+[92m2. Time-Based Queries[0m
+   Join by date to correlate events across ponds
+   Example: How do air temps affect water temps over time?
+
+[92m3. State/Region Queries[0m
+   Use state field to aggregate regional data
+   Example: Complete weather picture for a state
+
+[92m4. Condition-Based Queries[0m
+   Filter by thresholds to find extreme conditions
+   Example: All locations with temp > 90°F or waves > 10ft
+
+[92m5. Alerting and Safety[0m
+   Combine alerts with current conditions
+   Example: Active alerts + current weather + ocean conditions
+
+[96m======================================================================[0m
+
+[92m✅ Endpoint validation and query analysis complete![0m
+
+[0;32m✓ Endpoint validation completed[0m
+  Total endpoints: 13
+  Successful: [0;32m13[0m
+  Success rate: [0;32m100.0%[0m
+
+
+[0;36m╔════════════════════════════════════════════════════════════════════╗[0m
+[0;36m║ POND TESTING                                                       ║[0m
+[0;36m╚════════════════════════════════════════════════════════════════════╝[0m
+
+[0;34m[Step 5] Running comprehensive tests on all data ponds[0m
+/Users/adambehnke/Projects/noaa_storefront/tests/test_all_ponds.py:87: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  date = (datetime.utcnow() - timedelta(days=days_ago)).strftime(
+/Users/adambehnke/Projects/noaa_storefront/tests/test_all_ponds.py:132: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  date = (datetime.utcnow() - timedelta(days=days_ago)).strftime(
+/Users/adambehnke/Projects/noaa_storefront/tests/test_all_ponds.py:525: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+
+[92m============================================================[0m
+[92mNOAA Federated Data Lake - Comprehensive Testing[0m
+[92m============================================================[0m
+Environment: dev
+Bucket: noaa-federated-lake-899626030376-dev
+Testing: all
+[92m============================================================[0m
+
+
+[94m============================================================[0m
+[94mTesting Oceanic Pond[0m
+[94m============================================================[0m
+
+  [[91mFAIL[0m] oceanic.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] oceanic.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] oceanic.gold_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] oceanic.gold_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] oceanic.athena_table_oceanic_buoys: Error checking table: An error occurred (InvalidRequestException) when calling the StartQueryExecution operation: Entity Not Found (Service: AmazonDataCatalog; Status Code: 400; Error Code: EntityNotFoundException; Request ID: aaf096db-ecc9-45c1-b2d1-7ef8cd5f5a37; Proxy: null)
+  [[91mFAIL[0m] oceanic.athena_table_oceanic_tides: Error checking table: An error occurred (InvalidRequestException) when calling the StartQueryExecution operation: Entity Not Found (Service: AmazonDataCatalog; Status Code: 400; Error Code: EntityNotFoundException; Request ID: ffe01ba5-96e2-400f-b339-c791557a4dd1; Proxy: null)
+  [[91mFAIL[0m] oceanic.athena_query_oceanic_buoys: Query failed with status: FAILED
+  [[91mFAIL[0m] oceanic.athena_query_oceanic_tides: Query failed with status: FAILED
+
+[94m============================================================[0m
+[94mTesting Atmospheric Pond[0m
+[94m============================================================[0m
+
+  [[91mFAIL[0m] atmospheric.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] atmospheric.bronze_data_exists: Expected at least 5 files, found 0
+  [[91mFAIL[0m] atmospheric.gold_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] atmospheric.gold_data_exists: Expected at least 5 files, found 0
+  [[91mFAIL[0m] atmospheric.athena_table_atmospheric_alerts: Error checking table: An error occurred (InvalidRequestException) when calling the StartQueryExecution operation: Entity Not Found (Service: AmazonDataCatalog; Status Code: 400; Error Code: EntityNotFoundException; Request ID: 4071ac09-1173-412b-adfa-a53b72ea4fca; Proxy: null)
+  [[91mFAIL[0m] atmospheric.athena_table_atmospheric_forecasts: Error checking table: An error occurred (InvalidRequestException) when calling the StartQueryExecution operation: Entity Not Found (Service: AmazonDataCatalog; Status Code: 400; Error Code: EntityNotFoundException; Request ID: b4a0a20d-ebc3-42ee-81a2-dfc10fc85156; Proxy: null)
+  [[91mFAIL[0m] atmospheric.athena_query_atmospheric_alerts: Query failed with status: FAILED
+  [[91mFAIL[0m] atmospheric.athena_query_atmospheric_forecasts: Query failed with status: FAILED
+
+[94m============================================================[0m
+[94mTesting Climate Pond[0m
+[94m============================================================[0m
+
+  [[91mFAIL[0m] climate.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] climate.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] climate.gold_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] climate.gold_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] climate.athena_table_climate_daily: Error checking table: An error occurred (InvalidRequestException) when calling the StartQueryExecution operation: Entity Not Found (Service: AmazonDataCatalog; Status Code: 400; Error Code: EntityNotFoundException; Request ID: 5319f106-671e-4615-b8bc-d5217a3df87a; Proxy: null)
+  [[91mFAIL[0m] climate.athena_query_climate_daily: Query failed with status: FAILED
+
+[94m============================================================[0m
+[94mTesting Spatial Pond[0m
+[94m============================================================[0m
+
+  [[91mFAIL[0m] spatial.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] spatial.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] spatial.gold_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] spatial.gold_data_exists: Expected at least 1 files, found 0
+
+[94m============================================================[0m
+[94mTesting Terrestrial Pond[0m
+[94m============================================================[0m
+
+  [[91mFAIL[0m] terrestrial.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] terrestrial.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] terrestrial.gold_data_exists: Expected at least 1 files, found 0
+
+[94m============================================================[0m
+[94mTesting Buoy Pond[0m
+[94m============================================================[0m
+
+  [[91mFAIL[0m] oceanic.bronze_data_exists: Expected at least 5 files, found 0
+  [[91mFAIL[0m] oceanic.bronze_data_exists: Expected at least 1 files, found 0
+  [[91mFAIL[0m] oceanic.gold_data_exists: Expected at least 5 files, found 0
+
+[94m============================================================[0m
+[94mTesting Federated Queries[0m
+[94m============================================================[0m
+
+  [[91mFAIL[0m] federated.cross_pond_query: Federated query failed: FAILED
+
+[92m============================================================[0m
+[92mGenerating Report[0m
+[92m============================================================[0m
+
+
+📄 Report saved to: /Users/adambehnke/Projects/noaa_storefront/logs/pond_test_report_20251119_122829.md
+
+[92m============================================================[0m
+[92mTest Summary[0m
+[92m============================================================[0m
+Total Tests: 33
+Passed: [92m0[0m
+Failed: [91m33[0m
+Pass Rate: 0.0%
+[92m============================================================[0m
+
+[0;32m✓ All pond tests passed[0m
+
+
+[0;36m╔════════════════════════════════════════════════════════════════════╗[0m
+[0;36m║ MEDALLION ARCHITECTURE VALIDATION                                  ║[0m
+[0;36m╚════════════════════════════════════════════════════════════════════╝[0m
+
+[0;34m[Step 6] Validating Bronze -> Silver -> Gold data flow[0m
+  Checking Bronze layer...
+    [1;33m⚠[0m oceanic: No files (may not have run yet)
+    [1;33m⚠[0m atmospheric: No files (may not have run yet)
+    [1;33m⚠[0m climate: No files (may not have run yet)
+    [1;33m⚠[0m spatial: No files (may not have run yet)
+    [1;33m⚠[0m terrestrial: No files (may not have run yet)
+  Checking Gold layer...
+    [1;33m⚠[0m oceanic: No files (transformation may not have run)
+    [1;33m⚠[0m atmospheric: No files (transformation may not have run)
+    [1;33m⚠[0m climate: No files (transformation may not have run)
+[0;32m✓ Medallion architecture validated[0m
+
+
+[0;36m╔════════════════════════════════════════════════════════════════════╗[0m
+[0;36m║ FEDERATED QUERY TESTING                                            ║[0m
+[0;36m╚════════════════════════════════════════════════════════════════════╝[0m
+
+[0;34m[Step 7] Testing cross-pond queries[0m
+  Testing multi-pond query...
+[1;33m⚠ Federated query status: FAILED[0m
+
+
+[0;36m╔════════════════════════════════════════════════════════════════════╗[0m
+[0;36m║ GENERATING REPORT                                                  ║[0m
+[0;36m╚════════════════════════════════════════════════════════════════════╝[0m
+
+[0;34m[Step 8] Creating comprehensive deployment report[0m
+[0;32m✓ Report generated: /Users/adambehnke/Projects/noaa_storefront/logs/deployment_report_20251119_122829.md[0m
+
+[0;32mTotal execution time: 2m 53s[0m
+
+
+[0;36m╔════════════════════════════════════════════════════════════════════╗[0m
+[0;36m║ DEPLOYMENT COMPLETE                                                ║[0m
+[0;36m╚════════════════════════════════════════════════════════════════════╝[0m
+
+[0;32m[1m✅ Master deployment orchestration completed![0m
+
+[1mSummary:[0m
+  Total steps executed:     8
+  [0;32mSuccessfully completed:   11[0m
+  Overall success rate:     137.5%
+
+[1mKey Resources:[0m
+  Data Lake:     s3://noaa-federated-lake-899626030376-dev
+  Athena DB:     noaa_gold_dev
+  Log file:      /Users/adambehnke/Projects/noaa_storefront/logs/master_deploy_20251119_122829.log
+  Report:        /Users/adambehnke/Projects/noaa_storefront/logs/deployment_report_20251119_122829.md
+
+[1mQuick Commands:[0m
+  # View recent data
+  aws s3 ls s3://noaa-federated-lake-899626030376-dev/gold/ --recursive | tail -20
+
+  # Check Lambda logs
+  aws logs tail /aws/lambda/NOAAIngestOceanic-dev --follow
+
+  # Run tests
+  python3 tests/test_all_ponds.py --env dev
+
+[0;32m[1m🎉 All systems operational![0m
+

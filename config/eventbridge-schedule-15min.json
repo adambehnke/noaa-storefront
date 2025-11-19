@@ -1,0 +1,202 @@
+{
+  "ScheduleName": "noaa-data-ingestion-15min",
+  "Description": "Triggers NOAA comprehensive data ingestion every 15 minutes for all 25+ web services",
+  "ScheduleExpression": "rate(15 minutes)",
+  "ScheduleExpressionTimezone": "UTC",
+  "FlexibleTimeWindow": {
+    "Mode": "OFF"
+  },
+  "State": "ENABLED",
+  "Target": {
+    "Arn": "arn:aws:lambda:us-east-1:ACCOUNT_ID:function:noaa-comprehensive-ingestion",
+    "RoleArn": "arn:aws:iam::ACCOUNT_ID:role/EventBridge-Scheduler-Role",
+    "Input": "{\"ponds\": [\"atmospheric\", \"oceanic\", \"buoy\", \"spatial\", \"climate\", \"metadata\"], \"create_tables\": false}",
+    "RetryPolicy": {
+      "MaximumRetryAttempts": 2,
+      "MaximumEventAge": 3600
+    }
+  },
+  "Metadata": {
+    "Purpose": "Ingest data from 25+ NOAA web services into data ponds",
+    "Architecture": "Medallion (Bronze -> Silver -> Gold)",
+    "RefreshRate": "15 minutes",
+    "DataPonds": [
+      "atmospheric (12 endpoints)",
+      "oceanic (4 endpoints)",
+      "buoy (4 endpoints)",
+      "spatial (2 endpoints)",
+      "climate (3 endpoints)",
+      "metadata (1 endpoint)"
+    ],
+    "TotalEndpoints": 26,
+    "EstimatedDuration": "5-10 minutes per run"
+  },
+  "AlternativeSchedules": {
+    "HighFrequency": {
+      "Description": "Critical real-time data (alerts, buoys, tides)",
+      "Expression": "rate(5 minutes)",
+      "Ponds": ["atmospheric", "oceanic", "buoy"]
+    },
+    "MediumFrequency": {
+      "Description": "Hourly updates (forecasts, observations)",
+      "Expression": "rate(60 minutes)",
+      "Ponds": ["atmospheric", "oceanic"]
+    },
+    "LowFrequency": {
+      "Description": "Daily updates (climate, archives)",
+      "Expression": "cron(0 6 * * ? *)",
+      "Ponds": ["climate", "metadata"]
+    }
+  },
+  "CloudFormationTemplate": {
+    "EventBridgeRule": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "Name": "noaa-data-ingestion-15min",
+        "Description": "Triggers NOAA data ingestion every 15 minutes",
+        "ScheduleExpression": "rate(15 minutes)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": ["NoaaComprehensiveIngestionFunction", "Arn"]
+            },
+            "Id": "NoaaIngestionTarget",
+            "Input": "{\"ponds\": [\"atmospheric\", \"oceanic\", \"buoy\", \"spatial\", \"climate\", \"metadata\"]}",
+            "RetryPolicy": {
+              "MaximumRetryAttempts": 2,
+              "MaximumEventAgeInSeconds": 3600
+            },
+            "DeadLetterConfig": {
+              "Arn": {
+                "Fn::GetAtt": ["IngestionDLQ", "Arn"]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "LambdaInvokePermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "NoaaComprehensiveIngestionFunction"
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "events.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": ["EventBridgeRule", "Arn"]
+        }
+      }
+    },
+    "IngestionDLQ": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "QueueName": "noaa-ingestion-dlq",
+        "MessageRetentionPeriod": 1209600,
+        "VisibilityTimeout": 300
+      }
+    }
+  },
+  "CLICommands": {
+    "CreateSchedule": "aws scheduler create-schedule --name noaa-data-ingestion-15min --schedule-expression 'rate(15 minutes)' --flexible-time-window Mode=OFF --target '{\"Arn\":\"arn:aws:lambda:REGION:ACCOUNT_ID:function:noaa-comprehensive-ingestion\",\"RoleArn\":\"arn:aws:iam::ACCOUNT_ID:role/EventBridge-Scheduler-Role\",\"Input\":\"{\\\"ponds\\\":[\\\"atmospheric\\\",\\\"oceanic\\\",\\\"buoy\\\",\\\"spatial\\\",\\\"climate\\\",\\\"metadata\\\"]}\"}' --state ENABLED",
+    "CreateEventBridgeRule": "aws events put-rule --name noaa-data-ingestion-15min --schedule-expression 'rate(15 minutes)' --state ENABLED --description 'Triggers NOAA data ingestion every 15 minutes'",
+    "AddLambdaTarget": "aws events put-targets --rule noaa-data-ingestion-15min --targets 'Id'='1','Arn'='arn:aws:lambda:REGION:ACCOUNT_ID:function:noaa-comprehensive-ingestion','Input'='{\"ponds\":[\"atmospheric\",\"oceanic\",\"buoy\",\"spatial\",\"climate\",\"metadata\"]}'",
+    "GrantPermission": "aws lambda add-permission --function-name noaa-comprehensive-ingestion --statement-id EventBridgeInvoke --action lambda:InvokeFunction --principal events.amazonaws.com --source-arn arn:aws:events:REGION:ACCOUNT_ID:rule/noaa-data-ingestion-15min",
+    "DisableSchedule": "aws scheduler update-schedule --name noaa-data-ingestion-15min --state DISABLED",
+    "EnableSchedule": "aws scheduler update-schedule --name noaa-data-ingestion-15min --state ENABLED",
+    "DeleteSchedule": "aws scheduler delete-schedule --name noaa-data-ingestion-15min"
+  },
+  "MonitoringAndAlerts": {
+    "CloudWatchAlarm": {
+      "IngestionFailures": {
+        "MetricName": "Errors",
+        "Namespace": "AWS/Lambda",
+        "Statistic": "Sum",
+        "Period": 900,
+        "EvaluationPeriods": 1,
+        "Threshold": 3,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "AlarmActions": ["arn:aws:sns:REGION:ACCOUNT_ID:noaa-ingestion-alerts"]
+      },
+      "IngestionDuration": {
+        "MetricName": "Duration",
+        "Namespace": "AWS/Lambda",
+        "Statistic": "Average",
+        "Period": 900,
+        "EvaluationPeriods": 2,
+        "Threshold": 600000,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "AlarmActions": ["arn:aws:sns:REGION:ACCOUNT_ID:noaa-ingestion-alerts"]
+      }
+    },
+    "LogInsights": {
+      "QueryIngestionStats": "fields @timestamp, pond, source, records_processed, success | filter @message like /Successfully ingested/ | stats count() by pond, bin(5m)",
+      "QueryErrors": "fields @timestamp, @message | filter @message like /ERROR/ or @message like /Failed/ | sort @timestamp desc | limit 50",
+      "QueryPerformance": "fields @timestamp, pond, @duration | stats avg(@duration), max(@duration), count() by pond"
+    }
+  },
+  "StaggeredIngestionStrategy": {
+    "Description": "Alternative approach: Stagger ingestion by pond priority to avoid API rate limits",
+    "Schedules": [
+      {
+        "Name": "critical-data",
+        "Expression": "rate(5 minutes)",
+        "Ponds": ["atmospheric"],
+        "Sources": ["nws_alerts", "nws_observations", "space_weather"]
+      },
+      {
+        "Name": "oceanic-data",
+        "Expression": "rate(15 minutes)",
+        "Ponds": ["oceanic", "buoy"],
+        "Sources": ["tides_water_levels", "ndbc_realtime"]
+      },
+      {
+        "Name": "forecast-data",
+        "Expression": "rate(60 minutes)",
+        "Ponds": ["atmospheric"],
+        "Sources": ["nws_forecasts", "aviation_weather"]
+      },
+      {
+        "Name": "climate-data",
+        "Expression": "cron(0 */6 * * ? *)",
+        "Ponds": ["climate"],
+        "Sources": ["cdo_daily", "ncei_daily_summary"]
+      },
+      {
+        "Name": "metadata-refresh",
+        "Expression": "cron(0 0 * * ? *)",
+        "Ponds": ["metadata", "spatial"],
+        "Sources": ["data_catalog", "coops_gis"]
+      }
+    ]
+  },
+  "CostOptimization": {
+    "LambdaConcurrency": {
+      "ReservedConcurrency": 5,
+      "Rationale": "Limit concurrent executions to avoid rate limiting and control costs"
+    },
+    "S3Lifecycle": {
+      "BronzeLayer": {
+        "TransitionToIA": 30,
+        "TransitionToGlacier": 90,
+        "ExpirationDays": 365
+      },
+      "SilverLayer": {
+        "TransitionToIA": 90,
+        "ExpirationDays": 1095
+      },
+      "GoldLayer": {
+        "NoExpiration": true,
+        "IntelligentTiering": true
+      }
+    },
+    "EstimatedCosts": {
+      "Lambda": "$5-10/month (15min intervals, 5-10min execution)",
+      "S3": "$10-20/month (with lifecycle policies)",
+      "Athena": "$5-10/month (Gold layer queries)",
+      "DataTransfer": "$2-5/month",
+      "Total": "$22-45/month estimated"
+    }
+  }
+}

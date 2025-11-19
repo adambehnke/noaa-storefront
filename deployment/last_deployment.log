@@ -1,0 +1,36 @@
+[0;34m
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║        NOAA Federated Data Lake - AI System Deployment       ║
+║                   Fully Automated Process                     ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+[0m
+[0;34m[INFO][0m Deployment started at Fri Nov 14 10:59:17 CST 2025
+[0;34m[INFO][0m Environment: dev
+[0;34m[INFO][0m AWS Account: 899626030376
+[0;34m[INFO][0m Region: us-east-1
+[0;34m[INFO][0m Log file: /Users/adambehnke/Projects/noaa_storefront/deployment/deployment_20251114_105917.log
+
+[0;34m[INFO][0m Checking prerequisites...
+[0;32m[SUCCESS][0m Prerequisites verified
+
+[0;34m[INFO][0m [1/7] Creating backup of current handler...
+[0;32m[SUCCESS][0m Backup created at: /Users/adambehnke/Projects/noaa_storefront/backups/20251114_105917
+
+[0;34m[INFO][0m [2/7] Replacing handler with AI multi-pond code...
+[0;32m[SUCCESS][0m Handler replaced with AI code
+
+[0;34m[INFO][0m [3/7] Ensuring Bedrock dependencies...
+[0;32m[SUCCESS][0m Dependencies configured
+
+[0;34m[INFO][0m [4/7] Packaging Lambda function...
+[0;34m[INFO][0m Creating ZIP package...
+[0;32m[SUCCESS][0m Package created: 644K
+
+[0;34m[INFO][0m [5/7] Deploying to AWS Lambda...
+[0;31m[ERROR][0m Lambda function 'lambda-enhanced-handler-dev' not found!
+[0;31m[ERROR][0m Expected Lambda: lambda-enhanced-handler-dev
+[0;31m[ERROR][0m 
+[0;31m[ERROR][0m Available Lambdas:
+noaa-enhanced-handler-dev	noaa-ai-query-dev	noaa-passthrough-dev	noaa-data-api-dev	noaa-intelligent-orchestrator-dev	noaa-ingest-oceanic-dev	noaa-ai-orchestrator-dev	noaa-pipeline-validation-dev

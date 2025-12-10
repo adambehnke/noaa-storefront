@@ -1,0 +1,1537 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            http-equiv="Cache-Control"
+            content="no-cache, no-store, must-revalidate"
+        />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+        <title>NOAA Data Lake - AI Assistant v3.4</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            :root {
+                --primary-color: #0066cc;
+                --secondary-color: #0099ff;
+                --success-color: #28a745;
+                --danger-color: #dc3545;
+                --warning-color: #ffc107;
+                --dark-bg: #1a1a2e;
+                --darker-bg: #16213e;
+                --light-bg: #f8f9fa;
+                --text-primary: #333;
+                --text-secondary: #666;
+                --border-color: #dee2e6;
+                --message-user-bg: #0066cc;
+                --message-bot-bg: #e9ecef;
+                --message-user-text: #ffffff;
+                --message-bot-text: #333;
+            }
+
+            [data-theme="dark"] {
+                --primary-color: #0099ff;
+                --secondary-color: #0066cc;
+                --dark-bg: #16213e;
+                --darker-bg: #0f1626;
+                --light-bg: #1a1a2e;
+                --text-primary: #e0e0e0;
+                --text-secondary: #a0a0a0;
+                --border-color: #2d3748;
+                --message-user-bg: #0099ff;
+                --message-bot-bg: #2d3748;
+                --message-user-text: #ffffff;
+                --message-bot-text: #e0e0e0;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Oxygen, Ubuntu, Cantarell, sans-serif;
+                background: linear-gradient(
+                    135deg,
+                    var(--light-bg) 0%,
+                    #ffffff 100%
+                );
+                min-height: 100vh;
+                color: var(--text-primary);
+                transition: all 0.3s ease;
+            }
+
+            [data-theme="dark"] body {
+                background: linear-gradient(
+                    135deg,
+                    var(--darker-bg) 0%,
+                    var(--dark-bg) 100%
+                );
+            }
+
+            .container {
+                max-width: 100%;
+                margin: 0 auto;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                box-sizing: border-box;
+            }
+
+            header {
+                background: linear-gradient(
+                    135deg,
+                    var(--primary-color) 0%,
+                    var(--secondary-color) 100%
+                );
+                color: white;
+                padding: 12px 20px;
+                border-radius: 10px;
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-shadow: 0 4px 15px rgba(0, 102, 204, 0.2);
+                flex-shrink: 0;
+            }
+
+            .header-title {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .header-title i {
+                font-size: 32px;
+            }
+
+            .header-title h1 {
+                font-size: 24px;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            .header-title p {
+                font-size: 12px;
+                opacity: 0.9;
+                margin: 2px 0 0 0;
+            }
+
+            .header-controls {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .header-stats {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                padding: 0 15px;
+                border-left: 1px solid rgba(255, 255, 255, 0.3);
+                border-right: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            .header-stat {
+                text-align: center;
+            }
+
+            .header-stat-value {
+                font-size: 20px;
+                font-weight: bold;
+                display: block;
+            }
+
+            .header-stat-label {
+                font-size: 10px;
+                opacity: 0.8;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .theme-toggle,
+            .settings-btn {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                color: white;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                font-size: 14px;
+            }
+
+            .theme-toggle:hover,
+            .settings-btn:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(1.1);
+            }
+
+            .status-indicator {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(255, 255, 255, 0.2);
+                padding: 8px 15px;
+                border-radius: 20px;
+                font-size: 14px;
+            }
+
+            .status-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: var(--success-color);
+                animation: pulse 2s infinite;
+            }
+
+            @keyframes pulse {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.5;
+                }
+            }
+
+            .main-content {
+                display: flex;
+                gap: 10px;
+                flex: 1;
+                overflow: hidden;
+                min-height: 0;
+            }
+
+            .sidebar {
+                width: 180px;
+                min-width: 180px;
+                max-width: 600px;
+                background: white;
+                border-radius: 10px;
+                padding: 10px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                overflow-y: auto;
+                overflow-x: hidden;
+                flex-shrink: 0;
+                display: flex;
+                flex-direction: column;
+                max-height: 100%;
+                position: relative;
+                resize: horizontal;
+            }
+
+            [data-theme="dark"] .sidebar {
+                background: var(--dark-bg);
+            }
+
+            .sidebar-resize-handle {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 8px;
+                height: 100%;
+                cursor: ew-resize;
+                background: linear-gradient(
+                    to right,
+                    transparent,
+                    rgba(0, 102, 204, 0.1)
+                );
+                opacity: 0;
+                transition: opacity 0.2s;
+                z-index: 10;
+            }
+
+            .sidebar:hover .sidebar-resize-handle {
+                opacity: 1;
+            }
+
+            .sidebar-resize-handle:hover {
+                background: linear-gradient(
+                    to right,
+                    transparent,
+                    rgba(0, 102, 204, 0.3)
+                );
+            }
+
+            .sidebar-resize-handle::after {
+                content: "⋮";
+                position: absolute;
+                right: 2px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--primary-color);
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .sidebar h3 {
+                margin: 0 0 8px 0;
+                color: var(--primary-color);
+                font-size: 13px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .sidebar h3 i {
+                font-size: 12px;
+            }
+
+            .sidebar h3 .toggle-icon {
+                margin-left: auto;
+                font-size: 10px;
+                transition: transform 0.3s;
+            }
+
+            .sidebar h3.collapsed .toggle-icon {
+                transform: rotate(-90deg);
+            }
+
+            .collapsible-section {
+                transition:
+                    max-height 0.3s ease,
+                    opacity 0.3s ease;
+                overflow: hidden;
+            }
+
+            .collapsible-section.collapsed {
+                max-height: 0 !important;
+                opacity: 0;
+            }
+
+            .pond-selector {
+                margin-bottom: 10px;
+                flex-shrink: 0;
+                overflow: visible;
+            }
+
+            .pond-option {
+                padding: 7px 8px;
+                margin: 4px 0;
+                background: var(--light-bg);
+                border-radius: 6px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 11px;
+            }
+
+            [data-theme="dark"] .pond-option {
+                background: var(--darker-bg);
+            }
+
+            .pond-option:hover {
+                background: var(--primary-color);
+                color: white;
+                transform: translateX(5px);
+            }
+
+            .pond-option.active {
+                background: var(--primary-color);
+                color: white;
+            }
+
+            .pond-option i {
+                font-size: 13px;
+                flex-shrink: 0;
+            }
+
+            .pond-description {
+                font-size: 9px;
+                opacity: 0 !important;
+                max-height: 0 !important;
+                overflow: hidden !important;
+                transition: all 0.3s ease;
+                line-height: 1.3;
+                margin-top: 2px;
+                color: inherit;
+                display: none !important;
+                visibility: hidden !important;
+            }
+
+            .sidebar.wide .pond-description {
+                opacity: 0.7 !important;
+                max-height: 50px !important;
+                display: block;
+            }
+
+            .sidebar.wide .pond-option {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px;
+            }
+
+            .sidebar.wide .pond-option strong {
+                font-size: 12px;
+            }
+
+            .quick-actions {
+                margin-top: 10px;
+                flex-shrink: 0;
+                max-height: 200px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .quick-action-btn {
+                width: 100%;
+                padding: 6px 8px;
+                margin: 3px 0;
+                background: var(--light-bg);
+                border: 1px solid var(--border-color);
+                border-radius: 5px;
+                cursor: pointer;
+                text-align: left;
+                font-size: 10px;
+                transition: all 0.2s ease;
+                color: var(--text-primary);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .quick-action-btn i {
+                font-size: 10px;
+                flex-shrink: 0;
+            }
+
+            [data-theme="dark"] .quick-action-btn {
+                background: var(--darker-bg);
+                border-color: var(--border-color);
+            }
+
+            .quick-action-btn:hover {
+                background: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+
+            .chat-container {
+                flex: 5;
+                display: flex;
+                flex-direction: column;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+                min-height: 0;
+                min-width: 0;
+            }
+
+            [data-theme="dark"] .chat-container {
+                background: var(--dark-bg);
+            }
+
+            .chat-messages {
+                flex: 1;
+                padding: 20px;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                min-height: 0;
+            }
+
+            .message {
+                display: flex;
+                gap: 12px;
+                max-width: 80%;
+                animation: slideIn 0.3s ease;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .message.user {
+                align-self: flex-end;
+                flex-direction: row-reverse;
+            }
+
+            .message-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 18px;
+                flex-shrink: 0;
+            }
+
+            .message.user .message-avatar {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            }
+
+            .message.bot .message-avatar {
+                background: linear-gradient(
+                    135deg,
+                    var(--primary-color) 0%,
+                    var(--secondary-color) 100%
+                );
+            }
+
+            .message-content {
+                background: var(--message-bot-bg);
+                color: var(--message-bot-text);
+                padding: 12px 16px;
+                border-radius: 15px;
+                line-height: 1.5;
+                position: relative;
+            }
+
+            .message.user .message-content {
+                background: var(--message-user-bg);
+                color: var(--message-user-text);
+            }
+
+            .message-meta {
+                font-size: 11px;
+                opacity: 0.7;
+                margin-top: 5px;
+            }
+
+            .data-display {
+                margin-top: 10px;
+                padding: 12px;
+                background: rgba(0, 102, 204, 0.1);
+                border-radius: 8px;
+                font-size: 13px;
+                font-family: "Courier New", monospace;
+            }
+
+            [data-theme="dark"] .data-display {
+                background: rgba(0, 153, 255, 0.2);
+            }
+
+            .data-summary {
+                display: flex;
+                gap: 15px;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+
+            .data-stat {
+                background: white;
+                padding: 10px 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            [data-theme="dark"] .data-stat {
+                background: var(--darker-bg);
+            }
+
+            .data-stat-label {
+                font-size: 11px;
+                color: var(--text-secondary);
+                margin-bottom: 3px;
+            }
+
+            .data-stat-value {
+                font-size: 18px;
+                font-weight: bold;
+                color: var(--primary-color);
+            }
+
+            .loading {
+                display: flex;
+                gap: 5px;
+                padding: 20px;
+            }
+
+            .loading-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                animation: bounce 1.4s infinite ease-in-out;
+            }
+
+            .loading-dot:nth-child(1) {
+                animation-delay: -0.32s;
+            }
+            .loading-dot:nth-child(2) {
+                animation-delay: -0.16s;
+            }
+
+            @keyframes bounce {
+                0%,
+                80%,
+                100% {
+                    transform: scale(0);
+                }
+                40% {
+                    transform: scale(1);
+                }
+            }
+
+            .chat-input-container {
+                padding: 20px;
+                background: var(--light-bg);
+                border-top: 1px solid var(--border-color);
+                flex-shrink: 0;
+                display: block !important;
+                visibility: visible !important;
+            }
+
+            [data-theme="dark"] .chat-input-container {
+                background: var(--darker-bg);
+            }
+
+            .chat-input-wrapper {
+                display: flex;
+                gap: 10px;
+                align-items: flex-end;
+            }
+
+            .chat-input {
+                flex: 1;
+                padding: 12px 16px;
+                border: 2px solid var(--border-color);
+                border-radius: 25px;
+                font-size: 15px;
+                resize: none;
+                min-height: 48px;
+                max-height: 120px;
+                font-family: inherit;
+                background: white;
+                color: var(--text-primary);
+                transition: all 0.3s ease;
+            }
+
+            [data-theme="dark"] .chat-input {
+                background: var(--dark-bg);
+                border-color: var(--border-color);
+            }
+
+            .chat-input:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+            }
+
+            .send-btn {
+                width: 48px;
+                height: 48px;
+                background: linear-gradient(
+                    135deg,
+                    var(--primary-color) 0%,
+                    var(--secondary-color) 100%
+                );
+                border: none;
+                border-radius: 50%;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .send-btn:hover:not(:disabled) {
+                transform: scale(1.1);
+                box-shadow: 0 4px 12px rgba(0, 102, 204, 0.4);
+            }
+
+            .send-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .error-message {
+                background: rgba(220, 53, 69, 0.1);
+                color: var(--danger-color);
+                padding: 12px;
+                border-radius: 8px;
+                margin-top: 10px;
+                border-left: 4px solid var(--danger-color);
+            }
+
+            .info-panel {
+                display: none;
+            }
+
+            .sidebar-section {
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .sidebar-section:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+
+            .badge {
+                display: inline-block;
+                padding: 3px 6px;
+                border-radius: 10px;
+                font-size: 10px;
+                font-weight: 600;
+                margin: 2px;
+            }
+
+            .badge-success {
+                background: rgba(40, 167, 69, 0.2);
+                color: var(--success-color);
+            }
+
+            .badge-warning {
+                background: rgba(255, 193, 7, 0.2);
+                color: var(--warning-color);
+            }
+
+            .badge-info {
+                background: rgba(0, 153, 255, 0.2);
+                color: var(--secondary-color);
+            }
+
+            .welcome-screen {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                padding: 40px;
+                text-align: center;
+                color: var(--text-secondary);
+            }
+
+            .welcome-screen i {
+                font-size: 64px;
+                color: var(--primary-color);
+                margin-bottom: 20px;
+            }
+
+            .welcome-screen h2 {
+                color: var(--text-primary);
+                margin-bottom: 10px;
+            }
+
+            .welcome-examples {
+                margin-top: 30px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+                width: 100%;
+                max-width: 600px;
+            }
+
+            .example-card {
+                background: var(--light-bg);
+                padding: 15px;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-align: center;
+            }
+
+            [data-theme="dark"] .example-card {
+                background: var(--darker-bg);
+            }
+
+            .example-card:hover {
+                border-color: var(--primary-color);
+                transform: translateY(-5px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            }
+
+            .example-card i {
+                font-size: 32px;
+                color: var(--primary-color);
+                margin-bottom: 10px;
+            }
+
+            .example-card h4 {
+                color: var(--text-primary);
+                margin-bottom: 5px;
+            }
+
+            .example-card p {
+                font-size: 13px;
+                color: var(--text-secondary);
+            }
+
+            /* Scrollbar Styling */
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: var(--light-bg);
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: var(--border-color);
+                border-radius: 4px;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--primary-color);
+            }
+
+            /* Responsive Design */
+            @media (max-width: 1100px) {
+                .sidebar {
+                    width: 160px;
+                }
+
+                .header-stats {
+                    display: none;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    padding: 8px;
+                }
+
+                header {
+                    padding: 10px 12px;
+                    margin-bottom: 8px;
+                }
+
+                .header-title h1 {
+                    font-size: 18px;
+                }
+
+                .header-title p {
+                    display: none;
+                }
+
+                .header-stats {
+                    display: none;
+                }
+
+                .main-content {
+                    flex-direction: column;
+                    gap: 8px;
+                }
+
+                .sidebar {
+                    width: 100%;
+                    max-height: 150px;
+                    order: 2;
+                }
+
+                .chat-container {
+                    order: 1;
+                    flex: 1;
+                    min-height: 400px;
+                }
+
+                .message {
+                    padding: 10px;
+                }
+
+                .welcome-examples {
+                    flex-direction: column;
+                }
+
+                .quick-actions {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 3px;
+                    max-height: none;
+                }
+            }
+
+            .chart-container {
+                margin-top: 15px;
+                padding: 15px;
+                background: white;
+                border-radius: 8px;
+                max-height: 300px;
+            }
+
+            [data-theme="dark"] .chart-container {
+                background: var(--darker-bg);
+            }
+
+            .action-buttons {
+                display: flex;
+                gap: 8px;
+                margin-top: 10px;
+                flex-wrap: wrap;
+            }
+
+            .action-btn {
+                padding: 6px 12px;
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 12px;
+                transition: all 0.3s ease;
+            }
+
+            .action-btn:hover {
+                background: var(--secondary-color);
+                transform: translateY(-2px);
+            }
+
+            .pond-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 4px 10px;
+                background: rgba(0, 102, 204, 0.1);
+                border-radius: 12px;
+                font-size: 11px;
+                font-weight: 600;
+                color: var(--primary-color);
+            }
+
+            .endpoint-item {
+                transition: all 0.2s ease;
+            }
+
+            .endpoint-item:hover {
+                background: rgba(0, 102, 204, 0.15) !important;
+                transform: translateX(3px);
+                cursor: pointer;
+            }
+
+            #endpoints-container {
+                max-height: 400px;
+                overflow-y: auto;
+            }
+
+            #endpoints-container.collapsed {
+                max-height: 0 !important;
+                overflow: hidden;
+            }
+
+            .federated-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                padding: 4px 8px;
+                background: rgba(76, 175, 80, 0.2);
+                border-left: 3px solid #4caf50;
+                border-radius: 4px;
+                font-size: 10px;
+                font-weight: 600;
+                color: #4caf50;
+                margin-bottom: 8px;
+            }
+
+            /* Tooltip styles */
+            [data-tooltip] {
+                position: relative;
+            }
+
+            .pond-option[data-tooltip]:hover {
+                background: var(--primary-color) !important;
+                color: white;
+                box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
+            }
+
+            /* Tooltip popup - swings out to the right */
+            [data-tooltip]:hover::after {
+                content: attr(data-tooltip);
+                position: absolute;
+                left: calc(100% + 12px);
+                top: 0;
+                padding: 10px 14px;
+                background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                color: var(--text-primary);
+                border: 2px solid var(--primary-color);
+                border-radius: 8px;
+                font-size: 12px;
+                max-width: 280px;
+                min-width: 200px;
+                white-space: normal;
+                z-index: 999999;
+                box-shadow: 0 4px 20px rgba(0, 102, 204, 0.25);
+                pointer-events: none;
+                display: block;
+                opacity: 0;
+                animation: tooltipSlideIn 0.2s ease-out forwards;
+                line-height: 1.4;
+                font-weight: 500;
+            }
+
+            [data-theme="dark"] [data-tooltip]:hover::after {
+                background: linear-gradient(
+                    135deg,
+                    var(--dark-bg) 0%,
+                    var(--darker-bg) 100%
+                );
+                color: var(--text-primary);
+                border-color: var(--secondary-color);
+                box-shadow: 0 4px 20px rgba(0, 153, 255, 0.3);
+            }
+
+            @keyframes tooltipSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            /* Tooltip arrow */
+            [data-tooltip]:hover::before {
+                content: "";
+                position: absolute;
+                left: calc(100% + 4px);
+                top: 12px;
+                border: 8px solid transparent;
+                border-right-color: var(--primary-color);
+                z-index: 999999;
+                pointer-events: none;
+                display: block;
+                animation: tooltipSlideIn 0.2s ease-out forwards;
+            }
+
+            [data-theme="dark"] [data-tooltip]:hover::before {
+                border-right-color: var(--secondary-color);
+            }
+
+            .endpoint-item[data-tooltip]:hover {
+                background: rgba(0, 102, 204, 0.1) !important;
+                border-left: 3px solid var(--primary-color);
+                padding-left: 12px;
+            }
+
+            /* Hide tooltips when sidebar is wide - show inline instead */
+            .sidebar.wide [data-tooltip]:hover::after,
+            .sidebar.wide [data-tooltip]:hover::before {
+                display: none;
+            }
+
+            .api-url-display {
+                margin-top: 10px;
+                padding: 8px 12px;
+                background: rgba(0, 0, 0, 0.05);
+                border-radius: 6px;
+                font-size: 11px;
+                font-family: "Courier New", monospace;
+                word-break: break-all;
+                color: var(--text-secondary);
+            }
+
+            [data-theme="dark"] .api-url-display {
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            /* Markdown content styling */
+            .markdown-content {
+                line-height: 1.6;
+                color: var(--text-primary);
+            }
+
+            .markdown-content h1 {
+                font-size: 1.8em;
+                font-weight: 700;
+                margin: 0.5em 0 0.3em 0;
+                color: var(--primary-color);
+                border-bottom: 2px solid var(--primary-color);
+                padding-bottom: 0.3em;
+            }
+
+            .markdown-content h2 {
+                font-size: 1.4em;
+                font-weight: 600;
+                margin: 0.8em 0 0.4em 0;
+                color: var(--text-primary);
+            }
+
+            .markdown-content h3 {
+                font-size: 1.2em;
+                font-weight: 600;
+                margin: 0.6em 0 0.3em 0;
+                color: var(--text-secondary);
+            }
+
+            .markdown-content p {
+                margin: 0.5em 0;
+            }
+
+            .markdown-content hr {
+                border: none;
+                border-top: 1px solid var(--border-color);
+                margin: 1em 0;
+                opacity: 0.5;
+            }
+
+            .markdown-content ul,
+            .markdown-content ol {
+                margin: 0.5em 0 0.5em 1.5em;
+                padding: 0;
+            }
+
+            .markdown-content li {
+                margin: 0.3em 0;
+            }
+
+            .markdown-content strong {
+                font-weight: 600;
+                color: var(--text-primary);
+            }
+
+            .markdown-content em {
+                font-style: italic;
+                color: var(--text-secondary);
+            }
+
+            .markdown-content code {
+                background: rgba(0, 0, 0, 0.05);
+                padding: 2px 6px;
+                border-radius: 3px;
+                font-family: "Courier New", monospace;
+                font-size: 0.9em;
+            }
+
+            [data-theme="dark"] .markdown-content code {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .markdown-content pre {
+                background: rgba(0, 0, 0, 0.05);
+                padding: 12px;
+                border-radius: 6px;
+                overflow-x: auto;
+                margin: 0.8em 0;
+            }
+
+            [data-theme="dark"] .markdown-content pre {
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            .markdown-content blockquote {
+                border-left: 4px solid var(--primary-color);
+                padding-left: 1em;
+                margin: 0.8em 0;
+                color: var(--text-secondary);
+                font-style: italic;
+            }
+
+            /* Dark theme adjustments */
+            [data-theme="dark"] .markdown-content h1 {
+                color: var(--primary-color);
+                border-bottom-color: var(--primary-color);
+            }
+
+            [data-theme="dark"] .markdown-content hr {
+                border-top-color: rgba(255, 255, 255, 0.2);
+            }
+        </style>
+    </head>
+    <body data-version="3.5.0" data-build="1731961300">
+        <div class="container">
+            <header>
+                <div class="header-title">
+                    <i class="fas fa-cloud-sun"></i>
+                    <div>
+                        <h1>NOAA Data Lake Assistant</h1>
+                        <p>
+                            Ask me anything about weather, ocean, climate, or
+                            marine data
+                        </p>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="header-stat">
+                        <span class="header-stat-value" id="queryCount">0</span>
+                        <span class="header-stat-label">Queries</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="header-stat-value" id="dataCount">0</span>
+                        <span class="header-stat-label">Ponds Queried</span>
+                    </div>
+                </div>
+                <div class="header-controls">
+                    <button
+                        class="home-btn"
+                        id="homeBtn"
+                        title="Back to Home"
+                        style="
+                            background: none;
+                            border: none;
+                            cursor: pointer;
+                            padding: 8px 12px;
+                            color: #ffffff;
+                            font-size: 20px;
+                            transition: color 0.3s;
+                        "
+                    >
+                        <i class="fas fa-home"></i>
+                    </button>
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span>Online</span>
+                    </div>
+                    <button
+                        class="theme-toggle"
+                        id="themeToggle"
+                        title="Toggle theme"
+                    >
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="settings-btn" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="main-content">
+                <aside class="sidebar" id="sidebar">
+                    <div
+                        class="sidebar-resize-handle"
+                        id="sidebarResizeHandle"
+                    ></div>
+                    <div class="sidebar-section">
+                        <h3 class="collapsible-header">
+                            <i class="fas fa-database"></i> Data Sources
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </h3>
+                        <div
+                            style="
+                                font-size: 9px;
+                                opacity: 0.6;
+                                margin: -5px 0 5px 0;
+                                padding: 0 5px;
+                            "
+                        >
+                            Click to select multiple sources
+                        </div>
+                        <div
+                            class="collapsible-section pond-selector"
+                            style="max-height: none; overflow: visible"
+                        >
+                            <div
+                                class="pond-option active"
+                                data-pond="all"
+                                data-tooltip="AI automatically routes your query to the most relevant data sources"
+                            >
+                                <i class="fas fa-globe"></i>
+                                <div style="flex: 1">
+                                    <strong>Federated</strong>
+                                    <div class="pond-description">
+                                        AI automatically routes to relevant
+                                        ponds
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="pond-option"
+                                data-pond="atmospheric"
+                                data-tooltip="Weather alerts, forecasts, observations, and atmospheric conditions from NWS"
+                            >
+                                <i class="fas fa-cloud-sun-rain"></i>
+                                <div style="flex: 1">
+                                    <strong>Atmospheric</strong>
+                                    <div class="pond-description">
+                                        Weather data, alerts, forecasts
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="pond-option"
+                                data-pond="oceanic"
+                                data-tooltip="Tides, currents, water levels, and coastal marine conditions"
+                            >
+                                <i class="fas fa-water"></i>
+                                <div style="flex: 1">
+                                    <strong>Oceanic</strong>
+                                    <div class="pond-description">
+                                        Tides, currents, water levels
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="pond-option"
+                                data-pond="buoy"
+                                data-tooltip="NDBC buoy observations including wave height, wind speed, and sea conditions"
+                            >
+                                <i class="fas fa-life-ring"></i>
+                                <div style="flex: 1">
+                                    <strong>Buoy</strong>
+                                    <div class="pond-description">
+                                        Marine buoy observations
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="pond-option"
+                                data-pond="climate"
+                                data-tooltip="Historical climate data, temperature trends, and long-term weather patterns"
+                            >
+                                <i class="fas fa-chart-line"></i>
+                                <div style="flex: 1">
+                                    <strong>Climate</strong>
+                                    <div class="pond-description">
+                                        Historical climate data, trends
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Endpoints & Services Section -->
+                        <div class="sidebar-section" style="margin-top: 15px">
+                            <h3 class="collapsible-header collapsed">
+                                <i class="fas fa-plug"></i> Endpoints & Services
+                                <i class="fas fa-chevron-down toggle-icon"></i>
+                            </h3>
+                            <div
+                                class="collapsible-section collapsed"
+                                id="endpoints-container"
+                                style="max-height: 0; overflow-y: auto"
+                            >
+                                <div style="font-size: 11px; padding: 5px">
+                                    <p style="opacity: 0.7; margin: 10px 0">
+                                        Loading endpoint information...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions">
+                            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                            <div id="quickActionsContainer">
+                                <button class="quick-action-btn" onclick="displayAllPondsMetadata()" style="width: 100%; margin: 5px 0;">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Data Lake Metrics</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3 class="collapsible-header collapsed">
+                            <i class="fas fa-server"></i> Service Status
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </h3>
+                        <div
+                            class="collapsible-section collapsed"
+                            id="services-status-container"
+                            style="max-height: 0"
+                        >
+                            <div style="font-size: 10px; line-height: 1.6">
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        margin: 3px 0;
+                                    "
+                                >
+                                    <span>NWS API</span>
+                                    <span
+                                        class="badge badge-success"
+                                        style="padding: 2px 5px"
+                                        >Active</span
+                                    >
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        margin: 3px 0;
+                                    "
+                                >
+                                    <span>NOAA Tides</span>
+                                    <span
+                                        class="badge badge-success"
+                                        style="padding: 2px 5px"
+                                        >Active</span
+                                    >
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        margin: 3px 0;
+                                    "
+                                >
+                                    <span>NDBC Buoys</span>
+                                    <span
+                                        class="badge badge-success"
+                                        style="padding: 2px 5px"
+                                        >Active</span
+                                    >
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        margin: 3px 0;
+                                    "
+                                >
+                                    <span>CDO Climate</span>
+                                    <span
+                                        class="badge badge-warning"
+                                        style="padding: 2px 5px"
+                                        >Token Req</span
+                                    >
+                                </div>
+                                <div
+                                    style="
+                                        margin-top: 10px;
+                                        padding-top: 10px;
+                                        border-top: 1px solid
+                                            rgba(255, 255, 255, 0.1);
+                                    "
+                                >
+                                    <div style="opacity: 0.7; font-size: 9px">
+                                        <i class="fas fa-info-circle"></i>
+                                        Endpoints:
+                                        <span id="total-endpoints-count"
+                                            >Loading...</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="welcome-screen">
+                            <i class="fas fa-robot"></i>
+                            <h2>Welcome to NOAA Data Lake</h2>
+                            <p>
+                                I'm your AI assistant for exploring weather,
+                                ocean, climate, and marine data.
+                            </p>
+                            <p>Ask me anything or try one of these examples:</p>
+
+                            <div class="welcome-examples">
+                                <div
+                                    class="example-card"
+                                    data-query="What are the current weather conditions in Miami, are there any active hurricane warnings in the Gulf of Mexico, and what's the wave height forecast for the next 24 hours?"
+                                >
+                                    <i class="fas fa-hurricane"></i>
+                                    <h4>Hurricane & Ocean Safety</h4>
+                                    <p>Weather, warnings & wave forecasts</p>
+                                </div>
+                                <div
+                                    class="example-card"
+                                    data-query="Show me tide predictions for San Francisco Bay tomorrow at 6 AM and 6 PM, current water temperature, and any marine weather advisories for sailing conditions"
+                                >
+                                    <i class="fas fa-ship"></i>
+                                    <h4>Marine Planning</h4>
+                                    <p>Tides, temperature & advisories</p>
+                                </div>
+                                <div
+                                    class="example-card"
+                                    data-query="Compare the historical temperature trends for New York City over the past 5 years with current conditions, and show me any correlation with extreme weather events"
+                                >
+                                    <i class="fas fa-temperature-high"></i>
+                                    <h4>Climate Analysis</h4>
+                                    <p>Historical trends & correlations</p>
+                                </div>
+                                <div
+                                    class="example-card"
+                                    data-query="Is there a coastal flooding risk in Charleston, South Carolina considering storm surge predictions, high tide times, current rainfall totals, and historical flooding patterns in the area?"
+                                >
+                                    <i class="fas fa-house-flood-water"></i>
+                                    <h4>Coastal Flood Assessment</h4>
+                                    <p>Storm surge, tides, rain & history</p>
+                                </div>
+                                <div
+                                    class="example-card"
+                                    data-query="What are the best fishing conditions off the coast of North Carolina right now based on water temperature, wave heights from nearby buoys, barometric pressure trends, and weather forecast for the next 12 hours?"
+                                >
+                                    <i class="fas fa-fish"></i>
+                                    <h4>Fishing Conditions</h4>
+                                    <p>Water temp, waves, pressure & weather</p>
+                                </div>
+                                <div
+                                    class="example-card"
+                                    data-query="Show me all active severe weather warnings across Texas, current radar data, how this compares to historical severe weather patterns, and which counties are most affected"
+                                >
+                                    <i class="fas fa-bolt"></i>
+                                    <h4>Severe Weather Tracking</h4>
+                                    <p>Warnings, radar, history & zones</p>
+                                </div>
+                                <div
+                                    class="example-card"
+                                    data-query="Plan a safe maritime route from Boston to Portland Maine considering wind speed and direction, wave heights, visibility forecasts, ocean currents, and any marine weather advisories along the route"
+                                >
+                                    <i class="fas fa-route"></i>
+                                    <h4>Maritime Navigation</h4>
+                                    <p>Wind, waves, visibility & currents</p>
+                                </div>
+                                <div
+                                    class="example-card"
+                                    data-query="Analyze climate change indicators for the Pacific Northwest including sea level rise trends, temperature anomalies over the past decade, frequency of extreme precipitation events, and changes in seasonal weather patterns"
+                                >
+                                    <i class="fas fa-chart-area"></i>
+                                    <h4>Climate Change Impact</h4>
+                                    <p>Sea level, temps, extremes & patterns</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <textarea
+                                id="chatInput"
+                                class="chat-input"
+                                placeholder="Ask me about weather, tides, climate, or marine data..."
+                                rows="1"
+                            ></textarea>
+                            <button class="send-btn" id="sendBtn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Markdown rendering library -->
+        <script src="https://cdn.jsdelivr.net/npm/marked@11.1.0/marked.min.js"></script>
+        <script src="app.js?v=3.6.1"></script>
+        <script>
+            // Simple version logging - no automatic reloads
+            (function () {
+                const CURRENT_VERSION = "3.6.1";
+                console.log(`✓ NOAA Chatbot v${CURRENT_VERSION}`);
+                localStorage.setItem("noaa_chatbot_version", CURRENT_VERSION);
+            })();
+        </script>
+    </body>
+</html>

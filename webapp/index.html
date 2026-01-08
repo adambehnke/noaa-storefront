@@ -1226,13 +1226,17 @@
                         </h3>
                         <div
                             style="
-                                font-size: 9px;
+                                font-size: 10px;
                                 opacity: 0.6;
                                 margin: -5px 0 5px 0;
                                 padding: 0 5px;
                             "
                         >
-                            Click to select multiple sources
+                            Click to select multiple sources<br />
+                            <span style="opacity: 0.8; font-style: italic">
+                                <i class="fas fa-info-circle"></i> Double-click
+                                a pond to view recent data examples
+                            </span>
                         </div>
                         <div
                             class="collapsible-section pond-selector"
@@ -1327,7 +1331,16 @@
 
                         <div class="quick-actions">
                             <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
-                            <div id="quickActionsContainer"></div>
+                            <div id="quickActionsContainer">
+                                <button
+                                    class="quick-action-btn"
+                                    onclick="displayAllPondsMetadata()"
+                                    style="width: 100%; margin: 5px 0"
+                                >
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Data Lake Metrics</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -1518,85 +1531,13 @@
 
         <!-- Markdown rendering library -->
         <script src="https://cdn.jsdelivr.net/npm/marked@11.1.0/marked.min.js"></script>
-        <script src="app.js?v=3.5.0"></script>
+        <script src="chatbot.js?v=3.6.1"></script>
         <script>
-            // AGGRESSIVE version check and force reload if needed
+            // Simple version logging - no automatic reloads
             (function () {
-                const CURRENT_VERSION = "3.5.0";
-                const CURRENT_BUILD = "1731961300";
-                const storedVersion = localStorage.getItem(
-                    "noaa_chatbot_version",
-                );
-                const storedBuild = localStorage.getItem("noaa_chatbot_build");
-
-                // Check body data attributes match
-                const bodyVersion = document.body.getAttribute("data-version");
-                const bodyBuild = document.body.getAttribute("data-build");
-
-                if (
-                    !bodyVersion ||
-                    !bodyBuild ||
-                    bodyVersion !== CURRENT_VERSION ||
-                    bodyBuild !== CURRENT_BUILD
-                ) {
-                    console.warn("⚠️ HTML version mismatch detected!");
-                    console.log("Force reloading to get latest version...");
-
-                    // Clear everything
-                    localStorage.clear();
-                    sessionStorage.clear();
-
-                    // Force hard reload
-                    if ("caches" in window) {
-                        caches.keys().then((names) => {
-                            names.forEach((name) => caches.delete(name));
-                        });
-                    }
-
-                    setTimeout(() => {
-                        window.location.href =
-                            window.location.href + "?nocache=" + Date.now();
-                    }, 100);
-                    return;
-                }
-
-                if (storedVersion && storedVersion !== CURRENT_VERSION) {
-                    console.log(
-                        `Version mismatch: ${storedVersion} → ${CURRENT_VERSION}`,
-                    );
-                    console.log("Clearing cache and reloading...");
-
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    localStorage.setItem(
-                        "noaa_chatbot_version",
-                        CURRENT_VERSION,
-                    );
-                    localStorage.setItem("noaa_chatbot_build", CURRENT_BUILD);
-
-                    window.location.reload(true);
-                } else if (!storedVersion) {
-                    localStorage.setItem(
-                        "noaa_chatbot_version",
-                        CURRENT_VERSION,
-                    );
-                    localStorage.setItem("noaa_chatbot_build", CURRENT_BUILD);
-                    console.log("✓ Version set to:", CURRENT_VERSION);
-                } else {
-                    console.log("✓ Running version:", CURRENT_VERSION);
-                }
-
-                // Force hide pond descriptions immediately via JavaScript
-                setTimeout(() => {
-                    document
-                        .querySelectorAll(".pond-description")
-                        .forEach((el) => {
-                            el.style.display = "none";
-                            el.style.opacity = "0";
-                            el.style.maxHeight = "0";
-                            el.style.visibility = "hidden";
-                        });
-                }, 0);
+                const CURRENT_VERSION = "3.6.1";
+                console.log(`✓ NOAA Chatbot v${CURRENT_VERSION}`);
+                localStorage.setItem("noaa_chatbot_version", CURRENT_VERSION);
             })();
         </script>
     </body>

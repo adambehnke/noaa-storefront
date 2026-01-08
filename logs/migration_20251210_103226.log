@@ -1,0 +1,66 @@
+
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+[0;36m[1m NOAA FEDERATED DATA LAKE - ACCOUNT MIGRATION[0m
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+
+[0;34mℹ[0m  Migration script started at Wed Dec 10 10:32:26 CST 2025
+[0;34mℹ[0m  Log file: /Users/adambehnke/Projects/noaa_storefront/logs/migration_20251210_103226.log
+
+[0;35m▶[0m  [1mChecking prerequisites...[0m
+[0;32m✓[0m  All prerequisites met
+[0;35m▶[0m  [1mDetecting AWS account information...[0m
+[0;34mℹ[0m  Current Account: [1m349338457682[0m
+[0;34mℹ[0m  Current Region:  [1mus-east-1[0m
+[0;34mℹ[0m  Environment:     [1mdev[0m
+
+[0;35m▶[0m  [1mScanning for hardcoded account references...[0m
+[1;33m⚠[0m  Found old account reference in .deployment-bucket: 899626030376
+[1;33m⚠[0m  Found 1 old account reference(s)
+[0;34mℹ[0m    → 899626030376
+
+
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+[0;36m[1m APPLYING FIXES[0m
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+
+[0;35m▶[0m  [1mFixing .deployment-bucket file...[0m
+[0;34mℹ[0m  [DRY RUN] Would update to: noaa-deployment-349338457682-dev
+[0;35m▶[0m  [1mFixing hardcoded account in Glue ETL script...[0m
+[0;34mℹ[0m  [DRY RUN] Would fix account references in run-etl-now.sh
+[0;35m▶[0m  [1mUpdating documentation with current account...[0m
+[0;34mℹ[0m  [DRY RUN] Would update OPERATIONAL_STATUS_REPORT.md
+[0;34mℹ[0m  [DRY RUN] Would update COMPREHENSIVE_DIAGNOSTIC_REPORT.md
+
+[0;32m✓[0m  Completed 0/3 fixes
+[0;34mℹ[0m  This was a dry run. No changes were made.
+[0;34mℹ[0m  Run without --dry-run to apply changes.
+
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+[0;36m[1m DEPLOYING INFRASTRUCTURE[0m
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+
+[0;35m▶[0m  [1mStarting infrastructure deployment...[0m
+[0;34mℹ[0m  [DRY RUN] Would execute: /Users/adambehnke/Projects/noaa_storefront/scripts/deploy_to_aws.sh --env dev --region us-east-1
+
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+[0;36m[1m VERIFYING DEPLOYMENT[0m
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+
+[0;34mℹ[0m  [DRY RUN] Would verify deployment
+
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+[0;36m[1m MIGRATION SUMMARY[0m
+[0;36m[1m═══════════════════════════════════════════════════════════════[0m
+
+[0;34mℹ[0m  Migration Date:      Wed Dec 10 10:32:28 CST 2025
+[0;34mℹ[0m  Target Account:      [1m349338457682[0m
+[0;34mℹ[0m  Region:              [1mus-east-1[0m
+[0;34mℹ[0m  Environment:         [1mdev[0m
+
+[0;34mℹ[0m  This was a DRY RUN - no changes were made
+[0;34mℹ[0m  Run without --dry-run to perform actual migration
+
+[0;32m✓[0m  Migration script completed
+
+[0;32m✓[0m  [1mMigration script completed successfully![0m
+

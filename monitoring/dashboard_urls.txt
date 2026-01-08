@@ -1,0 +1,22 @@
+NOAA Dashboard URLs
+===================
+
+Simple Dashboard:
+https://d2azko4sm6tkua.cloudfront.net/dashboard_configured.html
+
+Interactive Dashboard:
+https://d2azko4sm6tkua.cloudfront.net/dashboard_interactive.html
+
+Comprehensive Dashboard:
+https://d2azko4sm6tkua.cloudfront.net/dashboard_comprehensive.html
+
+CloudFront Distribution:
+https://d2azko4sm6tkua.cloudfront.net
+
+API Endpoint:
+https://7zsyebtp6zfvbctdwd2gwlr3my0mijfn.lambda-url.us-east-1.on.aws/
+
+S3 Bucket:
+noaa-dashboards-dev-899626030376
+
+Deployed: Thu Dec 18 14:46:36 CST 2025

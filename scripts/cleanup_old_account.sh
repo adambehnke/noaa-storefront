@@ -3,7 +3,7 @@
 # NOAA Federated Data Lake - Old Account Cleanup Script
 #
 # This script removes all NOAA-related resources from the OLD account
-# (349338457682) after migration to the new account (899626030376).
+# (899626030376) after migration to the new account (899626030376).
 #
 # Usage:
 #   ./cleanup_old_account.sh [OPTIONS]
@@ -47,7 +47,7 @@ readonly NC='\033[0m'
 # ============================================================================
 
 # OLD account to clean up
-readonly OLD_ACCOUNT="349338457682"
+readonly OLD_ACCOUNT="899626030376"
 readonly OLD_PROFILE="${OLD_PROFILE:-noaa}"
 
 # NEW account (verification only)

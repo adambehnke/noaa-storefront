@@ -26,6 +26,7 @@ logger.setLevel(logging.INFO)
 bedrock = boto3.client("bedrock-runtime", region_name="us-east-1")
 athena = boto3.client("athena", region_name="us-east-1")
 lambda_client = boto3.client("lambda", region_name="us-east-1")
+s3_client = boto3.client("s3", region_name="us-east-1")
 
 # Environment Variables
 GOLD_DB = os.environ.get("GOLD_DB", "noaa_gold_dev")
@@ -37,6 +38,7 @@ BEDROCK_MODEL = os.environ.get(
 )
 ENV = os.environ.get("ENV", "dev")
 ENHANCED_HANDLER = f"noaa-enhanced-handler-{ENV}"
+S3_BUCKET = os.environ.get("S3_BUCKET", "noaa-federated-lake-899626030376-dev")
 
 # Configuration
 RELEVANCE_THRESHOLD = 0.3
@@ -240,6 +242,126 @@ POND_METADATA = {
 
 
 # =============================================================================
+# METADATA COLLECTION
+# =============================================================================
+
+
+def collect_pond_metadata_dynamic(pond_name=None):
+    """
+    Dynamically collect fresh metadata from S3 for data ponds
+    Returns current file counts, sizes, and freshness
+    """
+    logger.info(f"Collecting fresh metadata for ponds: {pond_name or 'all'}")
+
+    ponds_to_check = (
+        [pond_name]
+        if pond_name
+        else ["atmospheric", "oceanic", "buoy", "climate", "spatial", "terrestrial"]
+    )
+    layers = ["bronze", "silver", "gold"]
+
+    metadata = {
+        "collection_timestamp": datetime.utcnow().isoformat(),
+        "bucket": S3_BUCKET,
+        "ponds": {},
+    }
+
+    for pond in ponds_to_check:
+        pond_data = {
+            "pond_name": pond,
+            "layers": {},
+            "total_files": 0,
+            "total_size_mb": 0,
+            "latest_ingestion": None,
+            "freshness_minutes": None,
+            "status": "checking",
+        }
+
+        all_timestamps = []
+
+        for layer in layers:
+            prefix = f"{layer}/{pond}/"
+            layer_stats = {"file_count": 0, "size_mb": 0, "latest_file": None}
+
+            try:
+                paginator = s3_client.get_paginator("list_objects_v2")
+                page_iterator = paginator.paginate(
+                    Bucket=S3_BUCKET,
+                    Prefix=prefix,
+                    PaginationConfig={"MaxItems": 1000},  # Limit for speed
+                )
+
+                for page in page_iterator:
+                    if "Contents" not in page:
+                        continue
+
+                    for obj in page["Contents"]:
+                        if obj["Key"].endswith("/"):
+                            continue
+
+                        layer_stats["file_count"] += 1
+                        layer_stats["size_mb"] += obj["Size"] / (1024 * 1024)
+                        all_timestamps.append(obj["LastModified"])
+
+                if all_timestamps:
+                    latest = max(all_timestamps)
+                    layer_stats["latest_file"] = latest.isoformat()
+
+                pond_data["layers"][layer] = layer_stats
+                pond_data["total_files"] += layer_stats["file_count"]
+                pond_data["total_size_mb"] += layer_stats["size_mb"]
+
+            except Exception as e:
+                logger.error(f"Error checking {layer}/{pond}: {e}")
+                layer_stats["error"] = str(e)
+
+        # Calculate freshness
+        if all_timestamps:
+            latest = max(all_timestamps)
+            pond_data["latest_ingestion"] = latest.isoformat()
+
+            now = datetime.now(timezone.utc)
+            freshness_minutes = int((now - latest).total_seconds() / 60)
+            pond_data["freshness_minutes"] = freshness_minutes
+
+            if freshness_minutes < 30:
+                pond_data["freshness_status"] = "excellent"
+            elif freshness_minutes < 120:
+                pond_data["freshness_status"] = "good"
+            elif freshness_minutes < 360:
+                pond_data["freshness_status"] = "moderate"
+            else:
+                pond_data["freshness_status"] = "stale"
+
+            pond_data["status"] = "active"
+        else:
+            pond_data["status"] = "empty"
+            pond_data["freshness_status"] = "no_data"
+
+        pond_data["total_size_mb"] = round(pond_data["total_size_mb"], 2)
+        pond_data["total_size_gb"] = round(pond_data["total_size_mb"] / 1024, 2)
+
+        metadata["ponds"][pond] = pond_data
+
+    # Calculate summary
+    metadata["summary"] = {
+        "total_ponds": len(ponds_to_check),
+        "active_ponds": sum(
+            1 for p in metadata["ponds"].values() if p["status"] == "active"
+        ),
+        "total_files": sum(p["total_files"] for p in metadata["ponds"].values()),
+        "total_size_mb": round(
+            sum(p["total_size_mb"] for p in metadata["ponds"].values()), 2
+        ),
+        "total_size_gb": round(
+            sum(p.get("total_size_gb", 0) for p in metadata["ponds"].values()), 2
+        ),
+    }
+
+    return metadata
+
+
+# =============================================================================
 # MAIN LAMBDA HANDLER
 # =============================================================================
 
@@ -264,6 +386,16 @@ def lambda_handler(event, context):
         query = body.get("query") or body.get("question")
         include_raw_data = body.get("include_raw_data", False)
         max_results_per_pond = body.get("max_results_per_pond", 50)
+
+        # Check for metadata request
+        action = body.get("action")
+        if action == "get_metadata":
+            logger.info("Metadata request received")
+            pond_filter = body.get("pond")
+            metadata = collect_pond_metadata_dynamic(pond_filter)
+            return respond(
+                200, {"success": True, "action": "metadata", "data": metadata}
+            )
 
         if not query:
             return respond(400, {"error": "Missing 'query' parameter"})
@@ -1029,7 +1161,7 @@ def respond(status_code: int, body: Dict) -> Dict:
         "headers": {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Headers": "Content-Type,cache-control",
             "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
         },
         "body": json.dumps(body, default=str),

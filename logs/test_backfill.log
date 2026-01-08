@@ -1,0 +1,65 @@
+2025-12-11 14:55:22,986 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2025-12-11 14:55:23,863 - INFO - Test mode: limiting backfill to 7 days
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:146: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "started_at": datetime.utcnow().isoformat(),
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:147: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "last_updated": datetime.utcnow().isoformat(),
+2025-12-11 14:55:24,164 - INFO - ✓ S3 bucket access verified: noaa-federated-lake-899626030376-dev
+2025-12-11 14:55:24,381 - INFO - ✓ Lambda access verified
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:553: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  start_time = datetime.utcnow()
+2025-12-11 14:55:24,382 - INFO - 
+================================================================================
+2025-12-11 14:55:24,382 - INFO - NOAA HISTORICAL DATA BACKFILL
+2025-12-11 14:55:24,382 - INFO - ================================================================================
+2025-12-11 14:55:24,382 - INFO - Account: 899626030376
+2025-12-11 14:55:24,382 - INFO - Bucket: noaa-federated-lake-899626030376-dev
+2025-12-11 14:55:24,382 - INFO - Ponds: atmospheric
+2025-12-11 14:55:24,382 - INFO - Days back: 7
+2025-12-11 14:55:24,382 - INFO - Test mode: True
+2025-12-11 14:55:24,382 - INFO - ================================================================================
+
+2025-12-11 14:55:24,382 - INFO - 
+================================================================================
+2025-12-11 14:55:24,383 - INFO - Starting backfill for ATMOSPHERIC pond
+2025-12-11 14:55:24,383 - INFO - ================================================================================
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:283: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  end_date = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+2025-12-11 14:55:24,383 - INFO - Generated 1 date ranges for backfill
+2025-12-11 14:55:24,383 - INFO - 
+[1/1] Processing atmospheric: 2025-12-04 to 2025-12-11
+2025-12-11 14:55:24,383 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-12-04 to 2025-12-11
+2025-12-11 14:56:07,169 - INFO - ✓ Bronze ingestion successful: 1515 records, 66 API calls
+2025-12-11 14:56:08,279 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 14:56:08,279 - WARNING - No data found in Bronze layer - may be expected for this date range
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:190: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat(),
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:156: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  self.progress["last_updated"] = datetime.utcnow().isoformat()
+2025-12-11 14:56:08,281 - INFO - 
+ATMOSPHERIC backfill complete:
+2025-12-11 14:56:08,281 - INFO -   Completed: 1/1
+2025-12-11 14:56:08,281 - INFO -   Failed: 0/1
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:573: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  end_time = datetime.utcnow()
+2025-12-11 14:56:08,281 - INFO - 
+================================================================================
+2025-12-11 14:56:08,282 - INFO - BACKFILL COMPLETE
+2025-12-11 14:56:08,282 - INFO - ================================================================================
+2025-12-11 14:56:08,282 - INFO - Duration: 0:00:43.899840
+2025-12-11 14:56:08,282 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T20:56:08.280215
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 1
+  Failed Ranges: 0
+  Last Success: 2025-12-11
+================================================================================

@@ -1,0 +1,144 @@
+{
+  "widgets": [
+    {
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 2,
+      "properties": {
+        "markdown": "# NOAA Data Ingestion Flow\nMonitor data flowing from NOAA APIs through Lambda functions to S3 Bronze layer"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 2,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "title": "Lambda Invocations (Last 24h)",
+        "metrics": [
+          ["AWS/Lambda", "Invocations", {"stat": "Sum", "label": "All Lambda Functions"}]
+        ],
+        "period": 300,
+        "stat": "Sum",
+        "region": "us-east-1",
+        "view": "timeSeries",
+        "yAxis": {
+          "left": {
+            "label": "Invocations"
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 2,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "title": "Lambda Errors",
+        "metrics": [
+          ["AWS/Lambda", "Errors", {"stat": "Sum", "label": "Total Errors"}]
+        ],
+        "period": 300,
+        "stat": "Sum",
+        "region": "us-east-1",
+        "view": "timeSeries",
+        "yAxis": {
+          "left": {
+            "label": "Errors"
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 8,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Average Lambda Duration",
+        "metrics": [
+          ["AWS/Lambda", "Duration", {"stat": "Average", "label": "Avg Duration"}]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "us-east-1",
+        "view": "timeSeries",
+        "yAxis": {
+          "left": {
+            "label": "Milliseconds"
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 8,
+      "y": 8,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Concurrent Lambda Executions",
+        "metrics": [
+          ["AWS/Lambda", "ConcurrentExecutions", {"stat": "Maximum", "label": "Max Concurrent"}]
+        ],
+        "period": 60,
+        "stat": "Maximum",
+        "region": "us-east-1",
+        "view": "timeSeries",
+        "yAxis": {
+          "left": {
+            "label": "Concurrent"
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 16,
+      "y": 8,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Success Rate",
+        "metrics": [
+          ["AWS/Lambda", "Invocations", {"stat": "Sum", "id": "m1", "visible": false}],
+          [".", "Errors", {"stat": "Sum", "id": "m2", "visible": false}],
+          [{"expression": "100*(m1-m2)/m1", "label": "Success Rate %", "id": "e1"}]
+        ],
+        "period": 300,
+        "region": "us-east-1",
+        "view": "timeSeries",
+        "yAxis": {
+          "left": {
+            "min": 0,
+            "max": 100,
+            "label": "Percent"
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 14,
+      "width": 24,
+      "height": 6,
+      "properties": {
+        "title": "Lambda Throttles",
+        "metrics": [
+          ["AWS/Lambda", "Throttles", {"stat": "Sum", "label": "Throttled Requests"}]
+        ],
+        "period": 300,
+        "stat": "Sum",
+        "region": "us-east-1",
+        "view": "timeSeries"
+      }
+    }
+  ]
+}

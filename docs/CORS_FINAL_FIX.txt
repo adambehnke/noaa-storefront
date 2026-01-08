@@ -1,0 +1,49 @@
+╔══════════════════════════════════════════════════════════════╗
+║         CORS DUPLICATE HEADER ISSUE - FIXED ✅               ║
+╚══════════════════════════════════════════════════════════════╝
+
+PROBLEM: 
+--------
+Lambda Function URL was adding CORS headers automatically
+AND our Lambda code was also adding CORS headers
+Result: Duplicate "Access-Control-Allow-Origin" headers
+
+SOLUTION:
+---------
+✅ Removed ALL CORS headers from Lambda code
+✅ Let Lambda Function URL handle CORS automatically
+✅ Lambda Function URL already configured with:
+   - AllowOrigins: ["*"]
+   - AllowMethods: ["GET", "POST"]
+   - MaxAge: 3600
+
+DEPLOYED:
+---------
+Lambda: noaa-dashboard-metrics
+Updated: 2026-01-05 20:19:32 UTC
+Status: ✅ LIVE
+
+TEST NOW:
+---------
+The dashboard should work immediately (no cache to invalidate for Lambda)
+
+1. Open: https://d2azko4sm6tkua.cloudfront.net/dashboard_enhanced_live.html
+2. Hard refresh: Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac)  
+3. Open console (F12)
+4. Should see NO CORS errors
+5. All tabs should load data
+
+VERIFIED:
+---------
+✅ API returns single Access-Control-Allow-Origin header
+✅ Origin varies based on request (proper CORS behavior)
+✅ No duplicate headers
+
+Test command that confirms it works:
+curl -i -H "Origin: https://d2azko4sm6tkua.cloudfront.net" \
+  "https://ghew7mwudk326bla57wgqe5xxi0ymhjm.lambda-url.us-east-1.on.aws/?pond_name=atmospheric" \
+  | grep -i "access-control"
+
+Result: Single header only ✅
+Access-Control-Allow-Origin: https://d2azko4sm6tkua.cloudfront.net
+

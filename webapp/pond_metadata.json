@@ -1,0 +1,179 @@
+{
+  "collection_timestamp": "2025-12-18T21:12:14.843266",
+  "ponds": {
+    "atmospheric": {
+      "layers": {
+        "bronze": {
+          "file_count": 25101,
+          "size_bytes": 43647502900,
+          "size_mb": 41625.5,
+          "latest_file": "2025-12-18T21:10:24+00:00",
+          "oldest_file": "2025-11-19T22:28:51+00:00"
+        },
+        "silver": {
+          "file_count": 25100,
+          "size_bytes": 17985249125,
+          "size_mb": 17152.07,
+          "latest_file": "2025-12-18T21:10:24+00:00",
+          "oldest_file": "2025-11-19T22:28:51+00:00"
+        },
+        "gold": {
+          "file_count": 25100,
+          "size_bytes": 12340059608,
+          "size_mb": 11768.4,
+          "latest_file": "2025-12-18T21:10:24+00:00",
+          "oldest_file": "2025-11-19T22:28:51+00:00"
+        }
+      },
+      "total_files": 75301,
+      "total_size_mb": 70545.97,
+      "total_size_gb": 68.89,
+      "latest_ingestion": "2025-12-18T21:10:24+00:00"
+    },
+    "oceanic": {
+      "layers": {
+        "bronze": {
+          "file_count": 55982,
+          "size_bytes": 7452799253,
+          "size_mb": 7107.54,
+          "latest_file": "2025-12-18T21:12:51+00:00",
+          "oldest_file": "2025-11-19T21:17:35+00:00"
+        },
+        "silver": {
+          "file_count": 52548,
+          "size_bytes": 1523478425,
+          "size_mb": 1452.9,
+          "latest_file": "2025-12-18T21:13:02+00:00",
+          "oldest_file": "2025-11-19T21:17:35+00:00"
+        },
+        "gold": {
+          "file_count": 52548,
+          "size_bytes": 1327918500,
+          "size_mb": 1266.4,
+          "latest_file": "2025-12-18T21:13:16+00:00",
+          "oldest_file": "2025-11-19T21:17:35+00:00"
+        }
+      },
+      "total_files": 161078,
+      "total_size_mb": 9826.85,
+      "total_size_gb": 9.6,
+      "latest_ingestion": "2025-12-18T21:13:16+00:00"
+    },
+    "buoy": {
+      "layers": {
+        "bronze": {
+          "file_count": 25229,
+          "size_bytes": 8462153176,
+          "size_mb": 8070.14,
+          "latest_file": "2025-12-18T21:11:21+00:00",
+          "oldest_file": "2025-11-19T22:28:58+00:00"
+        },
+        "silver": {
+          "file_count": 25229,
+          "size_bytes": 12516396721,
+          "size_mb": 11936.57,
+          "latest_file": "2025-12-18T21:11:21+00:00",
+          "oldest_file": "2025-11-19T22:28:58+00:00"
+        },
+        "gold": {
+          "file_count": 25229,
+          "size_bytes": 12516396721,
+          "size_mb": 11936.57,
+          "latest_file": "2025-12-18T21:11:21+00:00",
+          "oldest_file": "2025-11-19T22:28:58+00:00"
+        }
+      },
+      "total_files": 75687,
+      "total_size_mb": 31943.27,
+      "total_size_gb": 31.19,
+      "latest_ingestion": "2025-12-18T21:11:21+00:00"
+    },
+    "climate": {
+      "layers": {
+        "bronze": {
+          "file_count": 708,
+          "size_bytes": 4291896,
+          "size_mb": 4.09,
+          "latest_file": "2025-12-18T20:29:04+00:00",
+          "oldest_file": "2025-11-19T22:29:04+00:00"
+        },
+        "silver": {
+          "file_count": 708,
+          "size_bytes": 7669056,
+          "size_mb": 7.31,
+          "latest_file": "2025-12-18T20:29:04+00:00",
+          "oldest_file": "2025-11-19T22:29:04+00:00"
+        },
+        "gold": {
+          "file_count": 708,
+          "size_bytes": 7669056,
+          "size_mb": 7.31,
+          "latest_file": "2025-12-18T20:29:04+00:00",
+          "oldest_file": "2025-11-19T22:29:04+00:00"
+        }
+      },
+      "total_files": 2124,
+      "total_size_mb": 18.72,
+      "total_size_gb": 0.02,
+      "latest_ingestion": "2025-12-18T20:29:04+00:00"
+    },
+    "spatial": {
+      "layers": {
+        "bronze": {
+          "file_count": 90,
+          "size_bytes": 1064104230,
+          "size_mb": 1014.81,
+          "latest_file": "2025-12-17T22:29:46+00:00",
+          "oldest_file": "2025-11-19T22:29:18+00:00"
+        },
+        "silver": {
+          "file_count": 90,
+          "size_bytes": 538750530,
+          "size_mb": 513.79,
+          "latest_file": "2025-12-17T22:29:46+00:00",
+          "oldest_file": "2025-11-19T22:29:21+00:00"
+        },
+        "gold": {
+          "file_count": 90,
+          "size_bytes": 595700850,
+          "size_mb": 568.1,
+          "latest_file": "2025-12-17T22:29:46+00:00",
+          "oldest_file": "2025-11-19T22:29:24+00:00"
+        }
+      },
+      "total_files": 270,
+      "total_size_mb": 2096.71,
+      "total_size_gb": 2.05,
+      "latest_ingestion": "2025-12-17T22:29:46+00:00"
+    },
+    "terrestrial": {
+      "layers": {
+        "bronze": {
+          "file_count": 2880,
+          "size_bytes": 293415466,
+          "size_mb": 279.82,
+          "latest_file": "2025-12-18T21:00:31+00:00",
+          "oldest_file": "2025-11-19T22:29:28+00:00"
+        },
+        "silver": {
+          "file_count": 2880,
+          "size_bytes": 105768324,
+          "size_mb": 100.87,
+          "latest_file": "2025-12-18T21:00:31+00:00",
+          "oldest_file": "2025-11-19T22:29:28+00:00"
+        },
+        "gold": {
+          "file_count": 2880,
+          "size_bytes": 67387871,
+          "size_mb": 64.27,
+          "latest_file": "2025-12-18T21:00:31+00:00",
+          "oldest_file": "2025-11-19T22:29:28+00:00"
+        }
+      },
+      "total_files": 8640,
+      "total_size_mb": 444.96,
+      "total_size_gb": 0.43,
+      "latest_ingestion": "2025-12-18T21:00:31+00:00"
+    }
+  }
+}

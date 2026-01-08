@@ -1,0 +1,681 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'NOAA Federated Data Lake - QuickSight Dashboards and Visualizations'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+  AccountId:
+    Type: String
+    Default: '899626030376'
+    Description: AWS Account ID
+
+  DataLakeBucket:
+    Type: String
+    Description: S3 bucket for data lake storage
+
+  AthenaResultsBucket:
+    Type: String
+    Description: S3 bucket for Athena query results
+
+  QuickSightUsername:
+    Type: String
+    Description: QuickSight admin username
+    Default: admin
+
+  QuickSightEdition:
+    Type: String
+    Default: ENTERPRISE
+    AllowedValues:
+      - STANDARD
+      - ENTERPRISE
+    Description: QuickSight edition
+
+  GoldDatabase:
+    Type: String
+    Default: noaa_gold_dev
+    Description: Athena Gold database name
+
+  AnalyticsDatabase:
+    Type: String
+    Default: noaa_analytics_dev
+    Description: Athena Analytics database name
+
+Resources:
+  # ============================================================================
+  # IAM ROLES AND POLICIES
+  # ============================================================================
+
+  QuickSightServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'noaa-quicksight-service-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: quicksight.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSQuickSightAthenaAccess
+      Policies:
+        - PolicyName: QuickSightDataLakeAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:GetObjectVersion
+                  - s3:ListBucket
+                  - s3:ListBucketMultipartUploads
+                  - s3:ListMultipartUploadParts
+                  - s3:AbortMultipartUpload
+                  - s3:PutObject
+                Resource:
+                  - !Sub 'arn:aws:s3:::${DataLakeBucket}'
+                  - !Sub 'arn:aws:s3:::${DataLakeBucket}/*'
+                  - !Sub 'arn:aws:s3:::${AthenaResultsBucket}'
+                  - !Sub 'arn:aws:s3:::${AthenaResultsBucket}/*'
+              - Effect: Allow
+                Action:
+                  - athena:BatchGetQueryExecution
+                  - athena:CancelQueryExecution
+                  - athena:GetCatalogs
+                  - athena:GetExecutionEngine
+                  - athena:GetExecutionEngines
+                  - athena:GetNamespace
+                  - athena:GetNamespaces
+                  - athena:GetQueryExecution
+                  - athena:GetQueryExecutions
+                  - athena:GetQueryResults
+                  - athena:GetQueryResultsStream
+                  - athena:GetTable
+                  - athena:GetTables
+                  - athena:ListQueryExecutions
+                  - athena:RunQuery
+                  - athena:StartQueryExecution
+                  - athena:StopQueryExecution
+                  - athena:ListWorkGroups
+                  - athena:GetWorkGroup
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - glue:GetDatabase
+                  - glue:GetDatabases
+                  - glue:GetTable
+                  - glue:GetTables
+                  - glue:GetPartition
+                  - glue:GetPartitions
+                Resource:
+                  - !Sub 'arn:aws:glue:${AWS::Region}:${AccountId}:catalog'
+                  - !Sub 'arn:aws:glue:${AWS::Region}:${AccountId}:database/${GoldDatabase}'
+                  - !Sub 'arn:aws:glue:${AWS::Region}:${AccountId}:database/${AnalyticsDatabase}'
+                  - !Sub 'arn:aws:glue:${AWS::Region}:${AccountId}:table/${GoldDatabase}/*'
+                  - !Sub 'arn:aws:glue:${AWS::Region}:${AccountId}:table/${AnalyticsDatabase}/*'
+              - Effect: Allow
+                Action:
+                  - cloudwatch:GetMetricData
+                  - cloudwatch:GetMetricStatistics
+                  - cloudwatch:ListMetrics
+                Resource: '*'
+
+  # ============================================================================
+  # QUICKSIGHT DATA SOURCES
+  # ============================================================================
+
+  GoldDataSource:
+    Type: AWS::QuickSight::DataSource
+    Properties:
+      AwsAccountId: !Ref AccountId
+      DataSourceId: !Sub 'noaa-gold-datasource-${Environment}'
+      Name: !Sub 'NOAA Gold Layer - ${Environment}'
+      Type: ATHENA
+      DataSourceParameters:
+        AthenaParameters:
+          WorkGroup: primary
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:DescribeDataSource
+            - quicksight:DescribeDataSourcePermissions
+            - quicksight:PassDataSource
+            - quicksight:UpdateDataSource
+            - quicksight:DeleteDataSource
+            - quicksight:UpdateDataSourcePermissions
+      SslProperties:
+        DisableSsl: false
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+        - Key: Layer
+          Value: Gold
+
+  AnalyticsDataSource:
+    Type: AWS::QuickSight::DataSource
+    Properties:
+      AwsAccountId: !Ref AccountId
+      DataSourceId: !Sub 'noaa-analytics-datasource-${Environment}'
+      Name: !Sub 'NOAA Analytics Layer - ${Environment}'
+      Type: ATHENA
+      DataSourceParameters:
+        AthenaParameters:
+          WorkGroup: !Sub 'noaa-analytics-${Environment}'
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:DescribeDataSource
+            - quicksight:DescribeDataSourcePermissions
+            - quicksight:PassDataSource
+            - quicksight:UpdateDataSource
+            - quicksight:DeleteDataSource
+            - quicksight:UpdateDataSourcePermissions
+      SslProperties:
+        DisableSsl: false
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+        - Key: Layer
+          Value: Analytics
+
+  # ============================================================================
+  # QUICKSIGHT DATASETS
+  # ============================================================================
+
+  AtmosphericDataSet:
+    Type: AWS::QuickSight::DataSet
+    Properties:
+      AwsAccountId: !Ref AccountId
+      DataSetId: !Sub 'noaa-atmospheric-dataset-${Environment}'
+      Name: !Sub 'Atmospheric Data - ${Environment}'
+      ImportMode: DIRECT_QUERY
+      PhysicalTableMap:
+        atmospheric_table:
+          RelationalTable:
+            DataSourceArn: !GetAtt GoldDataSource.Arn
+            Catalog: AwsDataCatalog
+            Schema: !Ref GoldDatabase
+            Name: atmospheric
+            InputColumns:
+              - Name: station_id
+                Type: STRING
+              - Name: observation_time
+                Type: DATETIME
+              - Name: temperature
+                Type: DECIMAL
+              - Name: pressure
+                Type: DECIMAL
+              - Name: humidity
+                Type: DECIMAL
+              - Name: wind_speed
+                Type: DECIMAL
+              - Name: wind_direction
+                Type: DECIMAL
+              - Name: visibility
+                Type: DECIMAL
+              - Name: year
+                Type: INTEGER
+              - Name: month
+                Type: INTEGER
+              - Name: day
+                Type: INTEGER
+      LogicalTableMap:
+        logical_table:
+          Alias: atmospheric_data
+          Source:
+            PhysicalTableId: atmospheric_table
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:DescribeDataSet
+            - quicksight:DescribeDataSetPermissions
+            - quicksight:PassDataSet
+            - quicksight:DescribeIngestion
+            - quicksight:ListIngestions
+            - quicksight:UpdateDataSet
+            - quicksight:DeleteDataSet
+            - quicksight:CreateIngestion
+            - quicksight:CancelIngestion
+            - quicksight:UpdateDataSetPermissions
+
+  OceanicDataSet:
+    Type: AWS::QuickSight::DataSet
+    Properties:
+      AwsAccountId: !Ref AccountId
+      DataSetId: !Sub 'noaa-oceanic-dataset-${Environment}'
+      Name: !Sub 'Oceanic Data - ${Environment}'
+      ImportMode: DIRECT_QUERY
+      PhysicalTableMap:
+        oceanic_table:
+          RelationalTable:
+            DataSourceArn: !GetAtt GoldDataSource.Arn
+            Catalog: AwsDataCatalog
+            Schema: !Ref GoldDatabase
+            Name: oceanic
+            InputColumns:
+              - Name: station_id
+                Type: STRING
+              - Name: observation_time
+                Type: DATETIME
+              - Name: water_level
+                Type: DECIMAL
+              - Name: water_temperature
+                Type: DECIMAL
+              - Name: salinity
+                Type: DECIMAL
+              - Name: wave_height
+                Type: DECIMAL
+              - Name: current_speed
+                Type: DECIMAL
+              - Name: current_direction
+                Type: DECIMAL
+              - Name: year
+                Type: INTEGER
+              - Name: month
+                Type: INTEGER
+              - Name: day
+                Type: INTEGER
+      LogicalTableMap:
+        logical_table:
+          Alias: oceanic_data
+          Source:
+            PhysicalTableId: oceanic_table
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:DescribeDataSet
+            - quicksight:DescribeDataSetPermissions
+            - quicksight:PassDataSet
+            - quicksight:DescribeIngestion
+            - quicksight:ListIngestions
+            - quicksight:UpdateDataSet
+            - quicksight:DeleteDataSet
+            - quicksight:CreateIngestion
+            - quicksight:CancelIngestion
+            - quicksight:UpdateDataSetPermissions
+
+  BuoyDataSet:
+    Type: AWS::QuickSight::DataSet
+    Properties:
+      AwsAccountId: !Ref AccountId
+      DataSetId: !Sub 'noaa-buoy-dataset-${Environment}'
+      Name: !Sub 'Buoy Data - ${Environment}'
+      ImportMode: DIRECT_QUERY
+      PhysicalTableMap:
+        buoy_table:
+          RelationalTable:
+            DataSourceArn: !GetAtt GoldDataSource.Arn
+            Catalog: AwsDataCatalog
+            Schema: !Ref GoldDatabase
+            Name: buoy
+            InputColumns:
+              - Name: buoy_id
+                Type: STRING
+              - Name: observation_time
+                Type: DATETIME
+              - Name: latitude
+                Type: DECIMAL
+              - Name: longitude
+                Type: DECIMAL
+              - Name: wind_speed
+                Type: DECIMAL
+              - Name: wind_direction
+                Type: DECIMAL
+              - Name: wave_height
+                Type: DECIMAL
+              - Name: wave_period
+                Type: DECIMAL
+              - Name: air_temperature
+                Type: DECIMAL
+              - Name: water_temperature
+                Type: DECIMAL
+              - Name: year
+                Type: INTEGER
+              - Name: month
+                Type: INTEGER
+              - Name: day
+                Type: INTEGER
+      LogicalTableMap:
+        logical_table:
+          Alias: buoy_data
+          Source:
+            PhysicalTableId: buoy_table
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:DescribeDataSet
+            - quicksight:DescribeDataSetPermissions
+            - quicksight:PassDataSet
+            - quicksight:DescribeIngestion
+            - quicksight:ListIngestions
+            - quicksight:UpdateDataSet
+            - quicksight:DeleteDataSet
+            - quicksight:CreateIngestion
+            - quicksight:CancelIngestion
+            - quicksight:UpdateDataSetPermissions
+
+  AnalyticsHourlyDataSet:
+    Type: AWS::QuickSight::DataSet
+    Properties:
+      AwsAccountId: !Ref AccountId
+      DataSetId: !Sub 'noaa-analytics-hourly-${Environment}'
+      Name: !Sub 'Hourly Analytics - ${Environment}'
+      ImportMode: DIRECT_QUERY
+      PhysicalTableMap:
+        hourly_table:
+          RelationalTable:
+            DataSourceArn: !GetAtt AnalyticsDataSource.Arn
+            Catalog: AwsDataCatalog
+            Schema: !Ref AnalyticsDatabase
+            Name: hourly_aggregates
+            InputColumns:
+              - Name: pond_name
+                Type: STRING
+              - Name: aggregation_hour
+                Type: DATETIME
+              - Name: record_count
+                Type: INTEGER
+              - Name: avg_value
+                Type: DECIMAL
+              - Name: min_value
+                Type: DECIMAL
+              - Name: max_value
+                Type: DECIMAL
+              - Name: std_dev
+                Type: DECIMAL
+      LogicalTableMap:
+        logical_table:
+          Alias: hourly_analytics
+          Source:
+            PhysicalTableId: hourly_table
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:DescribeDataSet
+            - quicksight:DescribeDataSetPermissions
+            - quicksight:PassDataSet
+            - quicksight:DescribeIngestion
+            - quicksight:ListIngestions
+            - quicksight:UpdateDataSet
+            - quicksight:DeleteDataSet
+            - quicksight:CreateIngestion
+            - quicksight:CancelIngestion
+            - quicksight:UpdateDataSetPermissions
+
+  AnalyticsDailyDataSet:
+    Type: AWS::QuickSight::DataSet
+    Properties:
+      AwsAccountId: !Ref AccountId
+      DataSetId: !Sub 'noaa-analytics-daily-${Environment}'
+      Name: !Sub 'Daily Analytics - ${Environment}'
+      ImportMode: DIRECT_QUERY
+      PhysicalTableMap:
+        daily_table:
+          RelationalTable:
+            DataSourceArn: !GetAtt AnalyticsDataSource.Arn
+            Catalog: AwsDataCatalog
+            Schema: !Ref AnalyticsDatabase
+            Name: daily_aggregates
+            InputColumns:
+              - Name: pond_name
+                Type: STRING
+              - Name: aggregation_date
+                Type: DATETIME
+              - Name: record_count
+                Type: INTEGER
+              - Name: avg_value
+                Type: DECIMAL
+              - Name: min_value
+                Type: DECIMAL
+              - Name: max_value
+                Type: DECIMAL
+              - Name: std_dev
+                Type: DECIMAL
+              - Name: percentile_25
+                Type: DECIMAL
+              - Name: percentile_50
+                Type: DECIMAL
+              - Name: percentile_75
+                Type: DECIMAL
+      LogicalTableMap:
+        logical_table:
+          Alias: daily_analytics
+          Source:
+            PhysicalTableId: daily_table
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:DescribeDataSet
+            - quicksight:DescribeDataSetPermissions
+            - quicksight:PassDataSet
+            - quicksight:DescribeIngestion
+            - quicksight:ListIngestions
+            - quicksight:UpdateDataSet
+            - quicksight:DeleteDataSet
+            - quicksight:CreateIngestion
+            - quicksight:CancelIngestion
+            - quicksight:UpdateDataSetPermissions
+
+  # ============================================================================
+  # QUICKSIGHT ANALYSES (Templates for Dashboards)
+  # ============================================================================
+
+  OperationalDashboardAnalysis:
+    Type: AWS::QuickSight::Analysis
+    Properties:
+      AwsAccountId: !Ref AccountId
+      AnalysisId: !Sub 'noaa-operational-analysis-${Environment}'
+      Name: !Sub 'NOAA Operational Dashboard - ${Environment}'
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:RestoreAnalysis
+            - quicksight:UpdateAnalysisPermissions
+            - quicksight:DeleteAnalysis
+            - quicksight:DescribeAnalysisPermissions
+            - quicksight:QueryAnalysis
+            - quicksight:DescribeAnalysis
+            - quicksight:UpdateAnalysis
+      SourceEntity:
+        SourceTemplate:
+          DataSetReferences:
+            - DataSetPlaceholder: atmospheric
+              DataSetArn: !GetAtt AtmosphericDataSet.Arn
+            - DataSetPlaceholder: oceanic
+              DataSetArn: !GetAtt OceanicDataSet.Arn
+            - DataSetPlaceholder: buoy
+              DataSetArn: !GetAtt BuoyDataSet.Arn
+          Arn: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:template/noaa-operational-template'
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+        - Key: DashboardType
+          Value: Operational
+
+  # ============================================================================
+  # QUICKSIGHT DASHBOARDS
+  # ============================================================================
+
+  OperationalDashboard:
+    Type: AWS::QuickSight::Dashboard
+    DependsOn: OperationalDashboardAnalysis
+    Properties:
+      AwsAccountId: !Ref AccountId
+      DashboardId: !Sub 'noaa-operational-dashboard-${Environment}'
+      Name: !Sub 'NOAA Operational Dashboard - ${Environment}'
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:DescribeDashboard
+            - quicksight:ListDashboardVersions
+            - quicksight:UpdateDashboardPermissions
+            - quicksight:QueryDashboard
+            - quicksight:UpdateDashboard
+            - quicksight:DeleteDashboard
+            - quicksight:DescribeDashboardPermissions
+            - quicksight:UpdateDashboardPublishedVersion
+      SourceEntity:
+        SourceTemplate:
+          DataSetReferences:
+            - DataSetPlaceholder: atmospheric
+              DataSetArn: !GetAtt AtmosphericDataSet.Arn
+            - DataSetPlaceholder: oceanic
+              DataSetArn: !GetAtt OceanicDataSet.Arn
+            - DataSetPlaceholder: buoy
+              DataSetArn: !GetAtt BuoyDataSet.Arn
+          Arn: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:template/noaa-operational-template'
+      DashboardPublishOptions:
+        AdHocFilteringOption:
+          AvailabilityStatus: ENABLED
+        ExportToCSVOption:
+          AvailabilityStatus: ENABLED
+        SheetControlsOption:
+          VisibilityState: EXPANDED
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+
+  AnalyticsDashboard:
+    Type: AWS::QuickSight::Dashboard
+    Properties:
+      AwsAccountId: !Ref AccountId
+      DashboardId: !Sub 'noaa-analytics-dashboard-${Environment}'
+      Name: !Sub 'NOAA Analytics Dashboard - ${Environment}'
+      Permissions:
+        - Principal: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:user/default/${QuickSightUsername}'
+          Actions:
+            - quicksight:DescribeDashboard
+            - quicksight:ListDashboardVersions
+            - quicksight:UpdateDashboardPermissions
+            - quicksight:QueryDashboard
+            - quicksight:UpdateDashboard
+            - quicksight:DeleteDashboard
+            - quicksight:DescribeDashboardPermissions
+            - quicksight:UpdateDashboardPublishedVersion
+      SourceEntity:
+        SourceTemplate:
+          DataSetReferences:
+            - DataSetPlaceholder: hourly
+              DataSetArn: !GetAtt AnalyticsHourlyDataSet.Arn
+            - DataSetPlaceholder: daily
+              DataSetArn: !GetAtt AnalyticsDailyDataSet.Arn
+          Arn: !Sub 'arn:aws:quicksight:${AWS::Region}:${AccountId}:template/noaa-analytics-template'
+      DashboardPublishOptions:
+        AdHocFilteringOption:
+          AvailabilityStatus: ENABLED
+        ExportToCSVOption:
+          AvailabilityStatus: ENABLED
+        SheetControlsOption:
+          VisibilityState: EXPANDED
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+
+  # ============================================================================
+  # CLOUDWATCH DASHBOARD FOR QUICKSIGHT METRICS
+  # ============================================================================
+
+  QuickSightMetricsDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: !Sub 'NOAA-QuickSight-Metrics-${Environment}'
+      DashboardBody: !Sub |
+        {
+          "widgets": [
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/QuickSight", "QueryExecutionTime", {"stat": "Average"}],
+                  [".", ".", {"stat": "Maximum"}]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "${AWS::Region}",
+                "title": "QuickSight Query Performance",
+                "yAxis": {
+                  "left": {
+                    "label": "Milliseconds"
+                  }
+                }
+              }
+            },
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/QuickSight", "DataSetRefreshCount", {"stat": "Sum"}],
+                  [".", "DataSetRefreshFailureCount", {"stat": "Sum"}]
+                ],
+                "period": 3600,
+                "stat": "Sum",
+                "region": "${AWS::Region}",
+                "title": "Dataset Refresh Activity"
+              }
+            },
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/QuickSight", "DashboardViews", {"stat": "Sum"}]
+                ],
+                "period": 3600,
+                "stat": "Sum",
+                "region": "${AWS::Region}",
+                "title": "Dashboard Usage"
+              }
+            }
+          ]
+        }
+
+Outputs:
+  GoldDataSourceId:
+    Description: QuickSight Gold Data Source ID
+    Value: !Ref GoldDataSource
+    Export:
+      Name: !Sub '${AWS::StackName}-gold-datasource'
+
+  AnalyticsDataSourceId:
+    Description: QuickSight Analytics Data Source ID
+    Value: !Ref AnalyticsDataSource
+    Export:
+      Name: !Sub '${AWS::StackName}-analytics-datasource'
+
+  OperationalDashboardId:
+    Description: Operational Dashboard ID
+    Value: !Ref OperationalDashboard
+    Export:
+      Name: !Sub '${AWS::StackName}-operational-dashboard'
+
+  AnalyticsDashboardId:
+    Description: Analytics Dashboard ID
+    Value: !Ref AnalyticsDashboard
+    Export:
+      Name: !Sub '${AWS::StackName}-analytics-dashboard'
+
+  QuickSightServiceRoleArn:
+    Description: QuickSight Service Role ARN
+    Value: !GetAtt QuickSightServiceRole.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-service-role-arn'
+
+  DashboardURL:
+    Description: URL to access QuickSight dashboards
+    Value: !Sub 'https://${AWS::Region}.quicksight.aws.amazon.com/sn/dashboards/${OperationalDashboard}'

@@ -1,0 +1,621 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'NOAA Federated Data Lake - Advanced Analytics Layer Infrastructure'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+  AccountId:
+    Type: String
+    Default: '899626030376'
+    Description: AWS Account ID
+
+  DataLakeBucket:
+    Type: String
+    Description: S3 bucket for data lake storage
+
+  AthenaResultsBucket:
+    Type: String
+    Description: S3 bucket for Athena query results
+
+Resources:
+  # ============================================================================
+  # GLUE DATABASES - Analytics Layer
+  # ============================================================================
+
+  AnalyticsDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Sub 'noaa_analytics_${Environment}'
+        Description: 'Advanced analytics layer with aggregations and ML-ready datasets'
+        LocationUri: !Sub 's3://${DataLakeBucket}/analytics/'
+        Parameters:
+          classification: analytics
+          layer: analytics
+
+  MLDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: !Sub 'noaa_ml_${Environment}'
+        Description: 'ML-ready datasets for machine learning and AI applications'
+        LocationUri: !Sub 's3://${DataLakeBucket}/ml-datasets/'
+        Parameters:
+          classification: ml-ready
+          layer: ml
+
+  # ============================================================================
+  # IAM ROLES
+  # ============================================================================
+
+  AnalyticsGlueRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'noaa-analytics-glue-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: glue.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+      Policies:
+        - PolicyName: AnalyticsDataAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                Resource:
+                  - !Sub 'arn:aws:s3:::${DataLakeBucket}/*'
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                Resource:
+                  - !Sub 'arn:aws:s3:::${DataLakeBucket}'
+              - Effect: Allow
+                Action:
+                  - glue:*
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - cloudwatch:PutMetricData
+                Resource: '*'
+
+  # ============================================================================
+  # GLUE ETL JOBS - Aggregations
+  # ============================================================================
+
+  HourlyAggregationJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub 'noaa-hourly-aggregation-${Environment}'
+      Description: 'Hourly aggregations across all data ponds'
+      Role: !GetAtt AnalyticsGlueRole.Arn
+      Command:
+        Name: glueetl
+        PythonVersion: '3'
+        ScriptLocation: !Sub 's3://${DataLakeBucket}/glue-scripts/hourly_aggregation.py'
+      DefaultArguments:
+        '--TempDir': !Sub 's3://${DataLakeBucket}/glue-temp/'
+        '--job-bookmark-option': 'job-bookmark-enable'
+        '--enable-metrics': 'true'
+        '--enable-continuous-cloudwatch-log': 'true'
+        '--enable-spark-ui': 'true'
+        '--spark-event-logs-path': !Sub 's3://${DataLakeBucket}/glue-logs/'
+        '--DATA_LAKE_BUCKET': !Ref DataLakeBucket
+        '--ANALYTICS_DATABASE': !Ref AnalyticsDatabase
+        '--ENVIRONMENT': !Ref Environment
+      GlueVersion: '4.0'
+      MaxRetries: 3
+      Timeout: 120
+      NumberOfWorkers: 5
+      WorkerType: G.1X
+      ExecutionProperty:
+        MaxConcurrentRuns: 1
+      Tags:
+        Environment: !Ref Environment
+        Project: NOAA-Federated-Lake
+        JobType: Aggregation
+
+  DailyAggregationJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub 'noaa-daily-aggregation-${Environment}'
+      Description: 'Daily aggregations with statistical summaries'
+      Role: !GetAtt AnalyticsGlueRole.Arn
+      Command:
+        Name: glueetl
+        PythonVersion: '3'
+        ScriptLocation: !Sub 's3://${DataLakeBucket}/glue-scripts/daily_aggregation.py'
+      DefaultArguments:
+        '--TempDir': !Sub 's3://${DataLakeBucket}/glue-temp/'
+        '--job-bookmark-option': 'job-bookmark-enable'
+        '--enable-metrics': 'true'
+        '--enable-continuous-cloudwatch-log': 'true'
+        '--DATA_LAKE_BUCKET': !Ref DataLakeBucket
+        '--ANALYTICS_DATABASE': !Ref AnalyticsDatabase
+        '--ENVIRONMENT': !Ref Environment
+      GlueVersion: '4.0'
+      MaxRetries: 3
+      Timeout: 240
+      NumberOfWorkers: 10
+      WorkerType: G.1X
+      ExecutionProperty:
+        MaxConcurrentRuns: 1
+
+  MLFeatureEngineeringJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub 'noaa-ml-feature-engineering-${Environment}'
+      Description: 'Feature engineering for ML datasets'
+      Role: !GetAtt AnalyticsGlueRole.Arn
+      Command:
+        Name: glueetl
+        PythonVersion: '3'
+        ScriptLocation: !Sub 's3://${DataLakeBucket}/glue-scripts/ml_feature_engineering.py'
+      DefaultArguments:
+        '--TempDir': !Sub 's3://${DataLakeBucket}/glue-temp/'
+        '--job-bookmark-option': 'job-bookmark-enable'
+        '--enable-metrics': 'true'
+        '--DATA_LAKE_BUCKET': !Ref DataLakeBucket
+        '--ML_DATABASE': !Ref MLDatabase
+        '--ANALYTICS_DATABASE': !Ref AnalyticsDatabase
+        '--ENVIRONMENT': !Ref Environment
+      GlueVersion: '4.0'
+      MaxRetries: 3
+      Timeout: 300
+      NumberOfWorkers: 15
+      WorkerType: G.2X
+      ExecutionProperty:
+        MaxConcurrentRuns: 1
+
+  CrossPondAnalyticsJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Name: !Sub 'noaa-cross-pond-analytics-${Environment}'
+      Description: 'Cross-pond correlation and relationship analysis'
+      Role: !GetAtt AnalyticsGlueRole.Arn
+      Command:
+        Name: glueetl
+        PythonVersion: '3'
+        ScriptLocation: !Sub 's3://${DataLakeBucket}/glue-scripts/cross_pond_analytics.py'
+      DefaultArguments:
+        '--TempDir': !Sub 's3://${DataLakeBucket}/glue-temp/'
+        '--job-bookmark-option': 'job-bookmark-disable'
+        '--enable-metrics': 'true'
+        '--DATA_LAKE_BUCKET': !Ref DataLakeBucket
+        '--ANALYTICS_DATABASE': !Ref AnalyticsDatabase
+        '--ENVIRONMENT': !Ref Environment
+      GlueVersion: '4.0'
+      MaxRetries: 2
+      Timeout: 360
+      NumberOfWorkers: 20
+      WorkerType: G.2X
+      ExecutionProperty:
+        MaxConcurrentRuns: 1
+
+  # ============================================================================
+  # GLUE CRAWLERS - Analytics Tables
+  # ============================================================================
+
+  AnalyticsCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: !Sub 'noaa-analytics-crawler-${Environment}'
+      Description: 'Crawler for analytics aggregation tables'
+      Role: !GetAtt AnalyticsGlueRole.Arn
+      DatabaseName: !Ref AnalyticsDatabase
+      Targets:
+        S3Targets:
+          - Path: !Sub 's3://${DataLakeBucket}/analytics/hourly/'
+          - Path: !Sub 's3://${DataLakeBucket}/analytics/daily/'
+          - Path: !Sub 's3://${DataLakeBucket}/analytics/monthly/'
+          - Path: !Sub 's3://${DataLakeBucket}/analytics/cross-pond/'
+      SchemaChangePolicy:
+        UpdateBehavior: UPDATE_IN_DATABASE
+        DeleteBehavior: LOG
+      Schedule:
+        ScheduleExpression: 'cron(0 */6 * * ? *)'
+      Configuration: '{"Version":1.0,"CrawlerOutput":{"Partitions":{"AddOrUpdateBehavior":"InheritFromTable"}}}'
+      Tags:
+        Environment: !Ref Environment
+        Project: NOAA-Federated-Lake
+
+  MLCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name: !Sub 'noaa-ml-crawler-${Environment}'
+      Description: 'Crawler for ML-ready datasets'
+      Role: !GetAtt AnalyticsGlueRole.Arn
+      DatabaseName: !Ref MLDatabase
+      Targets:
+        S3Targets:
+          - Path: !Sub 's3://${DataLakeBucket}/ml-datasets/features/'
+          - Path: !Sub 's3://${DataLakeBucket}/ml-datasets/training/'
+          - Path: !Sub 's3://${DataLakeBucket}/ml-datasets/validation/'
+      SchemaChangePolicy:
+        UpdateBehavior: UPDATE_IN_DATABASE
+        DeleteBehavior: LOG
+      Schedule:
+        ScheduleExpression: 'cron(0 */12 * * ? *)'
+      Configuration: '{"Version":1.0,"CrawlerOutput":{"Partitions":{"AddOrUpdateBehavior":"InheritFromTable"}}}'
+
+  # ============================================================================
+  # GLUE TRIGGERS - Workflow Orchestration
+  # ============================================================================
+
+  HourlyAggregationTrigger:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: !Sub 'noaa-hourly-aggregation-trigger-${Environment}'
+      Description: 'Trigger hourly aggregations'
+      Type: SCHEDULED
+      Schedule: 'cron(5 * * * ? *)'
+      Actions:
+        - JobName: !Ref HourlyAggregationJob
+      StartOnCreation: true
+
+  DailyAggregationTrigger:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: !Sub 'noaa-daily-aggregation-trigger-${Environment}'
+      Description: 'Trigger daily aggregations'
+      Type: SCHEDULED
+      Schedule: 'cron(15 2 * * ? *)'
+      Actions:
+        - JobName: !Ref DailyAggregationJob
+      StartOnCreation: true
+
+  MLFeatureEngineeringTrigger:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: !Sub 'noaa-ml-feature-trigger-${Environment}'
+      Description: 'Trigger ML feature engineering after daily aggregation'
+      Type: CONDITIONAL
+      Actions:
+        - JobName: !Ref MLFeatureEngineeringJob
+      Predicate:
+        Conditions:
+          - LogicalOperator: EQUALS
+            JobName: !Ref DailyAggregationJob
+            State: SUCCEEDED
+      StartOnCreation: true
+
+  WeeklyCrossPondTrigger:
+    Type: AWS::Glue::Trigger
+    Properties:
+      Name: !Sub 'noaa-cross-pond-trigger-${Environment}'
+      Description: 'Trigger weekly cross-pond analytics'
+      Type: SCHEDULED
+      Schedule: 'cron(0 4 ? * SUN *)'
+      Actions:
+        - JobName: !Ref CrossPondAnalyticsJob
+      StartOnCreation: true
+
+  # ============================================================================
+  # ATHENA WORKGROUPS - Analytics
+  # ============================================================================
+
+  AnalyticsWorkgroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: !Sub 'noaa-analytics-${Environment}'
+      Description: 'Workgroup for analytics queries with cost controls'
+      State: ENABLED
+      WorkGroupConfiguration:
+        EnforceWorkGroupConfiguration: true
+        PublishCloudWatchMetricsEnabled: true
+        BytesScannedCutoffPerQuery: 10737418240
+        ResultConfiguration:
+          OutputLocation: !Sub 's3://${AthenaResultsBucket}/analytics/'
+          EncryptionConfiguration:
+            EncryptionOption: SSE_S3
+        EngineVersion:
+          SelectedEngineVersion: AUTO
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+        - Key: Purpose
+          Value: Analytics
+
+  MLWorkgroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: !Sub 'noaa-ml-${Environment}'
+      Description: 'Workgroup for ML data preparation queries'
+      State: ENABLED
+      WorkGroupConfiguration:
+        EnforceWorkGroupConfiguration: true
+        PublishCloudWatchMetricsEnabled: true
+        BytesScannedCutoffPerQuery: 21474836480
+        ResultConfiguration:
+          OutputLocation: !Sub 's3://${AthenaResultsBucket}/ml/'
+          EncryptionConfiguration:
+            EncryptionOption: SSE_S3
+        EngineVersion:
+          SelectedEngineVersion: AUTO
+
+  # ============================================================================
+  # LAMBDA - Analytics Orchestrator
+  # ============================================================================
+
+  AnalyticsOrchestratorRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'noaa-analytics-orchestrator-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: AnalyticsOrchestratorPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - glue:StartJobRun
+                  - glue:GetJobRun
+                  - glue:GetJobRuns
+                  - glue:BatchStopJobRun
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - athena:StartQueryExecution
+                  - athena:GetQueryExecution
+                  - athena:GetQueryResults
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource:
+                  - !Sub 'arn:aws:s3:::${DataLakeBucket}/*'
+                  - !Sub 'arn:aws:s3:::${AthenaResultsBucket}/*'
+              - Effect: Allow
+                Action:
+                  - cloudwatch:PutMetricData
+                Resource: '*'
+
+  AnalyticsOrchestratorFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'noaa-analytics-orchestrator-${Environment}'
+      Description: 'Orchestrates analytics jobs and monitors execution'
+      Runtime: python3.11
+      Handler: index.lambda_handler
+      Role: !GetAtt AnalyticsOrchestratorRole.Arn
+      Timeout: 300
+      MemorySize: 512
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+          DATA_LAKE_BUCKET: !Ref DataLakeBucket
+          ANALYTICS_DATABASE: !Ref AnalyticsDatabase
+          ML_DATABASE: !Ref MLDatabase
+          HOURLY_JOB: !Ref HourlyAggregationJob
+          DAILY_JOB: !Ref DailyAggregationJob
+          ML_JOB: !Ref MLFeatureEngineeringJob
+          CROSS_POND_JOB: !Ref CrossPondAnalyticsJob
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+          import os
+          from datetime import datetime, timedelta
+
+          glue = boto3.client('glue')
+          athena = boto3.client('athena')
+          cloudwatch = boto3.client('cloudwatch')
+
+          def lambda_handler(event, context):
+              """
+              Orchestrates analytics jobs based on schedule and data availability
+              """
+
+              job_type = event.get('job_type', 'hourly')
+              force_run = event.get('force_run', False)
+
+              env = os.environ['ENVIRONMENT']
+              analytics_db = os.environ['ANALYTICS_DATABASE']
+
+              results = {
+                  'timestamp': datetime.utcnow().isoformat(),
+                  'job_type': job_type,
+                  'executions': []
+              }
+
+              try:
+                  if job_type == 'hourly':
+                      # Start hourly aggregation
+                      response = glue.start_job_run(
+                          JobName=os.environ['HOURLY_JOB'],
+                          Arguments={
+                              '--execution_time': datetime.utcnow().isoformat(),
+                              '--force_run': str(force_run)
+                          }
+                      )
+                      results['executions'].append({
+                          'job': 'hourly',
+                          'run_id': response['JobRunId'],
+                          'status': 'started'
+                      })
+
+                  elif job_type == 'daily':
+                      # Start daily aggregation
+                      response = glue.start_job_run(
+                          JobName=os.environ['DAILY_JOB'],
+                          Arguments={
+                              '--execution_date': (datetime.utcnow() - timedelta(days=1)).strftime('%Y-%m-%d'),
+                              '--force_run': str(force_run)
+                          }
+                      )
+                      results['executions'].append({
+                          'job': 'daily',
+                          'run_id': response['JobRunId'],
+                          'status': 'started'
+                      })
+
+                  elif job_type == 'ml':
+                      # Start ML feature engineering
+                      response = glue.start_job_run(
+                          JobName=os.environ['ML_JOB'],
+                          Arguments={
+                              '--execution_time': datetime.utcnow().isoformat()
+                          }
+                      )
+                      results['executions'].append({
+                          'job': 'ml_features',
+                          'run_id': response['JobRunId'],
+                          'status': 'started'
+                      })
+
+                  elif job_type == 'cross_pond':
+                      # Start cross-pond analytics
+                      response = glue.start_job_run(
+                          JobName=os.environ['CROSS_POND_JOB'],
+                          Arguments={
+                              '--analysis_window_days': '7'
+                          }
+                      )
+                      results['executions'].append({
+                          'job': 'cross_pond',
+                          'run_id': response['JobRunId'],
+                          'status': 'started'
+                      })
+
+                  # Send CloudWatch metrics
+                  cloudwatch.put_metric_data(
+                      Namespace='NOAA/Analytics',
+                      MetricData=[{
+                          'MetricName': 'JobsStarted',
+                          'Value': len(results['executions']),
+                          'Unit': 'Count',
+                          'Dimensions': [
+                              {'Name': 'JobType', 'Value': job_type},
+                              {'Name': 'Environment', 'Value': env}
+                          ]
+                      }]
+                  )
+
+                  return {
+                      'statusCode': 200,
+                      'body': json.dumps(results)
+                  }
+
+              except Exception as e:
+                  print(f"Error orchestrating analytics: {str(e)}")
+                  return {
+                      'statusCode': 500,
+                      'body': json.dumps({
+                          'error': str(e),
+                          'job_type': job_type
+                      })
+                  }
+
+  # ============================================================================
+  # CLOUDWATCH ALARMS
+  # ============================================================================
+
+  GlueJobFailureAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub 'noaa-analytics-glue-job-failures-${Environment}'
+      AlarmDescription: 'Alert when Glue analytics jobs fail'
+      MetricName: glue.driver.aggregate.numFailedTasks
+      Namespace: Glue
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+
+  AnalyticsQueryCostAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub 'noaa-analytics-query-cost-${Environment}'
+      AlarmDescription: 'Alert when analytics query costs are high'
+      MetricName: DataScannedInBytes
+      Namespace: AWS/Athena
+      Statistic: Sum
+      Period: 3600
+      EvaluationPeriods: 1
+      Threshold: 107374182400
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: WorkGroup
+          Value: !Ref AnalyticsWorkgroup
+      TreatMissingData: notBreaching
+
+Outputs:
+  AnalyticsDatabaseName:
+    Description: Name of Analytics Glue Database
+    Value: !Ref AnalyticsDatabase
+    Export:
+      Name: !Sub '${AWS::StackName}-analytics-database'
+
+  MLDatabaseName:
+    Description: Name of ML Glue Database
+    Value: !Ref MLDatabase
+    Export:
+      Name: !Sub '${AWS::StackName}-ml-database'
+
+  AnalyticsWorkgroupName:
+    Description: Name of Analytics Athena Workgroup
+    Value: !Ref AnalyticsWorkgroup
+    Export:
+      Name: !Sub '${AWS::StackName}-analytics-workgroup'
+
+  MLWorkgroupName:
+    Description: Name of ML Athena Workgroup
+    Value: !Ref MLWorkgroup
+    Export:
+      Name: !Sub '${AWS::StackName}-ml-workgroup'
+
+  HourlyAggregationJobName:
+    Description: Name of Hourly Aggregation Glue Job
+    Value: !Ref HourlyAggregationJob
+    Export:
+      Name: !Sub '${AWS::StackName}-hourly-job'
+
+  DailyAggregationJobName:
+    Description: Name of Daily Aggregation Glue Job
+    Value: !Ref DailyAggregationJob
+    Export:
+      Name: !Sub '${AWS::StackName}-daily-job'
+
+  MLFeatureJobName:
+    Description: Name of ML Feature Engineering Glue Job
+    Value: !Ref MLFeatureEngineeringJob
+    Export:
+      Name: !Sub '${AWS::StackName}-ml-job'
+
+  OrchestratorFunctionArn:
+    Description: ARN of Analytics Orchestrator Lambda Function
+    Value: !GetAtt AnalyticsOrchestratorFunction.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-orchestrator-arn'

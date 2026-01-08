@@ -1,0 +1,2552 @@
+2025-12-11 14:56:46,537 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2025-12-11 14:56:46,840 - INFO - Loaded checkpoint from backfill_checkpoint.json
+2025-12-11 14:56:47,020 - INFO - ✓ S3 bucket access verified: noaa-federated-lake-899626030376-dev
+2025-12-11 14:56:47,252 - INFO - ✓ Lambda access verified
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:553: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  start_time = datetime.utcnow()
+2025-12-11 14:56:47,252 - INFO - 
+================================================================================
+2025-12-11 14:56:47,252 - INFO - NOAA HISTORICAL DATA BACKFILL
+2025-12-11 14:56:47,252 - INFO - ================================================================================
+2025-12-11 14:56:47,252 - INFO - Account: 899626030376
+2025-12-11 14:56:47,252 - INFO - Bucket: noaa-federated-lake-899626030376-dev
+2025-12-11 14:56:47,252 - INFO - Ponds: atmospheric, oceanic, buoy, climate, terrestrial
+2025-12-11 14:56:47,252 - INFO - Days back: 365
+2025-12-11 14:56:47,252 - INFO - Test mode: False
+2025-12-11 14:56:47,252 - INFO - ================================================================================
+
+2025-12-11 14:56:47,252 - INFO - 
+================================================================================
+2025-12-11 14:56:47,252 - INFO - Starting backfill for ATMOSPHERIC pond
+2025-12-11 14:56:47,253 - INFO - ================================================================================
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:283: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  end_date = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+2025-12-11 14:56:47,253 - INFO - Generated 53 date ranges for backfill
+2025-12-11 14:56:47,253 - INFO - [1/53] Skipping ('2025-12-04', '2025-12-11') (already completed)
+2025-12-11 14:56:47,253 - INFO - 
+[2/53] Processing atmospheric: 2025-11-27 to 2025-12-04
+2025-12-11 14:56:47,253 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-11-27 to 2025-12-04
+2025-12-11 14:57:30,368 - INFO - ✓ Bronze ingestion successful: 1547 records, 66 API calls
+2025-12-11 14:57:31,499 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 14:57:31,499 - WARNING - No data found in Bronze layer - may be expected for this date range
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:190: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat(),
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:156: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  self.progress["last_updated"] = datetime.utcnow().isoformat()
+2025-12-11 14:57:36,504 - INFO - 
+[3/53] Processing atmospheric: 2025-11-20 to 2025-11-27
+2025-12-11 14:57:36,505 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-11-20 to 2025-11-27
+2025-12-11 14:58:18,853 - INFO - ✓ Bronze ingestion successful: 1556 records, 66 API calls
+2025-12-11 14:58:19,952 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 14:58:19,953 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 14:58:24,958 - INFO - 
+[4/53] Processing atmospheric: 2025-11-13 to 2025-11-20
+2025-12-11 14:58:24,958 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-11-13 to 2025-11-20
+2025-12-11 14:59:06,907 - INFO - ✓ Bronze ingestion successful: 1556 records, 66 API calls
+2025-12-11 14:59:08,012 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 14:59:08,012 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 14:59:13,018 - INFO - 
+[5/53] Processing atmospheric: 2025-11-06 to 2025-11-13
+2025-12-11 14:59:13,018 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-11-06 to 2025-11-13
+2025-12-11 14:59:54,832 - INFO - ✓ Bronze ingestion successful: 1555 records, 66 API calls
+2025-12-11 14:59:55,948 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 14:59:55,949 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:00:00,956 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T20:59:55.950341
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 5
+  Failed Ranges: 0
+  Last Success: 2025-11-13
+================================================================================
+2025-12-11 15:00:00,957 - INFO - 
+[6/53] Processing atmospheric: 2025-10-30 to 2025-11-06
+2025-12-11 15:00:00,957 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-10-30 to 2025-11-06
+2025-12-11 15:05:10,927 - INFO - ✓ Bronze ingestion successful: 1569 records, 66 API calls
+2025-12-11 15:05:11,990 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:05:11,990 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:05:16,995 - INFO - 
+[7/53] Processing atmospheric: 2025-10-23 to 2025-10-30
+2025-12-11 15:05:16,995 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-10-23 to 2025-10-30
+2025-12-11 15:06:09,039 - INFO - ✓ Bronze ingestion successful: 1562 records, 66 API calls
+2025-12-11 15:06:10,429 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:06:10,429 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:06:15,434 - INFO - 
+[8/53] Processing atmospheric: 2025-10-16 to 2025-10-23
+2025-12-11 15:06:15,434 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-10-16 to 2025-10-23
+2025-12-11 15:07:02,330 - INFO - ✓ Bronze ingestion successful: 1561 records, 66 API calls
+2025-12-11 15:07:03,421 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:07:03,421 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:07:08,426 - INFO - 
+[9/53] Processing atmospheric: 2025-10-09 to 2025-10-16
+2025-12-11 15:07:08,426 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-10-09 to 2025-10-16
+2025-12-11 15:07:51,689 - INFO - ✓ Bronze ingestion successful: 1561 records, 66 API calls
+2025-12-11 15:07:52,743 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:07:52,743 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:07:57,749 - INFO - 
+[10/53] Processing atmospheric: 2025-10-02 to 2025-10-09
+2025-12-11 15:07:57,750 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-10-02 to 2025-10-09
+2025-12-11 15:08:40,089 - INFO - ✓ Bronze ingestion successful: 1562 records, 66 API calls
+2025-12-11 15:08:41,162 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:08:41,162 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:08:46,168 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T21:08:41.162994
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 10
+  Failed Ranges: 0
+  Last Success: 2025-10-09
+================================================================================
+2025-12-11 15:08:46,168 - INFO - 
+[11/53] Processing atmospheric: 2025-09-25 to 2025-10-02
+2025-12-11 15:08:46,168 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-09-25 to 2025-10-02
+2025-12-11 15:09:28,649 - INFO - ✓ Bronze ingestion successful: 1663 records, 66 API calls
+2025-12-11 15:09:29,681 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:09:29,681 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:09:34,691 - INFO - 
+[12/53] Processing atmospheric: 2025-09-18 to 2025-09-25
+2025-12-11 15:09:34,691 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-09-18 to 2025-09-25
+2025-12-11 15:10:20,958 - INFO - ✓ Bronze ingestion successful: 1672 records, 66 API calls
+2025-12-11 15:10:22,136 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:10:22,137 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:10:27,140 - INFO - 
+[13/53] Processing atmospheric: 2025-09-11 to 2025-09-18
+2025-12-11 15:10:27,141 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-09-11 to 2025-09-18
+2025-12-11 15:11:10,216 - INFO - ✓ Bronze ingestion successful: 1609 records, 66 API calls
+2025-12-11 15:11:11,288 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:11:11,288 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:11:16,289 - INFO - 
+[14/53] Processing atmospheric: 2025-09-04 to 2025-09-11
+2025-12-11 15:11:16,289 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-09-04 to 2025-09-11
+2025-12-11 15:12:02,491 - INFO - ✓ Bronze ingestion successful: 1608 records, 66 API calls
+2025-12-11 15:12:03,591 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:12:03,591 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:12:08,595 - INFO - 
+[15/53] Processing atmospheric: 2025-08-28 to 2025-09-04
+2025-12-11 15:12:08,595 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-08-28 to 2025-09-04
+2025-12-11 15:12:52,311 - INFO - ✓ Bronze ingestion successful: 1629 records, 66 API calls
+2025-12-11 15:12:53,379 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:12:53,380 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:12:58,381 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T21:12:53.380221
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 15
+  Failed Ranges: 0
+  Last Success: 2025-09-04
+================================================================================
+2025-12-11 15:12:58,381 - INFO - 
+[16/53] Processing atmospheric: 2025-08-21 to 2025-08-28
+2025-12-11 15:12:58,381 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-08-21 to 2025-08-28
+2025-12-11 15:13:43,419 - INFO - ✓ Bronze ingestion successful: 1692 records, 66 API calls
+2025-12-11 15:13:44,451 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:13:44,452 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:13:49,456 - INFO - 
+[17/53] Processing atmospheric: 2025-08-14 to 2025-08-21
+2025-12-11 15:13:49,457 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-08-14 to 2025-08-21
+2025-12-11 15:14:34,800 - INFO - ✓ Bronze ingestion successful: 1692 records, 66 API calls
+2025-12-11 15:14:35,906 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:14:35,907 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:14:40,913 - INFO - 
+[18/53] Processing atmospheric: 2025-08-07 to 2025-08-14
+2025-12-11 15:14:40,913 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-08-07 to 2025-08-14
+2025-12-11 15:15:39,260 - INFO - ✓ Bronze ingestion successful: 1692 records, 66 API calls
+2025-12-11 15:15:40,316 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:15:40,316 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:15:45,322 - INFO - 
+[19/53] Processing atmospheric: 2025-07-31 to 2025-08-07
+2025-12-11 15:15:45,322 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-07-31 to 2025-08-07
+2025-12-11 15:16:34,173 - INFO - ✓ Bronze ingestion successful: 1628 records, 66 API calls
+2025-12-11 15:16:35,210 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:16:35,210 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:16:40,216 - INFO - 
+[20/53] Processing atmospheric: 2025-07-24 to 2025-07-31
+2025-12-11 15:16:40,216 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-07-24 to 2025-07-31
+2025-12-11 15:17:31,812 - INFO - ✓ Bronze ingestion successful: 1639 records, 66 API calls
+2025-12-11 15:17:32,976 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:17:32,977 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:17:37,981 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T21:17:32.977345
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 20
+  Failed Ranges: 0
+  Last Success: 2025-07-31
+================================================================================
+2025-12-11 15:17:37,981 - INFO - 
+[21/53] Processing atmospheric: 2025-07-17 to 2025-07-24
+2025-12-11 15:17:37,981 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-07-17 to 2025-07-24
+2025-12-11 15:18:24,034 - INFO - ✓ Bronze ingestion successful: 1640 records, 66 API calls
+2025-12-11 15:18:25,066 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:18:25,066 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:18:30,072 - INFO - 
+[22/53] Processing atmospheric: 2025-07-10 to 2025-07-17
+2025-12-11 15:18:30,072 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-07-10 to 2025-07-17
+2025-12-11 15:19:22,824 - INFO - ✓ Bronze ingestion successful: 1641 records, 66 API calls
+2025-12-11 15:19:23,965 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:19:23,966 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:19:28,969 - INFO - 
+[23/53] Processing atmospheric: 2025-07-03 to 2025-07-10
+2025-12-11 15:19:28,969 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-07-03 to 2025-07-10
+2025-12-11 15:20:20,075 - INFO - ✓ Bronze ingestion successful: 1641 records, 66 API calls
+2025-12-11 15:20:21,134 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:20:21,134 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:20:26,140 - INFO - 
+[24/53] Processing atmospheric: 2025-06-26 to 2025-07-03
+2025-12-11 15:20:26,140 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-06-26 to 2025-07-03
+2025-12-11 15:21:20,428 - INFO - ✓ Bronze ingestion successful: 1631 records, 66 API calls
+2025-12-11 15:21:21,497 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:21:21,497 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:21:26,502 - INFO - 
+[25/53] Processing atmospheric: 2025-06-19 to 2025-06-26
+2025-12-11 15:21:26,502 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-06-19 to 2025-06-26
+2025-12-11 15:22:11,739 - INFO - ✓ Bronze ingestion successful: 1663 records, 66 API calls
+2025-12-11 15:22:12,798 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:22:12,798 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:22:17,799 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T21:22:12.798334
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 25
+  Failed Ranges: 0
+  Last Success: 2025-06-26
+================================================================================
+2025-12-11 15:22:17,799 - INFO - 
+[26/53] Processing atmospheric: 2025-06-12 to 2025-06-19
+2025-12-11 15:22:17,799 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-06-12 to 2025-06-19
+2025-12-11 15:23:04,892 - INFO - ✓ Bronze ingestion successful: 1663 records, 66 API calls
+2025-12-11 15:23:05,972 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:23:05,972 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:23:10,978 - INFO - 
+[27/53] Processing atmospheric: 2025-06-05 to 2025-06-12
+2025-12-11 15:23:10,979 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-06-05 to 2025-06-12
+2025-12-11 15:23:56,081 - INFO - ✓ Bronze ingestion successful: 1663 records, 66 API calls
+2025-12-11 15:23:57,116 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:23:57,116 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:24:02,122 - INFO - 
+[28/53] Processing atmospheric: 2025-05-29 to 2025-06-05
+2025-12-11 15:24:02,122 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-05-29 to 2025-06-05
+2025-12-11 15:24:48,268 - INFO - ✓ Bronze ingestion successful: 1660 records, 66 API calls
+2025-12-11 15:24:49,405 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:24:49,406 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:24:54,409 - INFO - 
+[29/53] Processing atmospheric: 2025-05-22 to 2025-05-29
+2025-12-11 15:24:54,409 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-05-22 to 2025-05-29
+2025-12-11 15:25:45,533 - INFO - ✓ Bronze ingestion successful: 1684 records, 66 API calls
+2025-12-11 15:25:46,572 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:25:46,573 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:25:51,581 - INFO - 
+[30/53] Processing atmospheric: 2025-05-15 to 2025-05-22
+2025-12-11 15:25:51,581 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-05-15 to 2025-05-22
+2025-12-11 15:26:36,015 - INFO - ✓ Bronze ingestion successful: 1627 records, 66 API calls
+2025-12-11 15:26:37,080 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:26:37,081 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:26:42,089 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T21:26:37.081181
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 30
+  Failed Ranges: 0
+  Last Success: 2025-05-22
+================================================================================
+2025-12-11 15:26:42,090 - INFO - 
+[31/53] Processing atmospheric: 2025-05-08 to 2025-05-15
+2025-12-11 15:26:42,090 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-05-08 to 2025-05-15
+2025-12-11 15:27:24,397 - INFO - ✓ Bronze ingestion successful: 1627 records, 66 API calls
+2025-12-11 15:27:25,447 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:27:25,448 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:27:30,458 - INFO - 
+[32/53] Processing atmospheric: 2025-05-01 to 2025-05-08
+2025-12-11 15:27:30,458 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-05-01 to 2025-05-08
+2025-12-11 15:28:11,740 - INFO - ✓ Bronze ingestion successful: 1627 records, 66 API calls
+2025-12-11 15:28:12,771 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:28:12,771 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:28:17,780 - INFO - 
+[33/53] Processing atmospheric: 2025-04-24 to 2025-05-01
+2025-12-11 15:28:17,780 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-04-24 to 2025-05-01
+2025-12-11 15:29:04,618 - INFO - ✓ Bronze ingestion successful: 1643 records, 66 API calls
+2025-12-11 15:29:05,764 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:29:05,764 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:29:10,780 - INFO - 
+[34/53] Processing atmospheric: 2025-04-17 to 2025-04-24
+2025-12-11 15:29:10,780 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-04-17 to 2025-04-24
+2025-12-11 15:29:56,959 - INFO - ✓ Bronze ingestion successful: 1684 records, 66 API calls
+2025-12-11 15:29:57,999 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:29:57,999 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:30:03,003 - INFO - 
+[35/53] Processing atmospheric: 2025-04-10 to 2025-04-17
+2025-12-11 15:30:03,004 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-04-10 to 2025-04-17
+2025-12-11 15:30:53,958 - INFO - ✓ Bronze ingestion successful: 1621 records, 66 API calls
+2025-12-11 15:30:55,060 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:30:55,061 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:31:00,072 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T21:30:55.061313
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 35
+  Failed Ranges: 0
+  Last Success: 2025-04-17
+================================================================================
+2025-12-11 15:31:00,073 - INFO - 
+[36/53] Processing atmospheric: 2025-04-03 to 2025-04-10
+2025-12-11 15:31:00,074 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-04-03 to 2025-04-10
+2025-12-11 15:31:44,120 - INFO - ✓ Bronze ingestion successful: 1621 records, 66 API calls
+2025-12-11 15:31:45,154 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:31:45,154 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:31:50,165 - INFO - 
+[37/53] Processing atmospheric: 2025-03-27 to 2025-04-03
+2025-12-11 15:31:50,165 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-03-27 to 2025-04-03
+2025-12-11 15:32:31,156 - INFO - ✓ Bronze ingestion successful: 1621 records, 66 API calls
+2025-12-11 15:32:32,194 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:32:32,194 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:32:37,204 - INFO - 
+[38/53] Processing atmospheric: 2025-03-20 to 2025-03-27
+2025-12-11 15:32:37,205 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-03-20 to 2025-03-27
+2025-12-11 15:33:19,883 - INFO - ✓ Bronze ingestion successful: 1675 records, 66 API calls
+2025-12-11 15:33:21,004 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:33:21,004 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:33:26,010 - INFO - 
+[39/53] Processing atmospheric: 2025-03-13 to 2025-03-20
+2025-12-11 15:33:26,010 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-03-13 to 2025-03-20
+2025-12-11 15:34:08,394 - INFO - ✓ Bronze ingestion successful: 1689 records, 66 API calls
+2025-12-11 15:34:09,439 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:34:09,439 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:34:14,450 - INFO - 
+[40/53] Processing atmospheric: 2025-03-06 to 2025-03-13
+2025-12-11 15:34:14,450 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-03-06 to 2025-03-13
+2025-12-11 15:34:56,723 - INFO - ✓ Bronze ingestion successful: 1689 records, 66 API calls
+2025-12-11 15:34:57,830 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:34:57,830 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:35:02,843 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T21:34:57.830811
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 40
+  Failed Ranges: 0
+  Last Success: 2025-03-13
+================================================================================
+2025-12-11 15:35:02,844 - INFO - 
+[41/53] Processing atmospheric: 2025-02-27 to 2025-03-06
+2025-12-11 15:35:02,844 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-02-27 to 2025-03-06
+2025-12-11 15:35:47,135 - INFO - ✓ Bronze ingestion successful: 1626 records, 66 API calls
+2025-12-11 15:35:48,184 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:35:48,184 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:35:53,187 - INFO - 
+[42/53] Processing atmospheric: 2025-02-20 to 2025-02-27
+2025-12-11 15:35:53,188 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-02-20 to 2025-02-27
+2025-12-11 15:36:35,025 - INFO - ✓ Bronze ingestion successful: 1626 records, 66 API calls
+2025-12-11 15:36:36,100 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:36:36,100 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:36:41,111 - INFO - 
+[43/53] Processing atmospheric: 2025-02-13 to 2025-02-20
+2025-12-11 15:36:41,111 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-02-13 to 2025-02-20
+2025-12-11 15:37:22,511 - INFO - ✓ Bronze ingestion successful: 1627 records, 66 API calls
+2025-12-11 15:37:23,580 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:37:23,580 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:37:28,590 - INFO - 
+[44/53] Processing atmospheric: 2025-02-06 to 2025-02-13
+2025-12-11 15:37:28,591 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-02-06 to 2025-02-13
+2025-12-11 15:38:13,054 - INFO - ✓ Bronze ingestion successful: 1628 records, 66 API calls
+2025-12-11 15:38:14,114 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:38:14,115 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:38:19,128 - INFO - 
+[45/53] Processing atmospheric: 2025-01-30 to 2025-02-06
+2025-12-11 15:38:19,128 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-01-30 to 2025-02-06
+2025-12-11 15:39:03,881 - INFO - ✓ Bronze ingestion successful: 1628 records, 66 API calls
+2025-12-11 15:39:04,993 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:39:04,993 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:39:10,003 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T21:39:04.993516
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 45
+  Failed Ranges: 0
+  Last Success: 2025-02-06
+================================================================================
+2025-12-11 15:39:10,003 - INFO - 
+[46/53] Processing atmospheric: 2025-01-23 to 2025-01-30
+2025-12-11 15:39:10,004 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-01-23 to 2025-01-30
+2025-12-11 15:39:53,691 - INFO - ✓ Bronze ingestion successful: 1628 records, 66 API calls
+2025-12-11 15:39:54,853 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:39:54,853 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:39:59,861 - INFO - 
+[47/53] Processing atmospheric: 2025-01-16 to 2025-01-23
+2025-12-11 15:39:59,862 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-01-16 to 2025-01-23
+2025-12-11 15:40:45,351 - INFO - ✓ Bronze ingestion successful: 1628 records, 66 API calls
+2025-12-11 15:40:46,380 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:40:46,380 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:40:51,390 - INFO - 
+[48/53] Processing atmospheric: 2025-01-09 to 2025-01-16
+2025-12-11 15:40:51,391 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-01-09 to 2025-01-16
+2025-12-11 15:41:39,479 - INFO - ✓ Bronze ingestion successful: 1623 records, 66 API calls
+2025-12-11 15:41:40,525 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:41:40,525 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:41:45,535 - INFO - 
+[49/53] Processing atmospheric: 2025-01-02 to 2025-01-09
+2025-12-11 15:41:45,536 - INFO - Invoking noaa-ingest-atmospheric-dev for 2025-01-02 to 2025-01-09
+2025-12-11 15:42:30,035 - INFO - ✓ Bronze ingestion successful: 1639 records, 66 API calls
+2025-12-11 15:42:31,100 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:42:31,100 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:42:36,106 - INFO - 
+[50/53] Processing atmospheric: 2024-12-26 to 2025-01-02
+2025-12-11 15:42:36,106 - INFO - Invoking noaa-ingest-atmospheric-dev for 2024-12-26 to 2025-01-02
+2025-12-11 15:43:18,046 - INFO - ✓ Bronze ingestion successful: 1639 records, 66 API calls
+2025-12-11 15:43:19,178 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:43:19,178 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:43:24,189 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T21:43:19.178611
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 50
+  Failed Ranges: 0
+  Last Success: 2025-01-02
+================================================================================
+2025-12-11 15:43:24,190 - INFO - 
+[51/53] Processing atmospheric: 2024-12-19 to 2024-12-26
+2025-12-11 15:43:24,190 - INFO - Invoking noaa-ingest-atmospheric-dev for 2024-12-19 to 2024-12-26
+2025-12-11 15:44:07,906 - INFO - ✓ Bronze ingestion successful: 1639 records, 66 API calls
+2025-12-11 15:44:08,992 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:44:08,992 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:44:13,996 - INFO - 
+[52/53] Processing atmospheric: 2024-12-12 to 2024-12-19
+2025-12-11 15:44:13,996 - INFO - Invoking noaa-ingest-atmospheric-dev for 2024-12-12 to 2024-12-19
+2025-12-11 15:44:55,654 - INFO - ✓ Bronze ingestion successful: 1642 records, 66 API calls
+2025-12-11 15:44:56,812 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:44:56,812 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:45:01,814 - INFO - 
+[53/53] Processing atmospheric: 2024-12-11 to 2024-12-12
+2025-12-11 15:45:01,814 - INFO - Invoking noaa-ingest-atmospheric-dev for 2024-12-11 to 2024-12-12
+2025-12-11 15:45:56,564 - INFO - ✓ Bronze ingestion successful: 1631 records, 66 API calls
+2025-12-11 15:45:56,946 - INFO - Found 0 files in Bronze layer for atmospheric
+2025-12-11 15:45:56,946 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-11 15:45:56,948 - INFO - 
+ATMOSPHERIC backfill complete:
+2025-12-11 15:45:56,948 - INFO -   Completed: 53/53
+2025-12-11 15:45:56,949 - INFO -   Failed: 0/53
+2025-12-11 15:45:56,949 - INFO - 
+================================================================================
+2025-12-11 15:45:56,949 - INFO - Starting backfill for OCEANIC pond
+2025-12-11 15:45:56,949 - INFO - ================================================================================
+2025-12-11 15:45:56,949 - INFO - Generated 53 date ranges for backfill
+2025-12-11 15:45:56,950 - INFO - 
+[1/53] Processing oceanic: 2025-12-04 to 2025-12-11
+2025-12-11 15:45:56,950 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-12-04 to 2025-12-11
+2025-12-11 15:51:06,556 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 15:51:06,556 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:203: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat(),
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:211: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "timestamp": datetime.utcnow().isoformat(),
+2025-12-11 15:51:11,569 - INFO - 
+[2/53] Processing oceanic: 2025-11-27 to 2025-12-04
+2025-12-11 15:51:11,570 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-11-27 to 2025-12-04
+2025-12-11 15:56:25,534 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 15:56:25,535 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 15:56:30,544 - INFO - 
+[3/53] Processing oceanic: 2025-11-20 to 2025-11-27
+2025-12-11 15:56:30,544 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-11-20 to 2025-11-27
+2025-12-11 16:01:40,181 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:01:40,182 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:01:45,189 - INFO - 
+[4/53] Processing oceanic: 2025-11-13 to 2025-11-20
+2025-12-11 16:01:45,189 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-11-13 to 2025-11-20
+2025-12-11 16:06:52,394 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:06:52,394 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:06:57,399 - INFO - 
+[5/53] Processing oceanic: 2025-11-06 to 2025-11-13
+2025-12-11 16:06:57,399 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-11-06 to 2025-11-13
+2025-12-11 16:12:09,627 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:12:09,627 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:12:14,635 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T22:12:09.627691
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 5
+  Last Success: None
+
+Total Errors: 5
+================================================================================
+2025-12-11 16:12:14,635 - INFO - 
+[6/53] Processing oceanic: 2025-10-30 to 2025-11-06
+2025-12-11 16:12:14,635 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-10-30 to 2025-11-06
+2025-12-11 16:17:24,530 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:17:24,530 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:17:29,537 - INFO - 
+[7/53] Processing oceanic: 2025-10-23 to 2025-10-30
+2025-12-11 16:17:29,537 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-10-23 to 2025-10-30
+2025-12-11 16:22:34,858 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:22:34,858 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:22:39,866 - INFO - 
+[8/53] Processing oceanic: 2025-10-16 to 2025-10-23
+2025-12-11 16:22:39,867 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-10-16 to 2025-10-23
+2025-12-11 16:27:51,483 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:27:51,483 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:27:56,492 - INFO - 
+[9/53] Processing oceanic: 2025-10-09 to 2025-10-16
+2025-12-11 16:27:56,493 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-10-09 to 2025-10-16
+2025-12-11 16:33:07,719 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:33:07,721 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:33:12,724 - INFO - 
+[10/53] Processing oceanic: 2025-10-02 to 2025-10-09
+2025-12-11 16:33:12,724 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-10-02 to 2025-10-09
+2025-12-11 16:38:16,101 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:38:16,101 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:38:21,110 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T22:38:16.101323
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 10
+  Last Success: None
+
+Total Errors: 10
+================================================================================
+2025-12-11 16:38:21,110 - INFO - 
+[11/53] Processing oceanic: 2025-09-25 to 2025-10-02
+2025-12-11 16:38:21,110 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-09-25 to 2025-10-02
+2025-12-11 16:43:26,795 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:43:26,796 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:43:31,808 - INFO - 
+[12/53] Processing oceanic: 2025-09-18 to 2025-09-25
+2025-12-11 16:43:31,808 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-09-18 to 2025-09-25
+2025-12-11 16:48:35,895 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:48:35,895 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:48:40,900 - INFO - 
+[13/53] Processing oceanic: 2025-09-11 to 2025-09-18
+2025-12-11 16:48:40,900 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-09-11 to 2025-09-18
+2025-12-11 16:53:49,890 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:53:49,890 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:53:54,899 - INFO - 
+[14/53] Processing oceanic: 2025-09-04 to 2025-09-11
+2025-12-11 16:53:54,899 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-09-04 to 2025-09-11
+2025-12-11 16:58:58,454 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:58:58,454 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 16:59:03,459 - INFO - 
+[15/53] Processing oceanic: 2025-08-28 to 2025-09-04
+2025-12-11 16:59:03,459 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-08-28 to 2025-09-04
+2025-12-11 17:04:12,788 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:04:12,788 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:04:17,797 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T23:04:12.788545
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 15
+  Last Success: None
+
+Total Errors: 15
+================================================================================
+2025-12-11 17:04:17,797 - INFO - 
+[16/53] Processing oceanic: 2025-08-21 to 2025-08-28
+2025-12-11 17:04:17,798 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-08-21 to 2025-08-28
+2025-12-11 17:09:22,346 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:09:22,346 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:09:27,358 - INFO - 
+[17/53] Processing oceanic: 2025-08-14 to 2025-08-21
+2025-12-11 17:09:27,358 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-08-14 to 2025-08-21
+2025-12-11 17:14:34,585 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:14:34,586 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:14:39,599 - INFO - 
+[18/53] Processing oceanic: 2025-08-07 to 2025-08-14
+2025-12-11 17:14:39,599 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-08-07 to 2025-08-14
+2025-12-11 17:19:47,517 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:19:47,517 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:19:52,522 - INFO - 
+[19/53] Processing oceanic: 2025-07-31 to 2025-08-07
+2025-12-11 17:19:52,522 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-07-31 to 2025-08-07
+2025-12-11 17:25:05,763 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:25:05,763 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:25:10,774 - INFO - 
+[20/53] Processing oceanic: 2025-07-24 to 2025-07-31
+2025-12-11 17:25:10,774 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-07-24 to 2025-07-31
+2025-12-11 17:30:16,163 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:30:16,164 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:30:21,172 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T23:30:16.164531
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 20
+  Last Success: None
+
+Total Errors: 20
+================================================================================
+2025-12-11 17:30:21,172 - INFO - 
+[21/53] Processing oceanic: 2025-07-17 to 2025-07-24
+2025-12-11 17:30:21,172 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-07-17 to 2025-07-24
+2025-12-11 17:35:27,218 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:35:27,218 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:35:32,226 - INFO - 
+[22/53] Processing oceanic: 2025-07-10 to 2025-07-17
+2025-12-11 17:35:32,226 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-07-10 to 2025-07-17
+2025-12-11 17:40:36,459 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:40:36,459 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:40:41,468 - INFO - 
+[23/53] Processing oceanic: 2025-07-03 to 2025-07-10
+2025-12-11 17:40:41,469 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-07-03 to 2025-07-10
+2025-12-11 17:45:47,148 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:45:47,148 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:45:52,158 - INFO - 
+[24/53] Processing oceanic: 2025-06-26 to 2025-07-03
+2025-12-11 17:45:52,158 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-06-26 to 2025-07-03
+2025-12-11 17:51:03,454 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:51:03,454 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:51:08,463 - INFO - 
+[25/53] Processing oceanic: 2025-06-19 to 2025-06-26
+2025-12-11 17:51:08,464 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-06-19 to 2025-06-26
+2025-12-11 17:56:12,930 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:56:12,930 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 17:56:17,939 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-11T23:56:12.930480
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 25
+  Last Success: None
+
+Total Errors: 25
+================================================================================
+2025-12-11 17:56:17,939 - INFO - 
+[26/53] Processing oceanic: 2025-06-12 to 2025-06-19
+2025-12-11 17:56:17,939 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-06-12 to 2025-06-19
+2025-12-11 18:01:24,619 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:01:24,619 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:01:29,628 - INFO - 
+[27/53] Processing oceanic: 2025-06-05 to 2025-06-12
+2025-12-11 18:01:29,629 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-06-05 to 2025-06-12
+2025-12-11 18:06:37,213 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:06:37,213 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:06:42,220 - INFO - 
+[28/53] Processing oceanic: 2025-05-29 to 2025-06-05
+2025-12-11 18:06:42,221 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-05-29 to 2025-06-05
+2025-12-11 18:11:49,550 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:11:49,550 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:11:54,560 - INFO - 
+[29/53] Processing oceanic: 2025-05-22 to 2025-05-29
+2025-12-11 18:11:54,561 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-05-22 to 2025-05-29
+2025-12-11 18:17:08,188 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:17:08,188 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:17:13,202 - INFO - 
+[30/53] Processing oceanic: 2025-05-15 to 2025-05-22
+2025-12-11 18:17:13,203 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-05-15 to 2025-05-22
+2025-12-11 18:22:24,292 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:22:24,292 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:22:29,303 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T00:22:24.292580
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 30
+  Last Success: None
+
+Total Errors: 30
+================================================================================
+2025-12-11 18:22:29,303 - INFO - 
+[31/53] Processing oceanic: 2025-05-08 to 2025-05-15
+2025-12-11 18:22:29,303 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-05-08 to 2025-05-15
+2025-12-11 18:27:34,242 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:27:34,242 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:27:39,249 - INFO - 
+[32/53] Processing oceanic: 2025-05-01 to 2025-05-08
+2025-12-11 18:27:39,249 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-05-01 to 2025-05-08
+2025-12-11 18:32:49,762 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:32:49,764 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:32:54,776 - INFO - 
+[33/53] Processing oceanic: 2025-04-24 to 2025-05-01
+2025-12-11 18:32:54,776 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-04-24 to 2025-05-01
+2025-12-11 18:38:05,738 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:38:05,738 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:38:10,747 - INFO - 
+[34/53] Processing oceanic: 2025-04-17 to 2025-04-24
+2025-12-11 18:38:10,747 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-04-17 to 2025-04-24
+2025-12-11 18:43:21,425 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:43:21,425 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:43:26,433 - INFO - 
+[35/53] Processing oceanic: 2025-04-10 to 2025-04-17
+2025-12-11 18:43:26,434 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-04-10 to 2025-04-17
+2025-12-11 18:48:36,920 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:48:36,920 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:48:41,930 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T00:48:36.920245
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 35
+  Last Success: None
+
+Total Errors: 35
+================================================================================
+2025-12-11 18:48:41,931 - INFO - 
+[36/53] Processing oceanic: 2025-04-03 to 2025-04-10
+2025-12-11 18:48:41,931 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-04-03 to 2025-04-10
+2025-12-11 18:53:50,592 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:53:50,593 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:53:55,599 - INFO - 
+[37/53] Processing oceanic: 2025-03-27 to 2025-04-03
+2025-12-11 18:53:55,599 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-03-27 to 2025-04-03
+2025-12-11 18:59:02,284 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:59:02,285 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 18:59:07,296 - INFO - 
+[38/53] Processing oceanic: 2025-03-20 to 2025-03-27
+2025-12-11 18:59:07,296 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-03-20 to 2025-03-27
+2025-12-11 19:04:12,395 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:04:12,395 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:04:17,398 - INFO - 
+[39/53] Processing oceanic: 2025-03-13 to 2025-03-20
+2025-12-11 19:04:17,398 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-03-13 to 2025-03-20
+2025-12-11 19:09:23,164 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:09:23,164 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:09:28,172 - INFO - 
+[40/53] Processing oceanic: 2025-03-06 to 2025-03-13
+2025-12-11 19:09:28,172 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-03-06 to 2025-03-13
+2025-12-11 19:14:38,356 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:14:38,356 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:14:43,369 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T01:14:38.356912
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 40
+  Last Success: None
+
+Total Errors: 40
+================================================================================
+2025-12-11 19:14:43,369 - INFO - 
+[41/53] Processing oceanic: 2025-02-27 to 2025-03-06
+2025-12-11 19:14:43,369 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-02-27 to 2025-03-06
+2025-12-11 19:19:51,383 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:19:51,384 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:19:56,393 - INFO - 
+[42/53] Processing oceanic: 2025-02-20 to 2025-02-27
+2025-12-11 19:19:56,393 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-02-20 to 2025-02-27
+2025-12-11 19:25:08,471 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:25:08,471 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:25:13,482 - INFO - 
+[43/53] Processing oceanic: 2025-02-13 to 2025-02-20
+2025-12-11 19:25:13,484 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-02-13 to 2025-02-20
+2025-12-11 19:30:19,570 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:30:19,572 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:30:24,578 - INFO - 
+[44/53] Processing oceanic: 2025-02-06 to 2025-02-13
+2025-12-11 19:30:24,578 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-02-06 to 2025-02-13
+2025-12-11 19:35:33,968 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:35:33,969 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:35:38,979 - INFO - 
+[45/53] Processing oceanic: 2025-01-30 to 2025-02-06
+2025-12-11 19:35:38,979 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-01-30 to 2025-02-06
+2025-12-11 19:40:44,884 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:40:44,884 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:40:49,895 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T01:40:44.885024
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 45
+  Last Success: None
+
+Total Errors: 45
+================================================================================
+2025-12-11 19:40:49,895 - INFO - 
+[46/53] Processing oceanic: 2025-01-23 to 2025-01-30
+2025-12-11 19:40:49,895 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-01-23 to 2025-01-30
+2025-12-11 19:45:56,941 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:45:56,941 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:46:01,952 - INFO - 
+[47/53] Processing oceanic: 2025-01-16 to 2025-01-23
+2025-12-11 19:46:01,952 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-01-16 to 2025-01-23
+2025-12-11 19:51:13,558 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:51:13,559 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:51:18,567 - INFO - 
+[48/53] Processing oceanic: 2025-01-09 to 2025-01-16
+2025-12-11 19:51:18,568 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-01-09 to 2025-01-16
+2025-12-11 19:56:30,888 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:56:30,888 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 19:56:35,894 - INFO - 
+[49/53] Processing oceanic: 2025-01-02 to 2025-01-09
+2025-12-11 19:56:35,894 - INFO - Invoking noaa-ingest-oceanic-dev for 2025-01-02 to 2025-01-09
+2025-12-11 20:01:45,035 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:01:45,035 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:01:50,049 - INFO - 
+[50/53] Processing oceanic: 2024-12-26 to 2025-01-02
+2025-12-11 20:01:50,049 - INFO - Invoking noaa-ingest-oceanic-dev for 2024-12-26 to 2025-01-02
+2025-12-11 20:06:58,581 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:06:58,581 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:07:03,590 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T02:06:58.581824
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 50
+  Last Success: None
+
+Total Errors: 50
+================================================================================
+2025-12-11 20:07:03,590 - INFO - 
+[51/53] Processing oceanic: 2024-12-19 to 2024-12-26
+2025-12-11 20:07:03,590 - INFO - Invoking noaa-ingest-oceanic-dev for 2024-12-19 to 2024-12-26
+2025-12-11 20:12:15,931 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:12:15,931 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:12:20,940 - INFO - 
+[52/53] Processing oceanic: 2024-12-12 to 2024-12-19
+2025-12-11 20:12:20,941 - INFO - Invoking noaa-ingest-oceanic-dev for 2024-12-12 to 2024-12-19
+2025-12-11 20:17:29,586 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:17:29,586 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:17:34,599 - INFO - 
+[53/53] Processing oceanic: 2024-12-11 to 2024-12-12
+2025-12-11 20:17:34,599 - INFO - Invoking noaa-ingest-oceanic-dev for 2024-12-11 to 2024-12-12
+2025-12-11 20:22:44,872 - ERROR - Error invoking noaa-ingest-oceanic-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:22:44,872 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-oceanic-dev/invocations"
+2025-12-11 20:22:44,874 - INFO - 
+OCEANIC backfill complete:
+2025-12-11 20:22:44,874 - INFO -   Completed: 0/53
+2025-12-11 20:22:44,874 - INFO -   Failed: 53/53
+2025-12-11 20:22:44,875 - INFO - 
+================================================================================
+2025-12-11 20:22:44,875 - INFO - Starting backfill for BUOY pond
+2025-12-11 20:22:44,875 - INFO - ================================================================================
+2025-12-11 20:22:44,875 - INFO - Generated 53 date ranges for backfill
+2025-12-11 20:22:44,875 - INFO - 
+[1/53] Processing buoy: 2025-12-05 to 2025-12-12
+2025-12-11 20:22:44,875 - INFO - Invoking noaa-ingest-buoy-dev for 2025-12-05 to 2025-12-12
+2025-12-11 20:27:54,485 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:27:54,486 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:27:59,495 - INFO - 
+[2/53] Processing buoy: 2025-11-28 to 2025-12-05
+2025-12-11 20:27:59,495 - INFO - Invoking noaa-ingest-buoy-dev for 2025-11-28 to 2025-12-05
+2025-12-11 20:33:04,538 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:33:04,539 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:33:09,551 - INFO - 
+[3/53] Processing buoy: 2025-11-21 to 2025-11-28
+2025-12-11 20:33:09,551 - INFO - Invoking noaa-ingest-buoy-dev for 2025-11-21 to 2025-11-28
+2025-12-11 20:38:21,795 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:38:21,795 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:38:26,798 - INFO - 
+[4/53] Processing buoy: 2025-11-14 to 2025-11-21
+2025-12-11 20:38:26,799 - INFO - Invoking noaa-ingest-buoy-dev for 2025-11-14 to 2025-11-21
+2025-12-11 20:43:35,428 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:43:35,428 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:43:40,438 - INFO - 
+[5/53] Processing buoy: 2025-11-07 to 2025-11-14
+2025-12-11 20:43:40,439 - INFO - Invoking noaa-ingest-buoy-dev for 2025-11-07 to 2025-11-14
+2025-12-11 20:48:52,792 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:48:52,793 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:48:57,800 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T02:48:52.793137
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 5
+  Last Success: None
+
+Total Errors: 58
+================================================================================
+2025-12-11 20:48:57,801 - INFO - 
+[6/53] Processing buoy: 2025-10-31 to 2025-11-07
+2025-12-11 20:48:57,801 - INFO - Invoking noaa-ingest-buoy-dev for 2025-10-31 to 2025-11-07
+2025-12-11 20:54:08,094 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:54:08,094 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:54:13,103 - INFO - 
+[7/53] Processing buoy: 2025-10-24 to 2025-10-31
+2025-12-11 20:54:13,104 - INFO - Invoking noaa-ingest-buoy-dev for 2025-10-24 to 2025-10-31
+2025-12-11 20:59:24,987 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:59:24,987 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 20:59:29,998 - INFO - 
+[8/53] Processing buoy: 2025-10-17 to 2025-10-24
+2025-12-11 20:59:29,998 - INFO - Invoking noaa-ingest-buoy-dev for 2025-10-17 to 2025-10-24
+2025-12-11 21:04:39,335 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:04:39,336 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:04:44,347 - INFO - 
+[9/53] Processing buoy: 2025-10-10 to 2025-10-17
+2025-12-11 21:04:44,347 - INFO - Invoking noaa-ingest-buoy-dev for 2025-10-10 to 2025-10-17
+2025-12-11 21:09:53,781 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:09:53,782 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:09:58,795 - INFO - 
+[10/53] Processing buoy: 2025-10-03 to 2025-10-10
+2025-12-11 21:09:58,795 - INFO - Invoking noaa-ingest-buoy-dev for 2025-10-03 to 2025-10-10
+2025-12-11 21:15:06,780 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:15:06,780 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:15:11,796 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T03:15:06.780742
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 10
+  Last Success: None
+
+Total Errors: 63
+================================================================================
+2025-12-11 21:15:11,796 - INFO - 
+[11/53] Processing buoy: 2025-09-26 to 2025-10-03
+2025-12-11 21:15:11,796 - INFO - Invoking noaa-ingest-buoy-dev for 2025-09-26 to 2025-10-03
+2025-12-11 21:20:23,124 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:20:23,124 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:20:28,134 - INFO - 
+[12/53] Processing buoy: 2025-09-19 to 2025-09-26
+2025-12-11 21:20:28,134 - INFO - Invoking noaa-ingest-buoy-dev for 2025-09-19 to 2025-09-26
+2025-12-11 21:25:35,705 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:25:35,705 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:25:40,716 - INFO - 
+[13/53] Processing buoy: 2025-09-12 to 2025-09-19
+2025-12-11 21:25:40,716 - INFO - Invoking noaa-ingest-buoy-dev for 2025-09-12 to 2025-09-19
+2025-12-11 21:30:52,011 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:30:52,012 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:30:57,026 - INFO - 
+[14/53] Processing buoy: 2025-09-05 to 2025-09-12
+2025-12-11 21:30:57,027 - INFO - Invoking noaa-ingest-buoy-dev for 2025-09-05 to 2025-09-12
+2025-12-11 21:36:02,821 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:36:02,821 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:36:07,834 - INFO - 
+[15/53] Processing buoy: 2025-08-29 to 2025-09-05
+2025-12-11 21:36:07,834 - INFO - Invoking noaa-ingest-buoy-dev for 2025-08-29 to 2025-09-05
+2025-12-11 21:41:16,290 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:41:16,291 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:41:21,303 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T03:41:16.291440
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 15
+  Last Success: None
+
+Total Errors: 68
+================================================================================
+2025-12-11 21:41:21,304 - INFO - 
+[16/53] Processing buoy: 2025-08-22 to 2025-08-29
+2025-12-11 21:41:21,304 - INFO - Invoking noaa-ingest-buoy-dev for 2025-08-22 to 2025-08-29
+2025-12-11 21:46:29,292 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:46:29,292 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:46:34,300 - INFO - 
+[17/53] Processing buoy: 2025-08-15 to 2025-08-22
+2025-12-11 21:46:34,300 - INFO - Invoking noaa-ingest-buoy-dev for 2025-08-15 to 2025-08-22
+2025-12-11 21:51:43,547 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:51:43,548 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:51:48,561 - INFO - 
+[18/53] Processing buoy: 2025-08-08 to 2025-08-15
+2025-12-11 21:51:48,561 - INFO - Invoking noaa-ingest-buoy-dev for 2025-08-08 to 2025-08-15
+2025-12-11 21:56:57,615 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:56:57,616 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 21:57:02,630 - INFO - 
+[19/53] Processing buoy: 2025-08-01 to 2025-08-08
+2025-12-11 21:57:02,631 - INFO - Invoking noaa-ingest-buoy-dev for 2025-08-01 to 2025-08-08
+2025-12-11 22:02:08,034 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:02:08,035 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:02:13,047 - INFO - 
+[20/53] Processing buoy: 2025-07-25 to 2025-08-01
+2025-12-11 22:02:13,047 - INFO - Invoking noaa-ingest-buoy-dev for 2025-07-25 to 2025-08-01
+2025-12-11 22:07:21,692 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:07:21,692 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:07:26,705 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T04:07:21.693060
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 20
+  Last Success: None
+
+Total Errors: 73
+================================================================================
+2025-12-11 22:07:26,705 - INFO - 
+[21/53] Processing buoy: 2025-07-18 to 2025-07-25
+2025-12-11 22:07:26,705 - INFO - Invoking noaa-ingest-buoy-dev for 2025-07-18 to 2025-07-25
+2025-12-11 22:12:38,377 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:12:38,377 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:12:43,382 - INFO - 
+[22/53] Processing buoy: 2025-07-11 to 2025-07-18
+2025-12-11 22:12:43,383 - INFO - Invoking noaa-ingest-buoy-dev for 2025-07-11 to 2025-07-18
+2025-12-11 22:17:53,665 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:17:53,665 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:17:58,667 - INFO - 
+[23/53] Processing buoy: 2025-07-04 to 2025-07-11
+2025-12-11 22:17:58,667 - INFO - Invoking noaa-ingest-buoy-dev for 2025-07-04 to 2025-07-11
+2025-12-11 22:23:08,501 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:23:08,501 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:23:13,523 - INFO - 
+[24/53] Processing buoy: 2025-06-27 to 2025-07-04
+2025-12-11 22:23:13,523 - INFO - Invoking noaa-ingest-buoy-dev for 2025-06-27 to 2025-07-04
+2025-12-11 22:28:21,373 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:28:21,373 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:28:26,380 - INFO - 
+[25/53] Processing buoy: 2025-06-20 to 2025-06-27
+2025-12-11 22:28:26,380 - INFO - Invoking noaa-ingest-buoy-dev for 2025-06-20 to 2025-06-27
+2025-12-11 22:33:31,373 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:33:31,374 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:33:36,385 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T04:33:31.374335
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 25
+  Last Success: None
+
+Total Errors: 78
+================================================================================
+2025-12-11 22:33:36,386 - INFO - 
+[26/53] Processing buoy: 2025-06-13 to 2025-06-20
+2025-12-11 22:33:36,386 - INFO - Invoking noaa-ingest-buoy-dev for 2025-06-13 to 2025-06-20
+2025-12-11 22:38:43,540 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:38:43,541 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:38:48,555 - INFO - 
+[27/53] Processing buoy: 2025-06-06 to 2025-06-13
+2025-12-11 22:38:48,555 - INFO - Invoking noaa-ingest-buoy-dev for 2025-06-06 to 2025-06-13
+2025-12-11 22:43:58,072 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:43:58,072 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:44:03,077 - INFO - 
+[28/53] Processing buoy: 2025-05-30 to 2025-06-06
+2025-12-11 22:44:03,077 - INFO - Invoking noaa-ingest-buoy-dev for 2025-05-30 to 2025-06-06
+2025-12-11 22:49:12,867 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:49:12,868 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:49:17,873 - INFO - 
+[29/53] Processing buoy: 2025-05-23 to 2025-05-30
+2025-12-11 22:49:17,873 - INFO - Invoking noaa-ingest-buoy-dev for 2025-05-23 to 2025-05-30
+2025-12-11 22:54:27,687 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:54:27,688 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:54:32,693 - INFO - 
+[30/53] Processing buoy: 2025-05-16 to 2025-05-23
+2025-12-11 22:54:32,694 - INFO - Invoking noaa-ingest-buoy-dev for 2025-05-16 to 2025-05-23
+2025-12-11 22:59:41,212 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:59:41,212 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 22:59:46,218 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T04:59:41.212949
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 30
+  Last Success: None
+
+Total Errors: 83
+================================================================================
+2025-12-11 22:59:46,218 - INFO - 
+[31/53] Processing buoy: 2025-05-09 to 2025-05-16
+2025-12-11 22:59:46,219 - INFO - Invoking noaa-ingest-buoy-dev for 2025-05-09 to 2025-05-16
+2025-12-11 23:04:57,653 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:04:57,654 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:05:02,663 - INFO - 
+[32/53] Processing buoy: 2025-05-02 to 2025-05-09
+2025-12-11 23:05:02,664 - INFO - Invoking noaa-ingest-buoy-dev for 2025-05-02 to 2025-05-09
+2025-12-11 23:10:10,879 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:10:10,879 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:10:15,883 - INFO - 
+[33/53] Processing buoy: 2025-04-25 to 2025-05-02
+2025-12-11 23:10:15,883 - INFO - Invoking noaa-ingest-buoy-dev for 2025-04-25 to 2025-05-02
+2025-12-11 23:15:24,107 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:15:24,107 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:15:29,123 - INFO - 
+[34/53] Processing buoy: 2025-04-18 to 2025-04-25
+2025-12-11 23:15:29,123 - INFO - Invoking noaa-ingest-buoy-dev for 2025-04-18 to 2025-04-25
+2025-12-11 23:20:32,467 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:20:32,468 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:20:37,483 - INFO - 
+[35/53] Processing buoy: 2025-04-11 to 2025-04-18
+2025-12-11 23:20:37,483 - INFO - Invoking noaa-ingest-buoy-dev for 2025-04-11 to 2025-04-18
+2025-12-11 23:25:49,515 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:25:49,516 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:25:54,527 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T05:25:49.516462
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 35
+  Last Success: None
+
+Total Errors: 88
+================================================================================
+2025-12-11 23:25:54,528 - INFO - 
+[36/53] Processing buoy: 2025-04-04 to 2025-04-11
+2025-12-11 23:25:54,528 - INFO - Invoking noaa-ingest-buoy-dev for 2025-04-04 to 2025-04-11
+2025-12-11 23:31:00,324 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:31:00,324 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:31:05,334 - INFO - 
+[37/53] Processing buoy: 2025-03-28 to 2025-04-04
+2025-12-11 23:31:05,334 - INFO - Invoking noaa-ingest-buoy-dev for 2025-03-28 to 2025-04-04
+2025-12-11 23:36:10,004 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:36:10,004 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:36:15,018 - INFO - 
+[38/53] Processing buoy: 2025-03-21 to 2025-03-28
+2025-12-11 23:36:15,019 - INFO - Invoking noaa-ingest-buoy-dev for 2025-03-21 to 2025-03-28
+2025-12-11 23:41:28,210 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:41:28,210 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:41:33,219 - INFO - 
+[39/53] Processing buoy: 2025-03-14 to 2025-03-21
+2025-12-11 23:41:33,220 - INFO - Invoking noaa-ingest-buoy-dev for 2025-03-14 to 2025-03-21
+2025-12-11 23:46:38,123 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:46:38,123 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:46:43,135 - INFO - 
+[40/53] Processing buoy: 2025-03-07 to 2025-03-14
+2025-12-11 23:46:43,135 - INFO - Invoking noaa-ingest-buoy-dev for 2025-03-07 to 2025-03-14
+2025-12-11 23:51:53,043 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:51:53,043 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:51:58,054 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T05:51:53.043442
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 40
+  Last Success: None
+
+Total Errors: 93
+================================================================================
+2025-12-11 23:51:58,054 - INFO - 
+[41/53] Processing buoy: 2025-02-28 to 2025-03-07
+2025-12-11 23:51:58,054 - INFO - Invoking noaa-ingest-buoy-dev for 2025-02-28 to 2025-03-07
+2025-12-11 23:57:02,293 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:57:02,293 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-11 23:57:07,302 - INFO - 
+[42/53] Processing buoy: 2025-02-21 to 2025-02-28
+2025-12-11 23:57:07,303 - INFO - Invoking noaa-ingest-buoy-dev for 2025-02-21 to 2025-02-28
+2025-12-12 00:02:16,426 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:02:16,426 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:02:21,436 - INFO - 
+[43/53] Processing buoy: 2025-02-14 to 2025-02-21
+2025-12-12 00:02:21,436 - INFO - Invoking noaa-ingest-buoy-dev for 2025-02-14 to 2025-02-21
+2025-12-12 00:07:28,289 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:07:28,289 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:07:33,298 - INFO - 
+[44/53] Processing buoy: 2025-02-07 to 2025-02-14
+2025-12-12 00:07:33,299 - INFO - Invoking noaa-ingest-buoy-dev for 2025-02-07 to 2025-02-14
+2025-12-12 00:12:43,069 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:12:43,070 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:12:48,086 - INFO - 
+[45/53] Processing buoy: 2025-01-31 to 2025-02-07
+2025-12-12 00:12:48,086 - INFO - Invoking noaa-ingest-buoy-dev for 2025-01-31 to 2025-02-07
+2025-12-12 00:17:56,883 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:17:56,883 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:18:01,894 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T06:17:56.883916
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 45
+  Last Success: None
+
+Total Errors: 98
+================================================================================
+2025-12-12 00:18:01,894 - INFO - 
+[46/53] Processing buoy: 2025-01-24 to 2025-01-31
+2025-12-12 00:18:01,894 - INFO - Invoking noaa-ingest-buoy-dev for 2025-01-24 to 2025-01-31
+2025-12-12 00:23:08,022 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:23:08,022 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:23:13,027 - INFO - 
+[47/53] Processing buoy: 2025-01-17 to 2025-01-24
+2025-12-12 00:23:13,028 - INFO - Invoking noaa-ingest-buoy-dev for 2025-01-17 to 2025-01-24
+2025-12-12 00:28:20,538 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:28:20,538 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:28:25,542 - INFO - 
+[48/53] Processing buoy: 2025-01-10 to 2025-01-17
+2025-12-12 00:28:25,542 - INFO - Invoking noaa-ingest-buoy-dev for 2025-01-10 to 2025-01-17
+2025-12-12 00:33:34,329 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:33:34,330 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:33:39,344 - INFO - 
+[49/53] Processing buoy: 2025-01-03 to 2025-01-10
+2025-12-12 00:33:39,345 - INFO - Invoking noaa-ingest-buoy-dev for 2025-01-03 to 2025-01-10
+2025-12-12 00:38:44,840 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:38:44,840 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:38:49,851 - INFO - 
+[50/53] Processing buoy: 2024-12-27 to 2025-01-03
+2025-12-12 00:38:49,851 - INFO - Invoking noaa-ingest-buoy-dev for 2024-12-27 to 2025-01-03
+2025-12-12 00:44:00,225 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:44:00,225 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:44:05,238 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T06:44:00.225968
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 50
+  Last Success: None
+
+Total Errors: 103
+================================================================================
+2025-12-12 00:44:05,239 - INFO - 
+[51/53] Processing buoy: 2024-12-20 to 2024-12-27
+2025-12-12 00:44:05,239 - INFO - Invoking noaa-ingest-buoy-dev for 2024-12-20 to 2024-12-27
+2025-12-12 00:49:12,365 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:49:12,365 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:49:17,382 - INFO - 
+[52/53] Processing buoy: 2024-12-13 to 2024-12-20
+2025-12-12 00:49:17,382 - INFO - Invoking noaa-ingest-buoy-dev for 2024-12-13 to 2024-12-20
+2025-12-12 00:54:26,477 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:54:26,477 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:54:31,489 - INFO - 
+[53/53] Processing buoy: 2024-12-12 to 2024-12-13
+2025-12-12 00:54:31,489 - INFO - Invoking noaa-ingest-buoy-dev for 2024-12-12 to 2024-12-13
+2025-12-12 00:59:39,178 - ERROR - Error invoking noaa-ingest-buoy-dev: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:59:39,178 - ERROR - ✗ Bronze ingestion failed: Read timeout on endpoint URL: "https://lambda.us-east-1.amazonaws.com/2015-03-31/functions/noaa-ingest-buoy-dev/invocations"
+2025-12-12 00:59:39,184 - INFO - 
+BUOY backfill complete:
+2025-12-12 00:59:39,184 - INFO -   Completed: 0/53
+2025-12-12 00:59:39,184 - INFO -   Failed: 53/53
+2025-12-12 00:59:39,184 - INFO - 
+================================================================================
+2025-12-12 00:59:39,184 - INFO - Starting backfill for CLIMATE pond
+2025-12-12 00:59:39,184 - INFO - ================================================================================
+2025-12-12 00:59:39,185 - INFO - Generated 13 date ranges for backfill
+2025-12-12 00:59:39,185 - INFO - 
+[1/13] Processing climate: 2025-11-12 to 2025-12-12
+2025-12-12 00:59:39,185 - INFO - Invoking noaa-ingest-climate-dev for 2025-11-12 to 2025-12-12
+2025-12-12 00:59:55,943 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 00:59:59,600 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 00:59:59,600 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:00:11,611 - INFO - 
+[2/13] Processing climate: 2025-10-13 to 2025-11-12
+2025-12-12 01:00:11,611 - INFO - Invoking noaa-ingest-climate-dev for 2025-10-13 to 2025-11-12
+2025-12-12 01:00:26,855 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:00:30,521 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:00:30,521 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:00:42,531 - INFO - 
+[3/13] Processing climate: 2025-09-13 to 2025-10-13
+2025-12-12 01:00:42,531 - INFO - Invoking noaa-ingest-climate-dev for 2025-09-13 to 2025-10-13
+2025-12-12 01:00:57,819 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:01:01,463 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:01:01,463 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:01:13,472 - INFO - 
+[4/13] Processing climate: 2025-08-14 to 2025-09-13
+2025-12-12 01:01:13,473 - INFO - Invoking noaa-ingest-climate-dev for 2025-08-14 to 2025-09-13
+2025-12-12 01:01:28,693 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:01:32,568 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:01:32,568 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:01:44,580 - INFO - 
+[5/13] Processing climate: 2025-07-15 to 2025-08-14
+2025-12-12 01:01:44,580 - INFO - Invoking noaa-ingest-climate-dev for 2025-07-15 to 2025-08-14
+2025-12-12 01:01:59,809 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:02:03,736 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:02:03,737 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:02:15,751 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:02:03.737584
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 5
+  Failed Ranges: 0
+  Last Success: 2025-08-14
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:02:15,751 - INFO - 
+[6/13] Processing climate: 2025-06-15 to 2025-07-15
+2025-12-12 01:02:15,751 - INFO - Invoking noaa-ingest-climate-dev for 2025-06-15 to 2025-07-15
+2025-12-12 01:02:30,969 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:02:34,708 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:02:34,708 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:02:46,721 - INFO - 
+[7/13] Processing climate: 2025-05-16 to 2025-06-15
+2025-12-12 01:02:46,721 - INFO - Invoking noaa-ingest-climate-dev for 2025-05-16 to 2025-06-15
+2025-12-12 01:03:01,981 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:03:05,619 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:03:05,619 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:03:17,631 - INFO - 
+[8/13] Processing climate: 2025-04-16 to 2025-05-16
+2025-12-12 01:03:17,631 - INFO - Invoking noaa-ingest-climate-dev for 2025-04-16 to 2025-05-16
+2025-12-12 01:03:32,899 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:03:36,609 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:03:36,609 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:03:48,621 - INFO - 
+[9/13] Processing climate: 2025-03-17 to 2025-04-16
+2025-12-12 01:03:48,621 - INFO - Invoking noaa-ingest-climate-dev for 2025-03-17 to 2025-04-16
+2025-12-12 01:04:03,895 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:04:07,543 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:04:07,543 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:04:19,553 - INFO - 
+[10/13] Processing climate: 2025-02-15 to 2025-03-17
+2025-12-12 01:04:19,553 - INFO - Invoking noaa-ingest-climate-dev for 2025-02-15 to 2025-03-17
+2025-12-12 01:04:34,765 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:04:38,682 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:04:38,682 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:04:50,698 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:04:38.683103
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 10
+  Failed Ranges: 0
+  Last Success: 2025-03-17
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:04:50,698 - INFO - 
+[11/13] Processing climate: 2025-01-16 to 2025-02-15
+2025-12-12 01:04:50,698 - INFO - Invoking noaa-ingest-climate-dev for 2025-01-16 to 2025-02-15
+2025-12-12 01:05:05,931 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:05:09,687 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:05:09,688 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:05:21,700 - INFO - 
+[12/13] Processing climate: 2024-12-17 to 2025-01-16
+2025-12-12 01:05:21,700 - INFO - Invoking noaa-ingest-climate-dev for 2024-12-17 to 2025-01-16
+2025-12-12 01:05:36,923 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:05:40,644 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:05:40,644 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:05:52,654 - INFO - 
+[13/13] Processing climate: 2024-12-12 to 2024-12-17
+2025-12-12 01:05:52,655 - INFO - Invoking noaa-ingest-climate-dev for 2024-12-12 to 2024-12-17
+2025-12-12 01:06:07,872 - INFO - ✓ Bronze ingestion successful: 30 records, 0 API calls
+2025-12-12 01:06:08,750 - INFO - Found 0 files in Bronze layer for climate
+2025-12-12 01:06:08,751 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:06:08,755 - INFO - 
+CLIMATE backfill complete:
+2025-12-12 01:06:08,756 - INFO -   Completed: 13/13
+2025-12-12 01:06:08,756 - INFO -   Failed: 0/13
+2025-12-12 01:06:08,756 - INFO - 
+================================================================================
+2025-12-12 01:06:08,756 - INFO - Starting backfill for TERRESTRIAL pond
+2025-12-12 01:06:08,756 - INFO - ================================================================================
+2025-12-12 01:06:08,756 - INFO - Generated 53 date ranges for backfill
+2025-12-12 01:06:08,756 - INFO - 
+[1/53] Processing terrestrial: 2025-12-05 to 2025-12-12
+2025-12-12 01:06:08,756 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-12-05 to 2025-12-12
+2025-12-12 01:06:41,424 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:06:42,473 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:06:42,473 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:06:48,485 - INFO - 
+[2/53] Processing terrestrial: 2025-11-28 to 2025-12-05
+2025-12-12 01:06:48,485 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-11-28 to 2025-12-05
+2025-12-12 01:07:17,210 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:07:18,282 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:07:18,282 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:07:24,295 - INFO - 
+[3/53] Processing terrestrial: 2025-11-21 to 2025-11-28
+2025-12-12 01:07:24,295 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-11-21 to 2025-11-28
+2025-12-12 01:07:53,409 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:07:54,451 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:07:54,451 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:08:00,465 - INFO - 
+[4/53] Processing terrestrial: 2025-11-14 to 2025-11-21
+2025-12-12 01:08:00,465 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-11-14 to 2025-11-21
+2025-12-12 01:08:28,752 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:08:29,811 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:08:29,812 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:08:35,825 - INFO - 
+[5/53] Processing terrestrial: 2025-11-07 to 2025-11-14
+2025-12-12 01:08:35,825 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-11-07 to 2025-11-14
+2025-12-12 01:09:04,229 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:09:05,348 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:09:05,348 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:09:11,361 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:09:05.348841
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 5
+  Failed Ranges: 0
+  Last Success: 2025-11-14
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:09:11,361 - INFO - 
+[6/53] Processing terrestrial: 2025-10-31 to 2025-11-07
+2025-12-12 01:09:11,361 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-10-31 to 2025-11-07
+2025-12-12 01:09:39,658 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:09:40,701 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:09:40,701 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:09:46,713 - INFO - 
+[7/53] Processing terrestrial: 2025-10-24 to 2025-10-31
+2025-12-12 01:09:46,713 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-10-24 to 2025-10-31
+2025-12-12 01:10:14,945 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:10:15,992 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:10:15,992 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:10:22,001 - INFO - 
+[8/53] Processing terrestrial: 2025-10-17 to 2025-10-24
+2025-12-12 01:10:22,001 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-10-17 to 2025-10-24
+2025-12-12 01:10:50,744 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:10:51,876 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:10:51,876 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:10:57,885 - INFO - 
+[9/53] Processing terrestrial: 2025-10-10 to 2025-10-17
+2025-12-12 01:10:57,885 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-10-10 to 2025-10-17
+2025-12-12 01:11:26,018 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:11:27,194 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:11:27,194 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:11:33,207 - INFO - 
+[10/53] Processing terrestrial: 2025-10-03 to 2025-10-10
+2025-12-12 01:11:33,207 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-10-03 to 2025-10-10
+2025-12-12 01:12:01,375 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:12:02,566 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:12:02,566 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:12:08,584 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:12:02.566685
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 10
+  Failed Ranges: 0
+  Last Success: 2025-10-10
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:12:08,585 - INFO - 
+[11/53] Processing terrestrial: 2025-09-26 to 2025-10-03
+2025-12-12 01:12:08,585 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-09-26 to 2025-10-03
+2025-12-12 01:12:36,846 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:12:38,004 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:12:38,004 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:12:44,019 - INFO - 
+[12/53] Processing terrestrial: 2025-09-19 to 2025-09-26
+2025-12-12 01:12:44,019 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-09-19 to 2025-09-26
+2025-12-12 01:13:12,532 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:13:13,662 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:13:13,663 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:13:19,680 - INFO - 
+[13/53] Processing terrestrial: 2025-09-12 to 2025-09-19
+2025-12-12 01:13:19,681 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-09-12 to 2025-09-19
+2025-12-12 01:13:47,819 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:13:48,959 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:13:48,959 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:13:54,976 - INFO - 
+[14/53] Processing terrestrial: 2025-09-05 to 2025-09-12
+2025-12-12 01:13:54,976 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-09-05 to 2025-09-12
+2025-12-12 01:14:23,128 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:14:24,380 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:14:24,381 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:14:30,390 - INFO - 
+[15/53] Processing terrestrial: 2025-08-29 to 2025-09-05
+2025-12-12 01:14:30,390 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-08-29 to 2025-09-05
+2025-12-12 01:14:58,750 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:14:59,867 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:14:59,867 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:15:05,877 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:14:59.867375
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 15
+  Failed Ranges: 0
+  Last Success: 2025-09-05
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:15:05,877 - INFO - 
+[16/53] Processing terrestrial: 2025-08-22 to 2025-08-29
+2025-12-12 01:15:05,878 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-08-22 to 2025-08-29
+2025-12-12 01:15:34,051 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:15:35,182 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:15:35,183 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:15:41,195 - INFO - 
+[17/53] Processing terrestrial: 2025-08-15 to 2025-08-22
+2025-12-12 01:15:41,195 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-08-15 to 2025-08-22
+2025-12-12 01:16:09,547 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:16:10,650 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:16:10,651 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:16:16,661 - INFO - 
+[18/53] Processing terrestrial: 2025-08-08 to 2025-08-15
+2025-12-12 01:16:16,661 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-08-08 to 2025-08-15
+2025-12-12 01:16:45,761 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:16:46,827 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:16:46,827 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:16:52,839 - INFO - 
+[19/53] Processing terrestrial: 2025-08-01 to 2025-08-08
+2025-12-12 01:16:52,839 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-08-01 to 2025-08-08
+2025-12-12 01:17:21,632 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:17:22,694 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:17:22,694 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:17:28,703 - INFO - 
+[20/53] Processing terrestrial: 2025-07-25 to 2025-08-01
+2025-12-12 01:17:28,704 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-07-25 to 2025-08-01
+2025-12-12 01:17:57,710 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:17:58,776 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:17:58,776 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:18:04,791 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:17:58.776458
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 20
+  Failed Ranges: 0
+  Last Success: 2025-08-01
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:18:04,791 - INFO - 
+[21/53] Processing terrestrial: 2025-07-18 to 2025-07-25
+2025-12-12 01:18:04,792 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-07-18 to 2025-07-25
+2025-12-12 01:18:33,275 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:18:34,286 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:18:34,286 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:18:40,293 - INFO - 
+[22/53] Processing terrestrial: 2025-07-11 to 2025-07-18
+2025-12-12 01:18:40,294 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-07-11 to 2025-07-18
+2025-12-12 01:19:08,667 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:19:09,712 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:19:09,713 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:19:15,721 - INFO - 
+[23/53] Processing terrestrial: 2025-07-04 to 2025-07-11
+2025-12-12 01:19:15,721 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-07-04 to 2025-07-11
+2025-12-12 01:19:44,123 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:19:46,028 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:19:46,029 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:19:52,034 - INFO - 
+[24/53] Processing terrestrial: 2025-06-27 to 2025-07-04
+2025-12-12 01:19:52,034 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-06-27 to 2025-07-04
+2025-12-12 01:20:20,661 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:20:21,724 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:20:21,724 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:20:27,734 - INFO - 
+[25/53] Processing terrestrial: 2025-06-20 to 2025-06-27
+2025-12-12 01:20:27,734 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-06-20 to 2025-06-27
+2025-12-12 01:20:56,179 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:20:57,202 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:20:57,202 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:21:03,213 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:20:57.202945
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 25
+  Failed Ranges: 0
+  Last Success: 2025-06-27
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:21:03,213 - INFO - 
+[26/53] Processing terrestrial: 2025-06-13 to 2025-06-20
+2025-12-12 01:21:03,213 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-06-13 to 2025-06-20
+2025-12-12 01:21:31,356 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:21:32,409 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:21:32,410 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:21:38,423 - INFO - 
+[27/53] Processing terrestrial: 2025-06-06 to 2025-06-13
+2025-12-12 01:21:38,424 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-06-06 to 2025-06-13
+2025-12-12 01:22:07,677 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:22:08,743 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:22:08,743 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:22:14,746 - INFO - 
+[28/53] Processing terrestrial: 2025-05-30 to 2025-06-06
+2025-12-12 01:22:14,747 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-05-30 to 2025-06-06
+2025-12-12 01:22:43,212 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:22:44,236 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:22:44,236 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:22:50,248 - INFO - 
+[29/53] Processing terrestrial: 2025-05-23 to 2025-05-30
+2025-12-12 01:22:50,248 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-05-23 to 2025-05-30
+2025-12-12 01:23:18,590 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:23:19,697 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:23:19,697 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:23:25,706 - INFO - 
+[30/53] Processing terrestrial: 2025-05-16 to 2025-05-23
+2025-12-12 01:23:25,706 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-05-16 to 2025-05-23
+2025-12-12 01:23:54,172 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:23:55,250 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:23:55,250 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:24:01,256 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:23:55.250296
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 30
+  Failed Ranges: 0
+  Last Success: 2025-05-23
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:24:01,256 - INFO - 
+[31/53] Processing terrestrial: 2025-05-09 to 2025-05-16
+2025-12-12 01:24:01,256 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-05-09 to 2025-05-16
+2025-12-12 01:24:29,593 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:24:30,636 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:24:30,636 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:24:36,648 - INFO - 
+[32/53] Processing terrestrial: 2025-05-02 to 2025-05-09
+2025-12-12 01:24:36,648 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-05-02 to 2025-05-09
+2025-12-12 01:25:04,860 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:25:05,985 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:25:05,985 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:25:12,005 - INFO - 
+[33/53] Processing terrestrial: 2025-04-25 to 2025-05-02
+2025-12-12 01:25:12,005 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-04-25 to 2025-05-02
+2025-12-12 01:25:40,290 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:25:41,357 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:25:41,358 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:25:47,368 - INFO - 
+[34/53] Processing terrestrial: 2025-04-18 to 2025-04-25
+2025-12-12 01:25:47,368 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-04-18 to 2025-04-25
+2025-12-12 01:26:15,813 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:26:16,867 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:26:16,867 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:26:22,878 - INFO - 
+[35/53] Processing terrestrial: 2025-04-11 to 2025-04-18
+2025-12-12 01:26:22,878 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-04-11 to 2025-04-18
+2025-12-12 01:26:51,803 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:26:52,884 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:26:52,885 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:26:58,902 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:26:52.885242
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 35
+  Failed Ranges: 0
+  Last Success: 2025-04-18
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:26:58,903 - INFO - 
+[36/53] Processing terrestrial: 2025-04-04 to 2025-04-11
+2025-12-12 01:26:58,903 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-04-04 to 2025-04-11
+2025-12-12 01:27:27,878 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:27:28,983 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:27:28,989 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:27:35,006 - INFO - 
+[37/53] Processing terrestrial: 2025-03-28 to 2025-04-04
+2025-12-12 01:27:35,006 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-03-28 to 2025-04-04
+2025-12-12 01:28:03,263 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:28:04,365 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:28:04,368 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:28:10,378 - INFO - 
+[38/53] Processing terrestrial: 2025-03-21 to 2025-03-28
+2025-12-12 01:28:10,378 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-03-21 to 2025-03-28
+2025-12-12 01:28:38,989 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:28:39,986 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:28:39,986 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:28:45,992 - INFO - 
+[39/53] Processing terrestrial: 2025-03-14 to 2025-03-21
+2025-12-12 01:28:45,992 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-03-14 to 2025-03-21
+2025-12-12 01:29:14,433 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:29:15,481 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:29:15,481 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:29:21,493 - INFO - 
+[40/53] Processing terrestrial: 2025-03-07 to 2025-03-14
+2025-12-12 01:29:21,494 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-03-07 to 2025-03-14
+2025-12-12 01:29:50,257 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:29:51,343 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:29:51,343 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:29:57,350 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:29:51.343402
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 40
+  Failed Ranges: 0
+  Last Success: 2025-03-14
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:29:57,350 - INFO - 
+[41/53] Processing terrestrial: 2025-02-28 to 2025-03-07
+2025-12-12 01:29:57,351 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-02-28 to 2025-03-07
+2025-12-12 01:30:27,235 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:30:28,309 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:30:28,309 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:30:34,314 - INFO - 
+[42/53] Processing terrestrial: 2025-02-21 to 2025-02-28
+2025-12-12 01:30:34,314 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-02-21 to 2025-02-28
+2025-12-12 01:31:02,779 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:31:03,880 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:31:03,880 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:31:09,886 - INFO - 
+[43/53] Processing terrestrial: 2025-02-14 to 2025-02-21
+2025-12-12 01:31:09,886 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-02-14 to 2025-02-21
+2025-12-12 01:31:38,106 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:31:39,172 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:31:39,172 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:31:45,186 - INFO - 
+[44/53] Processing terrestrial: 2025-02-07 to 2025-02-14
+2025-12-12 01:31:45,187 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-02-07 to 2025-02-14
+2025-12-12 01:32:13,584 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:32:14,658 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:32:14,661 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:32:20,673 - INFO - 
+[45/53] Processing terrestrial: 2025-01-31 to 2025-02-07
+2025-12-12 01:32:20,673 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-01-31 to 2025-02-07
+2025-12-12 01:32:50,141 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:32:51,178 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:32:51,179 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:32:57,197 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:32:51.179197
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 45
+  Failed Ranges: 0
+  Last Success: 2025-02-07
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:32:57,197 - INFO - 
+[46/53] Processing terrestrial: 2025-01-24 to 2025-01-31
+2025-12-12 01:32:57,197 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-01-24 to 2025-01-31
+2025-12-12 01:33:25,778 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:33:26,818 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:33:26,818 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:33:32,830 - INFO - 
+[47/53] Processing terrestrial: 2025-01-17 to 2025-01-24
+2025-12-12 01:33:32,830 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-01-17 to 2025-01-24
+2025-12-12 01:34:01,216 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:34:02,263 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:34:02,263 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:34:08,278 - INFO - 
+[48/53] Processing terrestrial: 2025-01-10 to 2025-01-17
+2025-12-12 01:34:08,278 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-01-10 to 2025-01-17
+2025-12-12 01:34:36,525 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:34:37,563 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:34:37,563 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:34:43,575 - INFO - 
+[49/53] Processing terrestrial: 2025-01-03 to 2025-01-10
+2025-12-12 01:34:43,575 - INFO - Invoking noaa-ingest-terrestrial-dev for 2025-01-03 to 2025-01-10
+2025-12-12 01:35:12,026 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:35:13,074 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:35:13,075 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:35:19,087 - INFO - 
+[50/53] Processing terrestrial: 2024-12-27 to 2025-01-03
+2025-12-12 01:35:19,087 - INFO - Invoking noaa-ingest-terrestrial-dev for 2024-12-27 to 2025-01-03
+2025-12-12 01:35:48,344 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:35:49,405 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:35:49,406 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:35:55,415 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:35:49.406178
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 50
+  Failed Ranges: 0
+  Last Success: 2025-01-03
+
+Total Errors: 106
+================================================================================
+2025-12-12 01:35:55,415 - INFO - 
+[51/53] Processing terrestrial: 2024-12-20 to 2024-12-27
+2025-12-12 01:35:55,415 - INFO - Invoking noaa-ingest-terrestrial-dev for 2024-12-20 to 2024-12-27
+2025-12-12 01:36:23,664 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:36:24,685 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:36:24,685 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:36:30,697 - INFO - 
+[52/53] Processing terrestrial: 2024-12-13 to 2024-12-20
+2025-12-12 01:36:30,698 - INFO - Invoking noaa-ingest-terrestrial-dev for 2024-12-13 to 2024-12-20
+2025-12-12 01:36:58,856 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:36:59,891 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:36:59,891 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:37:05,898 - INFO - 
+[53/53] Processing terrestrial: 2024-12-12 to 2024-12-13
+2025-12-12 01:37:05,898 - INFO - Invoking noaa-ingest-terrestrial-dev for 2024-12-12 to 2024-12-13
+2025-12-12 01:37:34,641 - INFO - ✓ Bronze ingestion successful: 66 records, 69 API calls
+2025-12-12 01:37:35,026 - INFO - Found 0 files in Bronze layer for terrestrial
+2025-12-12 01:37:35,026 - WARNING - No data found in Bronze layer - may be expected for this date range
+2025-12-12 01:37:35,033 - INFO - 
+TERRESTRIAL backfill complete:
+2025-12-12 01:37:35,033 - INFO -   Completed: 53/53
+2025-12-12 01:37:35,033 - INFO -   Failed: 0/53
+/Users/adambehnke/Projects/noaa_storefront/scripts/historical_backfill_system.py:573: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  end_time = datetime.utcnow()
+2025-12-12 01:37:35,034 - INFO - 
+================================================================================
+2025-12-12 01:37:35,034 - INFO - BACKFILL COMPLETE
+2025-12-12 01:37:35,034 - INFO - ================================================================================
+2025-12-12 01:37:35,034 - INFO - Duration: 10:40:47.781428
+2025-12-12 01:37:35,034 - INFO - 
+================================================================================
+BACKFILL PROGRESS SUMMARY
+================================================================================
+Started: 2025-12-11T20:55:23.864907
+Last Updated: 2025-12-12T07:37:35.026487
+Total Records: 0
+Total API Calls: 0
+
+
+ATMOSPHERIC:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-12
+
+OCEANIC:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+BUOY:
+  Records: 0
+  Completed Ranges: 0
+  Failed Ranges: 53
+  Last Success: None
+
+CLIMATE:
+  Records: 0
+  Completed Ranges: 13
+  Failed Ranges: 0
+  Last Success: 2024-12-17
+
+TERRESTRIAL:
+  Records: 0
+  Completed Ranges: 53
+  Failed Ranges: 0
+  Last Success: 2024-12-13
+
+Total Errors: 106
+================================================================================

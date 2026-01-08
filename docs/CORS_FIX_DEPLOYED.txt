@@ -1,0 +1,52 @@
+╔══════════════════════════════════════════════════════════════╗
+║            CORS ISSUE FIXED - DEPLOYED ✅                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+ISSUE: CORS policy blocking Cache-Control header
+STATUS: RESOLVED
+
+FIXES APPLIED:
+--------------
+1. ✅ Removed Cache-Control header from dashboard fetch requests
+2. ✅ Added OPTIONS preflight handling to Lambda function
+3. ✅ Updated CORS headers to allow all necessary methods
+4. ✅ Re-deployed dashboard to S3
+5. ✅ Invalidated CloudFront cache
+
+DEPLOYMENT DETAILS:
+-------------------
+Dashboard File:  dashboard_enhanced_live.html
+S3 Bucket:       noaa-dashboards-dev-899626030376
+CloudFront:      EB2SWP7ZVF9JI
+Invalidation:    IAV6JC4JNYHKBYD699DSUQXCOT
+Lambda Updated:  noaa-dashboard-metrics (2026-01-05 19:35:52 UTC)
+
+WAIT TIME:
+----------
+⏰ CloudFront cache invalidation: 3-5 minutes
+   After that, hard refresh your browser (Ctrl+Shift+R)
+
+TEST AFTER 5 MINUTES:
+---------------------
+1. Open: https://d2azko4sm6tkua.cloudfront.net/dashboard_enhanced_live.html
+2. Hard refresh: Ctrl+Shift+R (Windows) or Cmd+Shift+R (Mac)
+3. Open browser console (F12)
+4. Should see: "Dashboard initializing..." with NO CORS errors
+5. All 6 ponds should load with data
+
+VERIFY:
+-------
+• System Overview tab shows pond metrics
+• Data Ponds tab - click any pond to see details
+• Maps & Images tab shows radar/satellite images
+
+ORIGINAL DASHBOARD PRESERVED:
+------------------------------
+✅ https://d2azko4sm6tkua.cloudfront.net/dashboard_comprehensive.html
+   (Not modified - working as before)
+
+NEW DASHBOARD:
+--------------
+✅ https://d2azko4sm6tkua.cloudfront.net/dashboard_enhanced_live.html
+   (Fixed CORS, now fully functional)
+

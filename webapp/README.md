@@ -18,24 +18,76 @@ A modern, interactive web-based chatbot interface for querying the NOAA Federate
 1. **Federated Mode** - AI automatically routes to the best data source(s)
 2. **Direct Mode** - Query specific data ponds directly
 
+### 🕐 Recent Data Examples (NEW!)
+- **Double-click any pond** to view all endpoints and recent data samples
+- **"Recent" button** on each endpoint shows most recently ingested data
+- **No live API calls** needed for data exploration
+- View ingestion timestamps, file counts, and data layer breakdowns
+- Perfect for discovering what data is available
+
 ### 📊 Rich Data Visualization
 - Real-time data display
 - Summary statistics and insights
 - Interactive charts and graphs
 - Raw data viewing and export
+- Medallion architecture visibility (Bronze/Silver/Gold layers)
 
 ### 🎨 Modern UI/UX
 - Clean, responsive design
 - Dark/light theme toggle
 - Mobile-friendly interface
 - Real-time status indicators
+- Intuitive double-click and button interactions
 
-### 🔌 Data Sources
-- **NWS** - National Weather Service (10+ endpoints)
-- **Tides & Currents** - CO-OPS (10+ products)
-- **NDBC** - Marine buoys (1000+ stations)
-- **CDO** - Climate Data Online (5+ datasets)
-- **NCEI** - Environmental archives (3+ datasets)
+### 🔌 Data Sources (48+ Active Endpoints)
+- **NWS** - National Weather Service (8 endpoints) - Atmospheric Pond
+- **CO-OPS** - Tides & Currents (8 endpoints) - Oceanic Pond
+- **NDBC** - Marine buoys (5 endpoints) - Buoy Pond
+- **CDO** - Climate Data Online (7 endpoints) - Climate Pond
+- **NEXRAD/GOES** - Radar & Satellite (2 endpoints) - Spatial Pond
+- **USGS** - River Gauges (3 endpoints) - Terrestrial Pond
+
+---
+
+## 🆕 What's New - Recent Data Examples Feature
+
+### Quick Overview
+The new **Recent Data Examples** feature makes it easy to explore what data is being ingested without querying live APIs:
+
+- **Double-click any pond** in the sidebar to see all its endpoints with descriptions
+- **Click the green "Recent" button** next to any endpoint to view the most recently ingested data
+- **Click the blue "Query" button** to fetch fresh data directly from NOAA APIs
+
+### Usage Examples
+
+#### Explore All Endpoints in a Pond
+```
+1. Double-click "Atmospheric" pond in sidebar
+2. View all 8 weather endpoints with descriptions
+3. See pond statistics (files, size, freshness)
+4. Check medallion layer breakdown (Bronze/Silver/Gold)
+```
+
+#### View Recent Ingested Data
+```
+1. Expand "Endpoints & Services" section
+2. Find any endpoint (e.g., "Active Alerts")
+3. Click the 🟢 Recent button
+4. View the most recently ingested data sample
+```
+
+#### Query Live Data
+```
+1. Find your desired endpoint
+2. Click the 🔵 Query button
+3. Get real-time data from NOAA
+```
+
+### Documentation
+- **Quick Reference**: See `QUICK_REFERENCE_RECENT_DATA.md`
+- **Full Documentation**: See `RECENT_DATA_EXAMPLES_FEATURE.md`
+- **Deployment Guide**: See `RECENT_DATA_FEATURE_DEPLOYMENT.md`
+- **Visual Guide**: See `RECENT_DATA_VISUAL_GUIDE.md`
 
 ---
 

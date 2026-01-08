@@ -1,0 +1,696 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'NOAA Federated Data Lake - Real-Time Streaming Infrastructure'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+  AccountId:
+    Type: String
+    Default: '899626030376'
+    Description: AWS Account ID
+
+  DataLakeBucket:
+    Type: String
+    Description: S3 bucket for data lake storage
+
+  ShardCount:
+    Type: Number
+    Default: 2
+    MinValue: 1
+    MaxValue: 10
+    Description: Number of shards for each Kinesis stream
+
+  RetentionHours:
+    Type: Number
+    Default: 24
+    MinValue: 24
+    MaxValue: 168
+    Description: Data retention in hours (24-168)
+
+Resources:
+  # ============================================================================
+  # KINESIS DATA STREAMS - High-Frequency Ponds
+  # ============================================================================
+
+  AtmosphericStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: !Sub 'noaa-stream-atmospheric-${Environment}'
+      ShardCount: !Ref ShardCount
+      RetentionPeriodHours: !Ref RetentionHours
+      StreamEncryption:
+        EncryptionType: KMS
+        KeyId: alias/aws/kinesis
+      StreamModeDetails:
+        StreamMode: PROVISIONED
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+        - Key: DataPond
+          Value: Atmospheric
+        - Key: Frequency
+          Value: High
+
+  OceanicStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: !Sub 'noaa-stream-oceanic-${Environment}'
+      ShardCount: !Ref ShardCount
+      RetentionPeriodHours: !Ref RetentionHours
+      StreamEncryption:
+        EncryptionType: KMS
+        KeyId: alias/aws/kinesis
+      StreamModeDetails:
+        StreamMode: PROVISIONED
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+        - Key: DataPond
+          Value: Oceanic
+        - Key: Frequency
+          Value: High
+
+  BuoyStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: !Sub 'noaa-stream-buoy-${Environment}'
+      ShardCount: !Ref ShardCount
+      RetentionPeriodHours: !Ref RetentionHours
+      StreamEncryption:
+        EncryptionType: KMS
+        KeyId: alias/aws/kinesis
+      StreamModeDetails:
+        StreamMode: PROVISIONED
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+        - Key: DataPond
+          Value: Buoy
+        - Key: Frequency
+          Value: High
+
+  # ============================================================================
+  # IAM ROLES
+  # ============================================================================
+
+  FirehoseRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'noaa-firehose-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: firehose.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+      Policies:
+        - PolicyName: FirehoseS3Access
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:PutObjectAcl
+                Resource:
+                  - !Sub 'arn:aws:s3:::${DataLakeBucket}/*'
+                  - !Sub 'arn:aws:s3:::${DataLakeBucket}'
+              - Effect: Allow
+                Action:
+                  - kinesis:DescribeStream
+                  - kinesis:GetShardIterator
+                  - kinesis:GetRecords
+                  - kinesis:ListShards
+                Resource:
+                  - !GetAtt AtmosphericStream.Arn
+                  - !GetAtt OceanicStream.Arn
+                  - !GetAtt BuoyStream.Arn
+              - Effect: Allow
+                Action:
+                  - kms:Decrypt
+                  - kms:GenerateDataKey
+                Resource: !Sub 'arn:aws:kms:${AWS::Region}:${AccountId}:alias/aws/kinesis'
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                  - lambda:GetFunctionConfiguration
+                Resource:
+                  - !GetAtt StreamProcessorAtmospheric.Arn
+                  - !GetAtt StreamProcessorOceanic.Arn
+                  - !GetAtt StreamProcessorBuoy.Arn
+
+  StreamProcessorRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'noaa-stream-processor-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+      Policies:
+        - PolicyName: StreamProcessorPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kinesis:GetRecords
+                  - kinesis:GetShardIterator
+                  - kinesis:DescribeStream
+                  - kinesis:ListShards
+                  - kinesis:ListStreams
+                Resource:
+                  - !GetAtt AtmosphericStream.Arn
+                  - !GetAtt OceanicStream.Arn
+                  - !GetAtt BuoyStream.Arn
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                Resource:
+                  - !Sub 'arn:aws:s3:::${DataLakeBucket}/streaming/*'
+              - Effect: Allow
+                Action:
+                  - cloudwatch:PutMetricData
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:UpdateItem
+                Resource:
+                  - !GetAtt StreamingMetadataTable.Arn
+
+  StreamProducerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'noaa-stream-producer-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: StreamProducerPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kinesis:PutRecord
+                  - kinesis:PutRecords
+                  - kinesis:DescribeStream
+                Resource:
+                  - !GetAtt AtmosphericStream.Arn
+                  - !GetAtt OceanicStream.Arn
+                  - !GetAtt BuoyStream.Arn
+              - Effect: Allow
+                Action:
+                  - cloudwatch:PutMetricData
+                Resource: '*'
+
+  # ============================================================================
+  # LAMBDA FUNCTIONS - Stream Processors
+  # ============================================================================
+
+  StreamProcessorAtmospheric:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'noaa-stream-processor-atmospheric-${Environment}'
+      Runtime: python3.11
+      Handler: index.lambda_handler
+      Role: !GetAtt StreamProcessorRole.Arn
+      Timeout: 60
+      MemorySize: 512
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+          DATA_LAKE_BUCKET: !Ref DataLakeBucket
+          STREAM_NAME: !Ref AtmosphericStream
+          POND_NAME: atmospheric
+          METADATA_TABLE: !Ref StreamingMetadataTable
+      Code:
+        ZipFile: |
+          import json
+          import base64
+          import boto3
+          import os
+          from datetime import datetime
+
+          s3 = boto3.client('s3')
+          cloudwatch = boto3.client('cloudwatch')
+          dynamodb = boto3.resource('dynamodb')
+
+          def lambda_handler(event, context):
+              """Process streaming atmospheric data records"""
+
+              bucket = os.environ['DATA_LAKE_BUCKET']
+              pond = os.environ['POND_NAME']
+              metadata_table = dynamodb.Table(os.environ['METADATA_TABLE'])
+
+              processed = 0
+              errors = 0
+
+              for record in event['Records']:
+                  try:
+                      # Decode Kinesis data
+                      payload = base64.b64decode(record['kinesis']['data'])
+                      data = json.loads(payload)
+
+                      # Add processing metadata
+                      data['stream_timestamp'] = record['kinesis']['approximateArrivalTimestamp']
+                      data['processing_timestamp'] = datetime.utcnow().isoformat()
+                      data['sequence_number'] = record['kinesis']['sequenceNumber']
+
+                      # Write to streaming layer (real-time access)
+                      timestamp = datetime.utcnow()
+                      key = f"streaming/{pond}/year={timestamp.year}/month={timestamp.month:02d}/day={timestamp.day:02d}/{timestamp.isoformat()}.json"
+
+                      s3.put_object(
+                          Bucket=bucket,
+                          Key=key,
+                          Body=json.dumps(data),
+                          ContentType='application/json'
+                      )
+
+                      # Update metadata
+                      metadata_table.put_item(Item={
+                          'record_id': f"{pond}#{record['kinesis']['sequenceNumber']}",
+                          'pond': pond,
+                          'timestamp': timestamp.isoformat(),
+                          'partition_key': record['kinesis']['partitionKey'],
+                          's3_location': f"s3://{bucket}/{key}",
+                          'record_count': 1
+                      })
+
+                      processed += 1
+
+                  except Exception as e:
+                      print(f"Error processing record: {str(e)}")
+                      errors += 1
+
+              # Send CloudWatch metrics
+              cloudwatch.put_metric_data(
+                  Namespace='NOAA/Streaming',
+                  MetricData=[
+                      {
+                          'MetricName': 'RecordsProcessed',
+                          'Value': processed,
+                          'Unit': 'Count',
+                          'Dimensions': [{'Name': 'Pond', 'Value': pond}]
+                      },
+                      {
+                          'MetricName': 'ProcessingErrors',
+                          'Value': errors,
+                          'Unit': 'Count',
+                          'Dimensions': [{'Name': 'Pond', 'Value': pond}]
+                      }
+                  ]
+              )
+
+              return {
+                  'statusCode': 200,
+                  'body': json.dumps({
+                      'processed': processed,
+                      'errors': errors
+                  })
+              }
+      TracingConfig:
+        Mode: Active
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+
+  StreamProcessorOceanic:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'noaa-stream-processor-oceanic-${Environment}'
+      Runtime: python3.11
+      Handler: index.lambda_handler
+      Role: !GetAtt StreamProcessorRole.Arn
+      Timeout: 60
+      MemorySize: 512
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+          DATA_LAKE_BUCKET: !Ref DataLakeBucket
+          STREAM_NAME: !Ref OceanicStream
+          POND_NAME: oceanic
+          METADATA_TABLE: !Ref StreamingMetadataTable
+      Code:
+        ZipFile: |
+          import json
+          import base64
+          import boto3
+          import os
+          from datetime import datetime
+
+          s3 = boto3.client('s3')
+          cloudwatch = boto3.client('cloudwatch')
+          dynamodb = boto3.resource('dynamodb')
+
+          def lambda_handler(event, context):
+              """Process streaming oceanic data records"""
+
+              bucket = os.environ['DATA_LAKE_BUCKET']
+              pond = os.environ['POND_NAME']
+              metadata_table = dynamodb.Table(os.environ['METADATA_TABLE'])
+
+              processed = 0
+              errors = 0
+
+              for record in event['Records']:
+                  try:
+                      payload = base64.b64decode(record['kinesis']['data'])
+                      data = json.loads(payload)
+
+                      data['stream_timestamp'] = record['kinesis']['approximateArrivalTimestamp']
+                      data['processing_timestamp'] = datetime.utcnow().isoformat()
+                      data['sequence_number'] = record['kinesis']['sequenceNumber']
+
+                      timestamp = datetime.utcnow()
+                      key = f"streaming/{pond}/year={timestamp.year}/month={timestamp.month:02d}/day={timestamp.day:02d}/{timestamp.isoformat()}.json"
+
+                      s3.put_object(
+                          Bucket=bucket,
+                          Key=key,
+                          Body=json.dumps(data),
+                          ContentType='application/json'
+                      )
+
+                      metadata_table.put_item(Item={
+                          'record_id': f"{pond}#{record['kinesis']['sequenceNumber']}",
+                          'pond': pond,
+                          'timestamp': timestamp.isoformat(),
+                          'partition_key': record['kinesis']['partitionKey'],
+                          's3_location': f"s3://{bucket}/{key}",
+                          'record_count': 1
+                      })
+
+                      processed += 1
+
+                  except Exception as e:
+                      print(f"Error processing record: {str(e)}")
+                      errors += 1
+
+              cloudwatch.put_metric_data(
+                  Namespace='NOAA/Streaming',
+                  MetricData=[
+                      {
+                          'MetricName': 'RecordsProcessed',
+                          'Value': processed,
+                          'Unit': 'Count',
+                          'Dimensions': [{'Name': 'Pond', 'Value': pond}]
+                      },
+                      {
+                          'MetricName': 'ProcessingErrors',
+                          'Value': errors,
+                          'Unit': 'Count',
+                          'Dimensions': [{'Name': 'Pond', 'Value': pond}]
+                      }
+                  ]
+              )
+
+              return {'statusCode': 200, 'body': json.dumps({'processed': processed, 'errors': errors})}
+      TracingConfig:
+        Mode: Active
+
+  StreamProcessorBuoy:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'noaa-stream-processor-buoy-${Environment}'
+      Runtime: python3.11
+      Handler: index.lambda_handler
+      Role: !GetAtt StreamProcessorRole.Arn
+      Timeout: 60
+      MemorySize: 512
+      Environment:
+        Variables:
+          ENVIRONMENT: !Ref Environment
+          DATA_LAKE_BUCKET: !Ref DataLakeBucket
+          STREAM_NAME: !Ref BuoyStream
+          POND_NAME: buoy
+          METADATA_TABLE: !Ref StreamingMetadataTable
+      Code:
+        ZipFile: |
+          import json
+          import base64
+          import boto3
+          import os
+          from datetime import datetime
+
+          s3 = boto3.client('s3')
+          cloudwatch = boto3.client('cloudwatch')
+          dynamodb = boto3.resource('dynamodb')
+
+          def lambda_handler(event, context):
+              """Process streaming buoy data records"""
+
+              bucket = os.environ['DATA_LAKE_BUCKET']
+              pond = os.environ['POND_NAME']
+              metadata_table = dynamodb.Table(os.environ['METADATA_TABLE'])
+
+              processed = 0
+              errors = 0
+
+              for record in event['Records']:
+                  try:
+                      payload = base64.b64decode(record['kinesis']['data'])
+                      data = json.loads(payload)
+
+                      data['stream_timestamp'] = record['kinesis']['approximateArrivalTimestamp']
+                      data['processing_timestamp'] = datetime.utcnow().isoformat()
+                      data['sequence_number'] = record['kinesis']['sequenceNumber']
+
+                      timestamp = datetime.utcnow()
+                      key = f"streaming/{pond}/year={timestamp.year}/month={timestamp.month:02d}/day={timestamp.day:02d}/{timestamp.isoformat()}.json"
+
+                      s3.put_object(
+                          Bucket=bucket,
+                          Key=key,
+                          Body=json.dumps(data),
+                          ContentType='application/json'
+                      )
+
+                      metadata_table.put_item(Item={
+                          'record_id': f"{pond}#{record['kinesis']['sequenceNumber']}",
+                          'pond': pond,
+                          'timestamp': timestamp.isoformat(),
+                          'partition_key': record['kinesis']['partitionKey'],
+                          's3_location': f"s3://{bucket}/{key}",
+                          'record_count': 1
+                      })
+
+                      processed += 1
+
+                  except Exception as e:
+                      print(f"Error processing record: {str(e)}")
+                      errors += 1
+
+              cloudwatch.put_metric_data(
+                  Namespace='NOAA/Streaming',
+                  MetricData=[
+                      {
+                          'MetricName': 'RecordsProcessed',
+                          'Value': processed,
+                          'Unit': 'Count',
+                          'Dimensions': [{'Name': 'Pond', 'Value': pond}]
+                      },
+                      {
+                          'MetricName': 'ProcessingErrors',
+                          'Value': errors,
+                          'Unit': 'Count',
+                          'Dimensions': [{'Name': 'Pond', 'Value': pond}]
+                      }
+                  ]
+              )
+
+              return {'statusCode': 200, 'body': json.dumps({'processed': processed, 'errors': errors})}
+      TracingConfig:
+        Mode: Active
+
+  # ============================================================================
+  # EVENT SOURCE MAPPINGS
+  # ============================================================================
+
+  AtmosphericEventSourceMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt AtmosphericStream.Arn
+      FunctionName: !Ref StreamProcessorAtmospheric
+      StartingPosition: LATEST
+      BatchSize: 100
+      MaximumBatchingWindowInSeconds: 5
+      ParallelizationFactor: 1
+      MaximumRecordAgeInSeconds: 86400
+      BisectBatchOnFunctionError: true
+      MaximumRetryAttempts: 3
+
+  OceanicEventSourceMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt OceanicStream.Arn
+      FunctionName: !Ref StreamProcessorOceanic
+      StartingPosition: LATEST
+      BatchSize: 100
+      MaximumBatchingWindowInSeconds: 5
+      ParallelizationFactor: 1
+      MaximumRecordAgeInSeconds: 86400
+      BisectBatchOnFunctionError: true
+      MaximumRetryAttempts: 3
+
+  BuoyEventSourceMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt BuoyStream.Arn
+      FunctionName: !Ref StreamProcessorBuoy
+      StartingPosition: LATEST
+      BatchSize: 100
+      MaximumBatchingWindowInSeconds: 5
+      ParallelizationFactor: 1
+      MaximumRecordAgeInSeconds: 86400
+      BisectBatchOnFunctionError: true
+      MaximumRetryAttempts: 3
+
+  # ============================================================================
+  # DYNAMODB - Streaming Metadata
+  # ============================================================================
+
+  StreamingMetadataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'noaa-streaming-metadata-${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: record_id
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: record_id
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: NOAA-Federated-Lake
+
+  # ============================================================================
+  # CLOUDWATCH ALARMS
+  # ============================================================================
+
+  AtmosphericStreamIteratorAgeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub 'noaa-atmospheric-stream-iterator-age-${Environment}'
+      AlarmDescription: 'Alert when Atmospheric stream iterator age is high'
+      MetricName: GetRecords.IteratorAgeMilliseconds
+      Namespace: AWS/Kinesis
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 60000
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: StreamName
+          Value: !Ref AtmosphericStream
+      TreatMissingData: notBreaching
+
+  OceanicStreamIteratorAgeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub 'noaa-oceanic-stream-iterator-age-${Environment}'
+      AlarmDescription: 'Alert when Oceanic stream iterator age is high'
+      MetricName: GetRecords.IteratorAgeMilliseconds
+      Namespace: AWS/Kinesis
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 60000
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: StreamName
+          Value: !Ref OceanicStream
+      TreatMissingData: notBreaching
+
+  StreamProcessingErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub 'noaa-stream-processing-errors-${Environment}'
+      AlarmDescription: 'Alert when stream processing errors are high'
+      MetricName: ProcessingErrors
+      Namespace: NOAA/Streaming
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 2
+      Threshold: 10
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+Outputs:
+  AtmosphericStreamArn:
+    Description: ARN of Atmospheric Kinesis Stream
+    Value: !GetAtt AtmosphericStream.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-atmospheric-stream-arn'
+
+  OceanicStreamArn:
+    Description: ARN of Oceanic Kinesis Stream
+    Value: !GetAtt OceanicStream.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-oceanic-stream-arn'
+
+  BuoyStreamArn:
+    Description: ARN of Buoy Kinesis Stream
+    Value: !GetAtt BuoyStream.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-buoy-stream-arn'
+
+  StreamProducerRoleArn:
+    Description: ARN of Stream Producer Role
+    Value: !GetAtt StreamProducerRole.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-producer-role-arn'
+
+  StreamingMetadataTableName:
+    Description: Name of Streaming Metadata DynamoDB Table
+    Value: !Ref StreamingMetadataTable
+    Export:
+      Name: !Sub '${AWS::StackName}-metadata-table'
